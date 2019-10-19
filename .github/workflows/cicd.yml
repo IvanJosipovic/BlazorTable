@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     timeout-minutes: 10
     
@@ -29,12 +29,6 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        
-    - name: Set Test Address
-      run: |
-        $url = $(ConvertFrom-Json '${{ steps.netlify.outputs.output }}').deploy_url;
-        Write-Output $url;
-      shell: pwsh
 
     - name: Deploy to Production
       if: github.ref == 'refs/heads/master'
