@@ -29,12 +29,6 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        
-    - name: Set Test Address
-      run: |
-        $url = $(ConvertFrom-Json '${{ steps.netlify.outputs.output }}').deploy_url;
-        Write-Output $url;
-      shell: pwsh
 
     - name: Deploy to Production
       if: github.ref == 'refs/heads/master'
@@ -44,13 +38,3 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-
-    - name: Pack
-      if: github.ref == 'refs/heads/master'
-      working-directory: src/BlazorTable
-      run: dotnet pack --configuration Release
-      
-    - name: Nuget Push
-      if: github.ref == 'refs/heads/master'
-      working-directory: src/BlazorTable/bin/Release
-      run: nuget push BlazorTable.*.nupkg -Source https://api.nuget.org/v3/index.json -ApiKey {{ secrets. NUGET_API_KEY }}
