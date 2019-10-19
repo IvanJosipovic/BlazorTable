@@ -17,7 +17,7 @@ jobs:
       with:
         dotnet-version: 3.1.100-preview1-014459
   
-    - name: Publish
+    - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample
       run: dotnet publish --configuration Release
 
@@ -39,14 +39,16 @@ jobs:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         
-    - name: Pack
+    - name: Dotnet Pack
       if: github.ref == 'refs/heads/master'      
       working-directory: src/BlazorTable
       run: dotnet pack --configuration Release
 
-    - name: Nuget Push
+    - name: Dotnet Nuget Push
       if: github.ref == 'refs/heads/master'      
       working-directory: src/BlazorTable/bin/Release
       run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+      continue-on-error: true
       env:
-        NETLIFY_SITE_ID: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      
