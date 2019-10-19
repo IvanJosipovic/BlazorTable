@@ -1,0 +1,90 @@
+﻿@namespace BlazorTable
+@typeparam TableItem
+
+@if (Columns.Any())
+{
+    <table class="@TableClass">
+        <thead class="@TableHeadClass">
+            <tr>
+                @foreach (IColumn<TableItem> column in Columns)
+                {
+                    <th>
+                        <span @onclick="@(() => SortBy(column))" style="@(column.Sortable ? "cursor: pointer;" : "") @(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "")">@column.Title</span>
+
+                        @if (SortColumn == column)
+                        {
+                            @if (SortDescending)
+                            {
+                                <span>&#11014;</span>
+                            } 
+                            else
+                            {
+                                <span>&#11015;</span>
+                            }
+                        }
+
+                        @if (column.Filterable)
+                        {
+                            <div class="float-right">
+                                <a href="javascript:;" id="@($"Filter-{column.Title}")" @onclick="@((x) => column.ToggleFilter())" style="text-decoration: none"><span>&#128269;</span></a>
+                            </div>
+                        }
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (TempItems != null)
+            {
+                if (TempItems.Any())
+                {
+                    foreach (TableItem item in TempItems)
+                    {
+                        <tr>
+                            @foreach (IColumn<TableItem> column in Columns)
+                            {
+                                <td>
+                                    @if (IsEditMode && column.EditorTemplate != null)
+                                    {
+                                        @column.EditorTemplate(item)
+                                    }
+                                    else
+                                    {
+                                        @column.Template(item)
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="@Columns.Count" style="text-align:center"><h1>No items...</h1></td></tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="@Columns.Count" style="text-align:center"><h1>Loading...</h1></td></tr>
+            }
+        </tbody>
+    </table>
+
+    @foreach (IColumn<TableItem> column in Columns)
+    {
+        @if (column.Filterable)
+        {
+            <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+                <BlazorStrap.CustomBSPopover Target="@($"Filter-{column.Title}")" IsOpen="@column.FilterOpen" Placement="BlazorStrap.Placement.Bottom" DismissOnNextClick="false">
+                    <BlazorStrap.BSPopoverHeader>Filter</BlazorStrap.BSPopoverHeader>
+                    <BlazorStrap.BSPopoverBody>
+                        <Filter TableItem="TableItem" Column="column"></Filter>
+                    </BlazorStrap.BSPopoverBody>
+                </BlazorStrap.CustomBSPopover>
+            </CascadingValue>
+        }
+    }
+}
+
+<CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+    @ChildContent
+</CascadingValue>
