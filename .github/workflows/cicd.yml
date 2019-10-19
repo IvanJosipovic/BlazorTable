@@ -49,4 +49,4 @@ jobs:
       working-directory: src/BlazorTable/bin/Release
       run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
       env:
-        NETLIFY_SITE_ID: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
