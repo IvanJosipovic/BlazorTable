@@ -43,7 +43,10 @@ jobs:
       if: github.ref == 'refs/heads/master'
       working-directory: src/BlazorTable
       run: dotnet pack --configuration Release
-      
+
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+
     - name: Nuget Push
       if: github.ref == 'refs/heads/master'
       working-directory: src/BlazorTable/bin/Release
