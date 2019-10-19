@@ -38,3 +38,15 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        
+    - name: Pack
+      if: github.ref == 'refs/heads/master'      
+      working-directory: src/BlazorTable
+      run: dotnet pack --configuration Release
+
+    - name: Nuget Push
+      if: github.ref == 'refs/heads/master'      
+      working-directory: src/BlazorTable/bin/Release
+      run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NUGET_API_KEY }}
