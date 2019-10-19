@@ -4,8 +4,10 @@
 
 A simple Table Control for Blazor
 
-[Demo](https://BlazorTable.netlify.com/)
+[Demo Site](https://BlazorTable.netlify.com/)
+
 [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/BlazorTable.svg)](https://www.nuget.org/packages/BlazorTable)
+
 ![](https://github.com/IvanJosipovic/BlazorTable/workflows/CI/CD/badge.svg)
 
 ### Features
@@ -28,7 +30,7 @@ A simple Table Control for Blazor
 [Example](/src/BlazorTable.Sample/Pages/Index.razor)
 
 ```csharp
-<Table TableItem="PersonData"Items="data" PageSize="15">
+<Table TableItem="PersonData" Items="data" PageSize="15">
     <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true">
         <Template>
             @context.id
