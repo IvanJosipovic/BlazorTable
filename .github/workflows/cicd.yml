@@ -1,0 +1,46 @@
+name: CI/CD
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    timeout-minutes: 10
+    
+    steps:
+    - uses: actions/checkout@master
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.1.100-preview1-014459
+  
+    - name: Publish
+      working-directory: src/BlazorTable.Sample
+      run: dotnet publish --configuration Release
+
+    - name: Deploy to Test
+      id: netlify
+      uses: ivanjosipovic/actions/cli@master
+      with:
+        args: deploy --json -d src/BlazorTable.Sample/bin/Release/netstandard2.0/publish/BlazorTable.Sample/dist/
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        
+    - name: Set Test Address
+      run: |
+        $url = $(ConvertFrom-Json '${{ steps.netlify.outputs.output }}').deploy_url;
+        Write-Output $url;
+      shell: pwsh
+
+    - name: Deploy to Production
+      if: github.ref == 'refs/heads/master'
+      uses: ivanjosipovic/actions/cli@master
+      with:
+        args: deploy --prod --json -d src/BlazorTable.Sample/bin/Release/netstandard2.0/publish/BlazorTable.Sample/dist/
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
