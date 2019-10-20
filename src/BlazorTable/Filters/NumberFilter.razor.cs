@@ -12,11 +12,11 @@ namespace BlazorTable
 
         [Inject] public ILogger<NumberFilter<TableItem>> Logger { get; set; }
 
-        private NumberCondition condition { get; set; }
+        private NumberCondition Condition { get; set; }
 
-        private int filterValue { get; set; }
+        private int FilterValue { get; set; }
 
-        public static List<Type> FilterTypes => new List<Type>() { typeof(short), typeof(int), typeof(long) };
+        public List<Type> FilterTypes => new List<Type>() { typeof(short), typeof(int), typeof(long) };
 
         protected override void OnInitialized()
         {
@@ -28,28 +28,28 @@ namespace BlazorTable
 
         public void ApplyFilter()
         {
-            switch (condition)
+            switch (Condition)
             {
-                case NumberCondition.Is_equal_to:
-                    FilterManager.Column.Filter = Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, filterValue);
+                case NumberCondition.IsEqualTo:
+                    FilterManager.Column.Filter = Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, FilterValue);
                     break;
-                case NumberCondition.Is_not_equal_to:
-                    FilterManager.Column.Filter = Utillities.Not(Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, filterValue));
+                case NumberCondition.IsNotEqualTo:
+                    FilterManager.Column.Filter = Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, FilterValue).Not();
                     break;
-                case NumberCondition.Is_greater_than_or_equal_to:
+                case NumberCondition.IsGreaterThanOrEqualTo:
                     break;
-                case NumberCondition.Is_greater_than:
+                case NumberCondition.IsGreaterThan:
                     break;
-                case NumberCondition.Is_less_than_or_equal_to:
+                case NumberCondition.IsLessThanOrEqualTo:
                     break;
-                case NumberCondition.Is_less_than:
+                case NumberCondition.IsLessThan:
                     break;
-                case NumberCondition.Is_null:
+                case NumberCondition.IsNull:
                     break;
-                case NumberCondition.Is_not_null:
+                case NumberCondition.IsNotNull:
                     break;
                 default:
-                    throw new ArgumentException(condition + " is not defined!");
+                    throw new ArgumentException(Condition + " is not defined!");
             }
         }
     }
@@ -57,27 +57,27 @@ namespace BlazorTable
     public enum NumberCondition
     {
         [Description("Is equal to")]
-        Is_equal_to,
+        IsEqualTo,
 
         [Description("Is not equal to")]
-        Is_not_equal_to,
+        IsNotEqualTo,
 
         [Description("Is greater than or equal to")]
-        Is_greater_than_or_equal_to,
+        IsGreaterThanOrEqualTo,
 
         [Description("Is greater than")]
-        Is_greater_than,
+        IsGreaterThan,
 
         [Description("Is less than or equal to")]
-        Is_less_than_or_equal_to,
+        IsLessThanOrEqualTo,
 
         [Description("Is less than")]
-        Is_less_than,
+        IsLessThan,
 
         [Description("Is null")]
-        Is_null,
+        IsNull,
 
         [Description("Is not null")]
-        Is_not_null
+        IsNotNull
     }
 }

@@ -42,25 +42,25 @@ namespace BlazorTable
                 case StringCondition.Contains:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Contains), typeof(string), FilterText);
                     break;
-                case StringCondition.Does_not_contain:
+                case StringCondition.DoesNotContain:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Contains), typeof(string), FilterText).Not();
                     break;
-                case StringCondition.Starts_with:
+                case StringCondition.StartsWith:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.StartsWith), typeof(string), FilterText);
                     break;
-                case StringCondition.Ends_with:
+                case StringCondition.EndsWith:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.EndsWith), typeof(string), FilterText);
                     break;
-                case StringCondition.Is_equal_to:
+                case StringCondition.IsEqualTo:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Equals), typeof(string), FilterText);
                     break;
-                case StringCondition.Is_not_equal_to:
+                case StringCondition.IsNotEqualTo:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Equals), typeof(string), FilterText).Not();
                     break;
-                case StringCondition.Is_null_or_empty:
+                case StringCondition.IsNullOrEmpty:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string), FilterText);
                     break;
-                case StringCondition.Is_not_null_or_empty:
+                case StringCondition.IsNotNulOrEmpty:
                     FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string), FilterText).Not();
                     break;
                 default:
@@ -75,24 +75,24 @@ namespace BlazorTable
         Contains,
 
         [Description("Does not contain")]
-        Does_not_contain,
+        DoesNotContain,
 
         [Description("Starts with")]
-        Starts_with,
+        StartsWith,
 
         [Description("Ends with")]
-        Ends_with,
+        EndsWith,
 
         [Description("Is equal to")]
-        Is_equal_to,
+        IsEqualTo,
 
         [Description("Is not equal to")]
-        Is_not_equal_to,
+        IsNotEqualTo,
 
         [Description("Is null or empty")]
-        Is_null_or_empty,
+        IsNullOrEmpty,
 
         [Description("Is not null or empty")]
-        Is_not_null_or_empty
+        IsNotNulOrEmpty
     }
 }

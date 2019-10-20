@@ -11,9 +11,12 @@ namespace BlazorTable
 
         [Parameter]
         public string TableClass { get; set; } = "table table-striped table-bordered table-hover table-sm";
-        
+
         [Parameter]
         public string TableHeadClass { get; set; } = "thead-light text-dark";
+
+        [Parameter]
+        public string TableBodyClass { get; set; } = "";
 
         [Parameter]
         public int PageSize { get; set; }
@@ -85,7 +88,7 @@ namespace BlazorTable
         public void Update()
         {
             TempItems = GetData();
-            StateHasChanged();
+            Refresh();
         }
 
         public void AddColumn(IColumn<TableItem> column)
@@ -98,6 +101,26 @@ namespace BlazorTable
         {
             Columns.Remove(column);
             StateHasChanged();
+        }
+
+        public void SortBy(IColumn<TableItem> column)
+        {
+            if (column?.Sortable == true)
+            {
+                if (SortColumn != column)
+                {
+                    SortColumn = column;
+                    SortDescending = false;
+                }
+                else
+                {
+                    SortDescending = !SortDescending;
+                }
+
+                PageNumber = 0;
+
+                Update();
+            }
         }
 
         public void FirstPage()
@@ -128,26 +151,6 @@ namespace BlazorTable
         {
             PageNumber = TotalCount / PageSize;
             Update();
-        }
-
-        public void SortBy(IColumn<TableItem> column)
-        {
-            if (column.Sortable)
-            {
-                if (SortColumn != column)
-                {
-                    SortColumn = column;
-                    SortDescending = false;
-                }
-                else
-                {
-                    SortDescending = !SortDescending;
-                }
-
-                PageNumber = 0;
-
-                Update();
-            }
         }
 
         public void ToggleEditMode()

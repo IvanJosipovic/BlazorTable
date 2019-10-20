@@ -35,13 +35,13 @@
 
                         @if (SortColumn == column)
                         {
-                            @if (SortDescending)
-                            {
-                                <span>&#11014;</span>
-                            }
-                            else
-                            {
-                                <span>&#11015;</span>
+                            if (SortDescending) 
+                            { 
+                                <span>&#11014;</span> 
+                            } 
+                            else 
+                            { 
+                                <span>&#11015;</span> 
                             }
                         }
 
@@ -55,7 +55,7 @@
                 }
             </tr>
         </thead>
-        <tbody>
+        <tbody class="@TableBodyClass">
             @if (TempItems != null)
             {
                 if (TempItems.Any())

@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace BlazorTable
 {
-    static class Utillities
+    internal static class Utillities
     {
         public static string GetDescription<T>(this T e) where T : IConvertible
         {
@@ -22,11 +22,10 @@ namespace BlazorTable
                     if (val == e.ToInt32(CultureInfo.InvariantCulture))
                     {
                         var memInfo = type.GetMember(type.GetEnumName(val));
-                        var descriptionAttribute = memInfo[0]
-                            .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                            .FirstOrDefault() as DescriptionAttribute;
 
-                        if (descriptionAttribute != null)
+                        if (memInfo[0]
+                            .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                            .FirstOrDefault() is DescriptionAttribute descriptionAttribute)
                         {
                             return descriptionAttribute.Description;
                         }
@@ -50,7 +49,7 @@ namespace BlazorTable
         public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
         {
             MethodInfo methodInfo = type.GetMethod(method, parameters);
-            
+
             return Expression.Lambda<Func<T, bool>>(
                 Expression.Call(
                     expression.Body,

@@ -3,12 +3,12 @@
 
 @if (FilterTypes.Contains(FilterManager.Column.Type))
 {
-    <select class="form-control form-control-sm" value="@condition" @onchange="@((x) => condition = (NumberCondition)Enum.Parse(typeof(NumberCondition), x.Value.ToString()))">
+    <select class="form-control form-control-sm" value="@Condition" @onchange="@((x) => Condition = (NumberCondition)Enum.Parse(typeof(NumberCondition), x.Value.ToString()))">
         @foreach (var suit in (NumberCondition[])Enum.GetValues(typeof(NumberCondition)))
         {
             <option value="@suit">@suit.GetDescription()</option>
         }
     </select>
 
-    <input type="number" class="form-control form-control-sm" @bind-value="filterValue" required />
+    <input type="number" class="form-control form-control-sm" @bind-value="FilterValue" required />
 }
