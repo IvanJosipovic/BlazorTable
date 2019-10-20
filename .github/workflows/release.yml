@@ -2,35 +2,28 @@ on:
   push:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-
 name: Create Release
-
 jobs:
   build:
     name: Create Release
-
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
     - name: Checkout code
       uses: actions/checkout@master
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.100-preview1-014459
-
     - name: Dotnet Pack 
       working-directory: src/BlazorTable
       run: dotnet pack --configuration Release
-
     - name: Dotnet Nuget Push   
       working-directory: src/BlazorTable/bin/Release
       run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
       continue-on-error: true
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        
     - name: Create Release
       uses: actions/create-release@master
       env:
