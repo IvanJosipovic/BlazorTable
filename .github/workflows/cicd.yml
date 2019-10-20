@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 10
     steps:
     - name: Checkout code
-    - uses: actions/checkout@master
+      uses: actions/checkout@master
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
