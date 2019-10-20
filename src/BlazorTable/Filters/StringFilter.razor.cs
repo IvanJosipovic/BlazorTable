@@ -13,9 +13,9 @@ namespace BlazorTable
 
         [Inject] public ILogger<StringFilter<TableItem>> Logger { get; set; }
 
-        private StringConditions condition { get; set; }
+        private StringCondition Condition { get; set; }
 
-        private string filterText { get; set; }
+        private string FilterText { get; set; }
 
         public Type FilterType => typeof(string);
 
@@ -29,47 +29,47 @@ namespace BlazorTable
 
         public void ApplyFilter()
         {
-            if (string.IsNullOrEmpty(filterText))
+            if (string.IsNullOrEmpty(FilterText))
             {
                 Logger.LogInformation("Filter Text is Null!");
                 return;
             }
 
-            filterText = filterText.Trim();
+            FilterText = FilterText.Trim();
 
-            switch (condition)
+            switch (Condition)
             {
-                case StringConditions.Contains:
-                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Contains), typeof(string), filterText);
+                case StringCondition.Contains:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Contains), typeof(string), FilterText);
                     break;
-                case StringConditions.Does_not_contain:
-                    FilterManager.Column.Filter = Utillities.Not(Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Contains), typeof(string), filterText));
+                case StringCondition.Does_not_contain:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Contains), typeof(string), FilterText).Not();
                     break;
-                case StringConditions.Starts_with:
-                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.StartsWith), typeof(string), filterText);
+                case StringCondition.Starts_with:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.StartsWith), typeof(string), FilterText);
                     break;
-                case StringConditions.Ends_with:
-                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.EndsWith), typeof(string), filterText);
+                case StringCondition.Ends_with:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.EndsWith), typeof(string), FilterText);
                     break;
-                case StringConditions.Is_equal_to:
-                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Equals), typeof(string), filterText);
+                case StringCondition.Is_equal_to:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Equals), typeof(string), FilterText);
                     break;
-                case StringConditions.Is_not_equal_to:
-                    FilterManager.Column.Filter = Utillities.Not(Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Equals), typeof(string), filterText));
+                case StringCondition.Is_not_equal_to:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.Equals), typeof(string), FilterText).Not();
                     break;
-                case StringConditions.Is_null_or_empty:
-                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string), filterText);
+                case StringCondition.Is_null_or_empty:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string), FilterText);
                     break;
-                case StringConditions.Is_not_null_or_empty:
-                    FilterManager.Column.Filter = Utillities.Not(Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string), filterText));
+                case StringCondition.Is_not_null_or_empty:
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string), FilterText).Not();
                     break;
                 default:
-                    throw new ArgumentException(condition + " is not defined!");
+                    throw new ArgumentException(Condition + " is not defined!");
             }
         }
     }
 
-    public enum StringConditions
+    public enum StringCondition
     {
         [Description("Contains")]
         Contains,

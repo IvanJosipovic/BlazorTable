@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace BlazorTable
 {
@@ -9,13 +7,18 @@ namespace BlazorTable
     {
         [CascadingParameter(Name = "Table")] public ITable<TableItem> Table { get; set; }
 
-        [Parameter] public IColumn<TableItem> Column { get; set; }
+        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
 
         [Inject] public ILogger<FilterManager<TableItem>> Logger { get; set; }
 
         public IFilter<TableItem> Filter { get; set; }
+
+        protected override void OnInitialized()
+        {
+            Column.FilterManager = this;
+        }
 
         private void ApplyFilter()
         {

@@ -3,9 +3,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace BlazorTable
 {
@@ -15,7 +12,7 @@ namespace BlazorTable
 
         [Inject] public ILogger<NumberFilter<TableItem>> Logger { get; set; }
 
-        private NumberConditions condition { get; set; }
+        private NumberCondition condition { get; set; }
 
         private int filterValue { get; set; }
 
@@ -33,23 +30,23 @@ namespace BlazorTable
         {
             switch (condition)
             {
-                case NumberConditions.Is_equal_to:
+                case NumberCondition.Is_equal_to:
                     FilterManager.Column.Filter = Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, filterValue);
                     break;
-                case NumberConditions.Is_not_equal_to:
+                case NumberCondition.Is_not_equal_to:
                     FilterManager.Column.Filter = Utillities.Not(Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, filterValue));
                     break;
-                case NumberConditions.Is_greater_than_or_equal_to:
+                case NumberCondition.Is_greater_than_or_equal_to:
                     break;
-                case NumberConditions.Is_greater_than:
+                case NumberCondition.Is_greater_than:
                     break;
-                case NumberConditions.Is_less_than_or_equal_to:
+                case NumberCondition.Is_less_than_or_equal_to:
                     break;
-                case NumberConditions.Is_less_than:
+                case NumberCondition.Is_less_than:
                     break;
-                case NumberConditions.Is_null:
+                case NumberCondition.Is_null:
                     break;
-                case NumberConditions.Is_not_null:
+                case NumberCondition.Is_not_null:
                     break;
                 default:
                     throw new ArgumentException(condition + " is not defined!");
@@ -57,7 +54,7 @@ namespace BlazorTable
         }
     }
 
-    public enum NumberConditions
+    public enum NumberCondition
     {
         [Description("Is equal to")]
         Is_equal_to,

@@ -13,7 +13,7 @@ namespace BlazorTable
         private string _title;
 
         /// <summary>
-        /// Title
+        /// Title (Optional, will use Property Name if null)
         /// </summary>
         [Parameter]
         public string Title
@@ -70,6 +70,8 @@ namespace BlazorTable
         public Expression<Func<TableItem, object>> Property { get; set; }
 
         public Type Type { get; private set; }
+
+        public IFilterManager<TableItem> FilterManager { get; set; }
 
         public void Dispose()
         {
