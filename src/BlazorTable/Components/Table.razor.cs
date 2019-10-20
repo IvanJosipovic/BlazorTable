@@ -6,14 +6,23 @@ namespace BlazorTable
 {
     public partial class Table<TableItem> : ITable<TableItem>
     {
-        [Parameter] public string TableClass { get; set; } = "table table-striped table-bordered table-hover table-sm";
-        [Parameter] public string TableHeadClass { get; set; } = "thead-light text-dark";
+        [Parameter(CaptureUnmatchedValues = true)]
+        public IDictionary<string, object> UnknownParameters { get; set; }
 
-        [Parameter] public int PageSize { get; set; }
+        [Parameter]
+        public string TableClass { get; set; } = "table table-striped table-bordered table-hover table-sm";
+        
+        [Parameter]
+        public string TableHeadClass { get; set; } = "thead-light text-dark";
 
-        [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter]
+        public int PageSize { get; set; }
 
-        [Parameter] public IEnumerable<TableItem> Items { get; set; }
+        [Parameter]
+        public RenderFragment ChildContent { get; set; }
+
+        [Parameter]
+        public IEnumerable<TableItem> Items { get; set; }
 
         private IEnumerable<TableItem> TempItems { get; set; }
 
@@ -45,6 +54,14 @@ namespace BlazorTable
             {
                 var query = Items.AsQueryable();
 
+                foreach (var item in Columns)
+                {
+                    if (item.Filter != null)
+                    {
+                        query = query.Where(item.Filter);
+                    }
+                }
+
                 TotalCount = Items.Count();
 
                 if (SortColumn != null)
@@ -56,14 +73,6 @@ namespace BlazorTable
                     else
                     {
                         query = query.OrderBy(SortColumn.Property);
-                    }
-                }
-
-                foreach (var item in Columns)
-                {
-                    if (item.Filter != null)
-                    {
-                        query = query.Where(item.Filter);
                     }
                 }
 

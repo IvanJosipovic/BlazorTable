@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace BlazorTable
 {
-    public static class Utillities
+    static class Utillities
     {
         public static string GetDescription<T>(this T e) where T : IConvertible
         {
@@ -42,6 +42,11 @@ namespace BlazorTable
             return CallMethodType(expression, type, method, new[] { parameter }, new[] { value });
         }
 
+        public static Expression<Func<T, bool>> CallMethodTypeObj<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter, object value)
+        {
+            return CallMethodTypeObj(expression, type, method, new[] { parameter }, new[] { value });
+        }
+
         public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
         {
             MethodInfo methodInfo = type.GetMethod(method, parameters);
@@ -51,6 +56,30 @@ namespace BlazorTable
                     expression.Body,
                     methodInfo,
                     values.Select(x => Expression.Constant(x))),
+                expression.Parameters);
+        }
+
+        public static Expression<Func<T, bool>> CallMethodTypeObj<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
+        {
+            MethodInfo methodInfo = type.GetMethod(method, parameters);
+
+            return Expression.Lambda<Func<T, bool>>(
+                Expression.Call(
+                    expression.Body,
+                    methodInfo,
+                    values.Select(x => Expression.Convert(Expression.Constant(x), typeof(int)))),
+                expression.Parameters);
+        }
+
+        public static Expression<Func<T, bool>> CallMethodTypeObj2<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
+        {
+            MethodInfo methodInfo = type.GetMethod(method, parameters);
+
+            return Expression.Lambda<Func<T, bool>>(
+                Expression.Call(
+                    expression.Body,
+                    methodInfo,
+                    values.Select(x => Expression.Convert(Expression.Constant(x), typeof(object)))),
                 expression.Parameters);
         }
 

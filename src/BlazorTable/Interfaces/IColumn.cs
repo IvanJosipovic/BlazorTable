@@ -18,6 +18,10 @@ namespace BlazorTable
 
         void ToggleFilter();
 
+        Type Type { get; }
+
+        IFilterManager<TableItem> FilterManager { get; set; }
+
         Expression<Func<TableItem, object>> Property { get; set; }
 
         Expression<Func<TableItem, bool>> Filter { get; set; }

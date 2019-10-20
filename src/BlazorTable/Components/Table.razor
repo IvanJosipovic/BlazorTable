@@ -3,20 +3,42 @@
 
 @if (Columns.Any())
 {
-    <table class="@TableClass">
+    @foreach (IColumn<TableItem> column in Columns)
+    {
+        @if (column.Filterable)
+        {
+            <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+                <CascadingValue Value="(IColumn<TableItem>)column" Name="Column">
+                    <BlazorStrap.CustomBSPopover Target="@($"Filter-{column.Title}")" IsOpen="@column.FilterOpen" Placement="BlazorStrap.Placement.Bottom" DismissOnNextClick="false">
+                        <BlazorStrap.BSPopoverHeader>Filter</BlazorStrap.BSPopoverHeader>
+                        <BlazorStrap.BSPopoverBody>
+
+                            <FilterManager TableItem="TableItem">
+                                <StringFilter TableItem="TableItem" />
+                                <NumberFilter TableItem="TableItem" />
+                            </FilterManager>
+
+                        </BlazorStrap.BSPopoverBody>
+                    </BlazorStrap.CustomBSPopover>
+                </CascadingValue>
+            </CascadingValue>
+        }
+    }
+
+    <table class="@TableClass" @attributes="UnknownParameters">
         <thead class="@TableHeadClass">
             <tr>
                 @foreach (IColumn<TableItem> column in Columns)
                 {
-                    <th>
-                        <span @onclick="@(() => SortBy(column))" style="@(column.Sortable ? "cursor: pointer;" : "") @(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "")">@column.Title</span>
+                    <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "")">
+                        <span @onclick="@(() => SortBy(column))" style="@(column.Sortable ? "cursor: pointer;" : "")">@column.Title</span>
 
                         @if (SortColumn == column)
                         {
                             @if (SortDescending)
                             {
                                 <span>&#11014;</span>
-                            } 
+                            }
                             else
                             {
                                 <span>&#11015;</span>
@@ -26,7 +48,7 @@
                         @if (column.Filterable)
                         {
                             <div class="float-right">
-                                <a href="javascript:;" id="@($"Filter-{column.Title}")" @onclick="@((x) => column.ToggleFilter())" style="text-decoration: none"><span>&#128269;</span></a>
+                                <a href="javascript:;" id="@($"Filter-{column.Title}")" @onclick="@((x) => column.ToggleFilter())" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
                             </div>
                         }
                     </th>
@@ -68,21 +90,6 @@
             }
         </tbody>
     </table>
-
-    @foreach (IColumn<TableItem> column in Columns)
-    {
-        @if (column.Filterable)
-        {
-            <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
-                <BlazorStrap.CustomBSPopover Target="@($"Filter-{column.Title}")" IsOpen="@column.FilterOpen" Placement="BlazorStrap.Placement.Bottom" DismissOnNextClick="false">
-                    <BlazorStrap.BSPopoverHeader>Filter</BlazorStrap.BSPopoverHeader>
-                    <BlazorStrap.BSPopoverBody>
-                        <Filter TableItem="TableItem" Column="column"></Filter>
-                    </BlazorStrap.BSPopoverBody>
-                </BlazorStrap.CustomBSPopover>
-            </CascadingValue>
-        }
-    }
 }
 
 <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
