@@ -1,0 +1,42 @@
+on:
+  push:
+    tags:
+      - '*'
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@master
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.1.100-preview1-014459
+
+    - name: Dotnet Pack 
+      working-directory: src/BlazorTable
+      run: dotnet pack --configuration Release
+
+    - name: Dotnet Nuget Push   
+      working-directory: src/BlazorTable/bin/Release
+      run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+      continue-on-error: true
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        
+    - name: Create Release
+      uses: actions/create-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: true        
