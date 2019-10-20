@@ -1,0 +1,13 @@
+﻿@namespace BlazorTable
+@typeparam TableItem
+
+<CascadingValue Value="(IFilterManager<TableItem>)this" Name="FilterManager">
+    @ChildContent
+</CascadingValue>
+<br />
+
+<div class="justify-content-md-center">
+    <button type="button" class="btn btn-danger btn-xs" role="button" @onclick="@((x) => Column.ToggleFilter())">Close</button>
+    <button type="button" class="btn btn-secondary btn-xs" role="button" @onclick="@((x) => ClearFilter())">Clear</button>
+    <button type="button" class="btn btn-primary btn-xs" role="button" @onclick="@((x) => ApplyFilter())">Apply</button>
+</div>

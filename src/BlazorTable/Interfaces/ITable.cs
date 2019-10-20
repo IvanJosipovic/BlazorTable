@@ -6,8 +6,6 @@ namespace BlazorTable
 {
     public interface ITable<TableItem>
     {
-        void Update();
-
         List<IColumn<TableItem>> Columns { get; }
 
         void SortBy(IColumn<TableItem> column);
@@ -37,6 +35,9 @@ namespace BlazorTable
         void AddColumn(IColumn<TableItem> column);
 
         void RemoveColumn(IColumn<TableItem> column);
+
         void Refresh();
+
+        void Update();
     }
 }

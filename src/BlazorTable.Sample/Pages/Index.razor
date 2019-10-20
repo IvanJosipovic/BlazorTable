@@ -12,32 +12,32 @@
 <br />
 
 <Table TableItem="PersonData" Items="data" PageSize="15">
-    <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true">
+    <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true" Filterable="true">
         <Template>
             @context.id
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="First Name" Property="@(x => x.first_name)" Sortable="true">
+    <Column TableItem="PersonData" Title="First Name" Property="@(x => x.first_name)" Sortable="true" Filterable="true">
         <Template>
             @context.first_name
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Last Name" Property="@(x => x.last_name)" Sortable="true">
+    <Column TableItem="PersonData" Title="Last Name" Property="@(x => x.last_name)" Sortable="true" Filterable="true">
         <Template>
             @context.last_name
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Email" Property="@(x => x.email)" Sortable="true">
+    <Column TableItem="PersonData" Title="Email" Property="@(x => x.email)" Sortable="true" Filterable="true">
         <Template>
             <a href="mailto:@context.email">@context.email</a>
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Gender" Property="@(x => x.gender)" Sortable="true">
+    <Column TableItem="PersonData" Title="Gender" Property="@(x => x.gender)" Sortable="true" Filterable="true">
         <Template>
             @context.gender
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="IP" Property="@(x => x.ip_address)" Sortable="true">
+    <Column TableItem="PersonData" Title="IP" Property="@(x => x.ip_address)" Sortable="true" Filterable="true">
         <Template>
             @context.ip_address
         </Template>

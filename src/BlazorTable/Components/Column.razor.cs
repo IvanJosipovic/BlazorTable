@@ -69,6 +69,8 @@ namespace BlazorTable
         [Parameter]
         public Expression<Func<TableItem, object>> Property { get; set; }
 
+        public Type Type { get; private set; }
+
         public void Dispose()
         {
             this.Table.RemoveColumn(this);
@@ -90,6 +92,8 @@ namespace BlazorTable
             {
                 throw new ArgumentNullException("A Column has both Title and Property parameters null");
             }
+
+            Type = Property.GetPropertyMemberInfo().GetMemberUnderlyingType();
         }
 
         public void ToggleFilter()

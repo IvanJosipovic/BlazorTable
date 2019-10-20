@@ -1,0 +1,13 @@
+﻿@namespace BlazorTable
+@typeparam TableItem
+
+@if (FilterTypes.Contains(FilterManager.Column.Type))
+{
+    <select class="form-control form-control-sm" value="@condition" @onchange="@((x) => condition = (NumberConditions)Enum.Parse(typeof(NumberConditions), x.Value.ToString()))">
+        @foreach (var suit in (NumberConditions[])Enum.GetValues(typeof(NumberConditions)))
+        {
+            <option value="@suit">@suit.GetDescription()</option>
+        }
+    </select>
+    <input type="number" class="form-control form-control-sm" @bind-value="filterValue" required></input>
+}
