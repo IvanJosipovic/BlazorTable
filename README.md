@@ -19,8 +19,8 @@ A simple Table Control for Blazor
 ### Todo
 - Client Side
     - Filtering
-      - String
-      - Numbers (WIP)
+      	- String
+      	- Numbers (WIP)
 
 - Server Side
 	- Paging
@@ -28,16 +28,6 @@ A simple Table Control for Blazor
 	- Filtering
 
 - Remove dependency on Bootstrap + BlazorStrap
-
-
- - Responds to [CORS preflight requests](https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request)
-	 1. Default header values (configurable)
-		 - Access-Control-Allow-Origin = *
-		 - Access-Control-Allow-Method = *
-		- Access-Control-Allow-Headers = *
-		- Access-Control-Max-Age = 86400
- 2. Adds “Access-Control-Allow-Origin” to all responses
-
 
 ### Sample
 [Example](/src/BlazorTable.Sample/Pages/Index.razor)

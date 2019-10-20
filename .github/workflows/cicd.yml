@@ -1,26 +1,23 @@
+on: 
+  push:
+    branches: 
+      - '*'
 name: CI/CD
-
-on: [push]
-
 jobs:
   build:
-
+    name: CI/CD
     runs-on: ubuntu-latest
-    
     timeout-minutes: 10
-    
     steps:
-    - uses: actions/checkout@master
-
+    - name: Checkout code
+      uses: actions/checkout@master
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.100-preview1-014459
-  
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample
       run: dotnet publish --configuration Release
-
     - name: Deploy to Test
       id: netlify
       uses: ivanjosipovic/actions/cli@master
@@ -29,7 +26,6 @@ jobs:
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-
     - name: Deploy to Production
       if: github.ref == 'refs/heads/master'
       uses: ivanjosipovic/actions/cli@master
