@@ -9,7 +9,7 @@
     <Authors>Ivan Josipovic</Authors>
     <PackageProjectUrl>https://github.com/IvanJosipovic/BlazorTable</PackageProjectUrl>
     <PackageTags>Blazor;Table;Grid;DataTable;Data;Sort;Filter;AspNetCore;AspNet</PackageTags>
-    <Version>0.0.3-alpha</Version>
+    <Version>0.0.4-alpha</Version>
     <PackageReleaseNotes>Experimental</PackageReleaseNotes>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>

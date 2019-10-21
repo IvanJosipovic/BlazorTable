@@ -75,7 +75,7 @@ namespace BlazorTable
                 throw new InvalidOperationException("A Column has both Title and Property parameters null");
             }
 
-            Type = Property.GetPropertyMemberInfo().GetMemberUnderlyingType();
+            Type = Property?.GetPropertyMemberInfo().GetMemberUnderlyingType();
         }
 
         public void ToggleFilter()
