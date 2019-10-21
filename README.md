@@ -11,7 +11,7 @@ A simple Table Control for Blazor
 ![](https://github.com/IvanJosipovic/BlazorTable/workflows/CI/CD/badge.svg)
 
 ### Features
-- Edit Mode Template Switching
+- Edit Mode ([Template Switching](/src/BlazorTable.Sample/Pages/EditMode.razor))
 - Client Side
 	- Paging
 	- Sorting
