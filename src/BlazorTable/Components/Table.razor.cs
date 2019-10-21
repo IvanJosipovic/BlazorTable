@@ -65,7 +65,7 @@ namespace BlazorTable
                     }
                 }
 
-                TotalCount = Items.Count();
+                TotalCount = query.Count();
 
                 if (SortColumn != null)
                 {

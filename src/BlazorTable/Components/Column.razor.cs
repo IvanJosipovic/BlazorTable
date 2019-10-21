@@ -35,7 +35,8 @@ namespace BlazorTable
 
         [Parameter]
         public Expression<Func<TableItem, object>> Property { get; set; }
-
+        
+        [Parameter]
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
         public bool FilterOpen { get; private set; }
