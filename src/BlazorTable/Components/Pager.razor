@@ -4,7 +4,7 @@
 @if (AlwaysShow || (Table.TotalCount >= 1 && TotalPages >= 1))
 {
     <div class="d-flex justify-content-end">
-        <span class="align-middle">@(Table.PageNumber + 1) of @(TotalPages + 1)</span>
+        <span class="align-middle">Page:@(Table.PageNumber + 1)/@(TotalPages + 1) Items:@(Table.TotalCount)</span>
         &nbsp;
         <ul class="pagination">
             <li class="page-item" @onclick="@(() => Table.FirstPage())" title="First"><a class="page-link" href="javascript:;">&#8676;</a></li>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +12,12 @@ namespace BlazorTable
 
         [Parameter]
         public string TableClass { get; set; } = "table table-striped table-bordered table-hover table-sm";
-        
+
         [Parameter]
         public string TableHeadClass { get; set; } = "thead-light text-dark";
+
+        [Parameter]
+        public string TableBodyClass { get; set; } = "";
 
         [Parameter]
         public int PageSize { get; set; }
@@ -24,13 +28,11 @@ namespace BlazorTable
         [Parameter]
         public IEnumerable<TableItem> Items { get; set; }
 
+        [Inject] ILogger<ITable<TableItem>> Logger { get; set; }
+
         private IEnumerable<TableItem> TempItems { get; set; }
 
         public List<IColumn<TableItem>> Columns { get; } = new List<IColumn<TableItem>>();
-
-        public IColumn<TableItem> SortColumn { get; set; }
-
-        public bool SortDescending { get; private set; }
 
         public int PageNumber { get; private set; }
 
@@ -62,17 +64,19 @@ namespace BlazorTable
                     }
                 }
 
-                TotalCount = Items.Count();
+                TotalCount = query.Count();
 
-                if (SortColumn != null)
+                var sortColumn = Columns.FirstOrDefault(x => x.SortColumn);
+
+                if (sortColumn != null)
                 {
-                    if (SortDescending)
+                    if (sortColumn.SortDescending)
                     {
-                        query = query.OrderByDescending(SortColumn.Property);
+                        query = query.OrderByDescending(sortColumn.Property);
                     }
                     else
                     {
-                        query = query.OrderBy(SortColumn.Property);
+                        query = query.OrderBy(sortColumn.Property);
                     }
                 }
 
@@ -85,7 +89,7 @@ namespace BlazorTable
         public void Update()
         {
             TempItems = GetData();
-            StateHasChanged();
+            Refresh();
         }
 
         public void AddColumn(IColumn<TableItem> column)
@@ -102,8 +106,11 @@ namespace BlazorTable
 
         public void FirstPage()
         {
-            PageNumber = 0;
-            Update();
+            if (PageNumber != 0)
+            {
+                PageNumber = 0;
+                Update();
+            }
         }
 
         public void NextPage()
@@ -128,26 +135,6 @@ namespace BlazorTable
         {
             PageNumber = TotalCount / PageSize;
             Update();
-        }
-
-        public void SortBy(IColumn<TableItem> column)
-        {
-            if (column.Sortable)
-            {
-                if (SortColumn != column)
-                {
-                    SortColumn = column;
-                    SortDescending = false;
-                }
-                else
-                {
-                    SortDescending = !SortDescending;
-                }
-
-                PageNumber = 0;
-
-                Update();
-            }
         }
 
         public void ToggleEditMode()

@@ -4,29 +4,27 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace BlazorTable
 {
-    static class Utillities
+    internal static class Utillities
     {
         public static string GetDescription<T>(this T e) where T : IConvertible
         {
             if (e is Enum)
             {
                 Type type = e.GetType();
-                Array values = System.Enum.GetValues(type);
+                Array values = Enum.GetValues(type);
 
                 foreach (int val in values)
                 {
                     if (val == e.ToInt32(CultureInfo.InvariantCulture))
                     {
                         var memInfo = type.GetMember(type.GetEnumName(val));
-                        var descriptionAttribute = memInfo[0]
-                            .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                            .FirstOrDefault() as DescriptionAttribute;
 
-                        if (descriptionAttribute != null)
+                        if (memInfo[0]
+                            .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                            .FirstOrDefault() is DescriptionAttribute descriptionAttribute)
                         {
                             return descriptionAttribute.Description;
                         }
@@ -42,15 +40,11 @@ namespace BlazorTable
             return CallMethodType(expression, type, method, new[] { parameter }, new[] { value });
         }
 
-        public static Expression<Func<T, bool>> CallMethodTypeObj<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter, object value)
-        {
-            return CallMethodTypeObj(expression, type, method, new[] { parameter }, new[] { value });
-        }
 
         public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
         {
             MethodInfo methodInfo = type.GetMethod(method, parameters);
-            
+
             return Expression.Lambda<Func<T, bool>>(
                 Expression.Call(
                     expression.Body,
@@ -59,28 +53,13 @@ namespace BlazorTable
                 expression.Parameters);
         }
 
-        public static Expression<Func<T, bool>> CallMethodTypeObj<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
+        public static Expression<Func<T, bool>> CallMethodTypeStaticSelf<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter)
         {
-            MethodInfo methodInfo = type.GetMethod(method, parameters);
+            MethodInfo methodInfo = type.GetMethod(method, new[] { parameter });
 
-            return Expression.Lambda<Func<T, bool>>(
-                Expression.Call(
-                    expression.Body,
-                    methodInfo,
-                    values.Select(x => Expression.Convert(Expression.Constant(x), typeof(int)))),
-                expression.Parameters);
-        }
+            var call = Expression.Call(methodInfo, expression.Body);
 
-        public static Expression<Func<T, bool>> CallMethodTypeObj2<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
-        {
-            MethodInfo methodInfo = type.GetMethod(method, parameters);
-
-            return Expression.Lambda<Func<T, bool>>(
-                Expression.Call(
-                    expression.Body,
-                    methodInfo,
-                    values.Select(x => Expression.Convert(Expression.Constant(x), typeof(object)))),
-                expression.Parameters);
+            return Expression.Lambda<Func<T, bool>>(call, expression.Parameters);
         }
 
         public static Type GetMemberUnderlyingType(this MemberInfo member)

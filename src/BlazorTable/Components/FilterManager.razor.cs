@@ -5,8 +5,6 @@ namespace BlazorTable
 {
     public partial class FilterManager<TableItem> : IFilterManager<TableItem>
     {
-        [CascadingParameter(Name = "Table")] public ITable<TableItem> Table { get; set; }
-
         [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
@@ -22,32 +20,20 @@ namespace BlazorTable
 
         private void ApplyFilter()
         {
-            if (Table == null)
-            {
-                Logger.LogInformation("Table is Null!");
-                return;
-            }
-
             Column.ToggleFilter();
-
-            Filter.ApplyFilter();
-
-            Table.Update();
+            if (Filter != null)
+            {
+                Filter.ApplyFilter();
+                Column.Table.Update();
+                Column.Table.FirstPage();
+            }
         }
 
         private void ClearFilter()
         {
-            if (Table == null)
-            {
-                Logger.LogInformation("Table is Null!");
-                return;
-            }
-
             Column.ToggleFilter();
-
             Column.Filter = null;
-
-            Table.Update();
+            Column.Table.Update();
         }
     }
 }

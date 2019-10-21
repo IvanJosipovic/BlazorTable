@@ -1,2 +1,16 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
+
+<CascadingValue Value="(IColumn<TableItem>)this" Name="Column">
+    <BlazorStrap.CustomBSPopover Target="@($"Filter-{Title}")" IsOpen="@FilterOpen" Placement="BlazorStrap.Placement.Bottom" DismissOnNextClick="false">
+        <BlazorStrap.BSPopoverHeader>Filter</BlazorStrap.BSPopoverHeader>
+        <BlazorStrap.BSPopoverBody>
+
+            <FilterManager TableItem="TableItem">
+                <StringFilter TableItem="TableItem" />          
+                @*@this.CustomIFilters(this)*@
+            </FilterManager>
+
+        </BlazorStrap.BSPopoverBody>
+    </BlazorStrap.CustomBSPopover>
+</CascadingValue>

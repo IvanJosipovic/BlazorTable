@@ -4,10 +4,14 @@
 @if (FilterManager.Column.Type == FilterType)
 {
     <select class="form-control form-control-sm" value="@Condition" @onchange="@((x) => Condition = (StringCondition)Enum.Parse(typeof(StringCondition), x.Value.ToString()))">
-        @foreach (var suit in (StringCondition[])Enum.GetValues(typeof(StringCondition)))
+        @foreach (var option in (StringCondition[])Enum.GetValues(typeof(StringCondition)))
         {
-            <option value="@suit">@suit.GetDescription()</option>
+            <option value="@option">@option.GetDescription()</option>
         }
     </select>
-    <input type="text" class="form-control form-control-sm" @bind-value="FilterText" required />
+    
+    @if (Condition != StringCondition.IsNotNulOrEmpty && Condition != StringCondition.IsNullOrEmpty)
+    {
+        <input type="text" class="form-control form-control-sm" @bind-value="FilterText" />
+    }
 }

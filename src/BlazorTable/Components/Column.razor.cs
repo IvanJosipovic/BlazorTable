@@ -1,20 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace BlazorTable
 {
     public partial class Column<TableItem> : IColumn<TableItem>
     {
         [CascadingParameter(Name = "Table")]
-        private ITable<TableItem> Table { get; set; }
+        public ITable<TableItem> Table { get; set; }
 
         private string _title;
 
-        /// <summary>
-        /// Title (Optional, will use Property Name if null)
-        /// </summary>
         [Parameter]
         public string Title
         {
@@ -22,52 +19,35 @@ namespace BlazorTable
             set { _title = value; }
         }
 
-        /// <summary>
-        /// Width auto|value|initial|inherit
-        /// </summary>
         [Parameter]
         public string Width { get; set; }
 
-        /// <summary>
-        /// Column can be sorted
-        /// </summary>
         [Parameter]
         public bool Sortable { get; set; }
 
-        /// <summary>
-        /// Column can be filtered
-        /// </summary>
         [Parameter]
         public bool Filterable { get; set; }
 
-        /// <summary>
-        /// Contains Filter expression
-        /// </summary>
-        public Expression<Func<TableItem, bool>> Filter { get; set; }
-
-        /// <summary>
-        /// Filter Panel is open
-        /// </summary>
-        public bool FilterOpen { get; private set; }
-
-        /// <summary>
-        /// Normal Item Template
-        /// </summary>
         [Parameter]
         public RenderFragment<TableItem> Template { get; set; }
 
-        /// <summary>
-        /// Edit Mode Item Template
-        /// </summary>
         [Parameter]
         public RenderFragment<TableItem> EditorTemplate { get; set; }
 
-        /// <summary>
-        /// Select Which Property To Sort On,
-        /// Required when Sort = true
-        /// </summary>
+        [Parameter]
+        public RenderFragment<Column<TableItem>> CustomIFilters { get; set; }
+
         [Parameter]
         public Expression<Func<TableItem, object>> Property { get; set; }
+        
+        [Parameter]
+        public Expression<Func<TableItem, bool>> Filter { get; set; }
+
+        public bool SortColumn { get; set; }
+
+        public bool SortDescending { get; set; }
+
+        public bool FilterOpen { get; private set; }
 
         public Type Type { get; private set; }
 
@@ -87,12 +67,12 @@ namespace BlazorTable
         {
             if ((Sortable && Property == null) || (Filterable && Property == null))
             {
-                throw new ArgumentNullException($"Column {Title} Property parameter is null");
+                throw new InvalidOperationException($"Column {Title} Property parameter is null");
             }
 
             if (Title == null && Property == null)
             {
-                throw new ArgumentNullException("A Column has both Title and Property parameters null");
+                throw new InvalidOperationException("A Column has both Title and Property parameters null");
             }
 
             Type = Property.GetPropertyMemberInfo().GetMemberUnderlyingType();
@@ -102,6 +82,23 @@ namespace BlazorTable
         {
             FilterOpen = !FilterOpen;
             Table.Refresh();
+        }
+
+        public void SortBy()
+        {
+            if (Sortable)
+            {
+                if (SortColumn)
+                {
+                    SortDescending = !SortDescending;
+                }
+
+                Table.Columns.ForEach(x => x.SortColumn = false);
+                
+                SortColumn = true;
+
+                Table.Update();
+            }
         }
     }
 }
