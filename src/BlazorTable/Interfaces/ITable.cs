@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
 
 namespace BlazorTable
 {
     public interface ITable<TableItem>
     {
-        bool SortDescending { get; }
-
         /// <summary>
         /// Page Size
         /// </summary>
@@ -55,17 +54,6 @@ namespace BlazorTable
         /// List of All Available Columns
         /// </summary>
         List<IColumn<TableItem>> Columns { get; }
-
-        /// <summary>
-        /// Sort by specified Column
-        /// </summary>
-        /// <param name="column"></param>
-        void SortBy(IColumn<TableItem> column);
-
-        /// <summary>
-        /// Current Selected Sort Column
-        /// </summary>
-        IColumn<TableItem> SortColumn { get; }
 
         /// <summary>
         /// Adds a Column to the Table

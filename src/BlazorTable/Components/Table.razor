@@ -9,11 +9,11 @@
                 @foreach (IColumn<TableItem> column in Columns)
                 {
                     <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "")">
-                        <span @onclick="@(() => SortBy(column))" style="@(column.Sortable ? "cursor: pointer;" : "")">@column.Title</span>
+                        <span @onclick="@(() => column.SortBy())" style="@(column.Sortable ? "cursor: pointer;" : "")">@column.Title</span>
 
-                        @if (SortColumn == column)
+                        @if (column.SortColumn)
                         {
-                            if (SortDescending) 
+                            if (column.SortDescending)
                             { 
                                 <span>&#11014;</span> 
                             } 

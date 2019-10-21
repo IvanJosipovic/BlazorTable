@@ -6,6 +6,8 @@ namespace BlazorTable
 {
     public interface IColumn<TableItem>
     {
+        ITable<TableItem> Table { get; set; }
+
         /// <summary>
         /// Title (Optional, will use Property Name if null)
         /// </summary>
@@ -37,6 +39,11 @@ namespace BlazorTable
         void ToggleFilter();
 
         /// <summary>
+        /// Sort by this column
+        /// </summary>
+        void SortBy();
+
+        /// <summary>
         /// Column Data Type
         /// </summary>
         Type Type { get; }
@@ -64,5 +71,17 @@ namespace BlazorTable
         /// Normal Item Template
         /// </summary>
         RenderFragment<TableItem> Template { get; set; }
+
+        RenderFragment<Column<TableItem>> CustomIFilters { get; set; }
+
+        /// <summary>
+        /// True if this is the current Sort Column
+        /// </summary>
+        bool SortColumn { get; set; }
+
+        /// <summary>
+        /// Direction of sorting
+        /// </summary>
+        bool SortDescending { get; set; }
     }
 }

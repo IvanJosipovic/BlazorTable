@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,13 +28,11 @@ namespace BlazorTable
         [Parameter]
         public IEnumerable<TableItem> Items { get; set; }
 
+        [Inject] ILogger<ITable<TableItem>> Logger { get; set; }
+
         private IEnumerable<TableItem> TempItems { get; set; }
 
         public List<IColumn<TableItem>> Columns { get; } = new List<IColumn<TableItem>>();
-
-        public IColumn<TableItem> SortColumn { get; set; }
-
-        public bool SortDescending { get; private set; }
 
         public int PageNumber { get; private set; }
 
@@ -67,15 +66,17 @@ namespace BlazorTable
 
                 TotalCount = query.Count();
 
-                if (SortColumn != null)
+                var sortColumn = Columns.FirstOrDefault(x => x.SortColumn);
+
+                if (sortColumn != null)
                 {
-                    if (SortDescending)
+                    if (sortColumn.SortDescending)
                     {
-                        query = query.OrderByDescending(SortColumn.Property);
+                        query = query.OrderByDescending(sortColumn.Property);
                     }
                     else
                     {
-                        query = query.OrderBy(SortColumn.Property);
+                        query = query.OrderBy(sortColumn.Property);
                     }
                 }
 
@@ -103,30 +104,13 @@ namespace BlazorTable
             StateHasChanged();
         }
 
-        public void SortBy(IColumn<TableItem> column)
-        {
-            if (column?.Sortable == true)
-            {
-                if (SortColumn != column)
-                {
-                    SortColumn = column;
-                    SortDescending = false;
-                }
-                else
-                {
-                    SortDescending = !SortDescending;
-                }
-
-                PageNumber = 0;
-
-                Update();
-            }
-        }
-
         public void FirstPage()
         {
-            PageNumber = 0;
-            Update();
+            if (PageNumber != 0)
+            {
+                PageNumber = 0;
+                Update();
+            }
         }
 
         public void NextPage()

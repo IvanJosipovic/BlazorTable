@@ -31,10 +31,10 @@ namespace BlazorTable
             switch (Condition)
             {
                 case NumberCondition.IsEqualTo:
-                    FilterManager.Column.Filter = Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, FilterValue);
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, FilterValue);
                     break;
                 case NumberCondition.IsNotEqualTo:
-                    FilterManager.Column.Filter = Utillities.CallMethodTypeObj(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, FilterValue).Not();
+                    FilterManager.Column.Filter = Utillities.CallMethodType(FilterManager.Column.Property, FilterManager.Column.Type, nameof(int.Equals), FilterManager.Column.Type, FilterValue).Not();
                     break;
                 case NumberCondition.IsGreaterThanOrEqualTo:
                     break;

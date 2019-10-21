@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -7,7 +8,7 @@ namespace BlazorTable
     public partial class Column<TableItem> : IColumn<TableItem>
     {
         [CascadingParameter(Name = "Table")]
-        private ITable<TableItem> Table { get; set; }
+        public ITable<TableItem> Table { get; set; }
 
         private string _title;
 
@@ -34,10 +35,17 @@ namespace BlazorTable
         public RenderFragment<TableItem> EditorTemplate { get; set; }
 
         [Parameter]
+        public RenderFragment<Column<TableItem>> CustomIFilters { get; set; }
+
+        [Parameter]
         public Expression<Func<TableItem, object>> Property { get; set; }
         
         [Parameter]
         public Expression<Func<TableItem, bool>> Filter { get; set; }
+
+        public bool SortColumn { get; set; }
+
+        public bool SortDescending { get; set; }
 
         public bool FilterOpen { get; private set; }
 
@@ -74,6 +82,23 @@ namespace BlazorTable
         {
             FilterOpen = !FilterOpen;
             Table.Refresh();
+        }
+
+        public void SortBy()
+        {
+            if (Sortable)
+            {
+                if (SortColumn)
+                {
+                    SortDescending = !SortDescending;
+                }
+
+                Table.Columns.ForEach(x => x.SortColumn = false);
+                
+                SortColumn = true;
+
+                Table.Update();
+            }
         }
     }
 }

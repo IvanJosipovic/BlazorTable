@@ -21,13 +21,10 @@ A simple Table Control for Blazor
 - Client Side
     - Filtering
       	- Numbers (WIP)
-
-- Server Side
-	- Paging
-	- Sorting
-	- Filtering
-
+        - Dates
+        - Custom Filter
 - Remove dependency on Bootstrap + BlazorStrap
+
 
 ### Sample
 [Example](/src/BlazorTable.Sample/Pages/Index.razor)
