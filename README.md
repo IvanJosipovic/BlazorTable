@@ -15,11 +15,11 @@ A simple Table Control for Blazor
 - Client Side
 	- Paging
 	- Sorting
-
+    - Filtering
+      	- String
 ### Todo
 - Client Side
     - Filtering
-      	- String
       	- Numbers (WIP)
 
 - Server Side
