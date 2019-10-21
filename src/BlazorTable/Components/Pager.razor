@@ -4,16 +4,35 @@
 @if (AlwaysShow || (Table.TotalCount >= 1 && TotalPages >= 1))
 {
     <div class="d-flex justify-content-end">
-        <span class="align-middle">Page:@(Table.PageNumber + 1)/@(TotalPages + 1) Items:@(Table.TotalCount)</span>
-        &nbsp;
         <ul class="pagination">
-            <li class="page-item" @onclick="@(() => Table.FirstPage())" title="First"><a class="page-link" href="javascript:;">&#8676;</a></li>
-            <li class="page-item" @onclick="@(() => Table.PreviousPage())" title="Previous"><a class="page-link" href="javascript:;">&#8592;</a></li>
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&nbsp;</a>
-            </li>
-            <li class="page-item" @onclick="@(() => Table.NextPage())" title="Next"><a class="page-link" href="javascript:;">&#8594;</a></li>
-            <li class="page-item" @onclick="@(() => Table.LastPage())" title="Last"><a class="page-link" href="javascript:;">&#8677;</a></li>
+            @if (ShowPageNumber)
+            {
+                <li class="page-item disabled" @onclick="@(() => Table.FirstPage())" title="Page">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">@(Table.PageNumber + 1)/@(TotalPages + 1)</a>
+                </li>
+            }
+            @if (ShowTotalCount)
+            {
+                <li class="page-item disabled" @onclick="@(() => Table.FirstPage())" title="Total Items">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">@(Table.TotalCount)</a>
+                </li>
+            }
+            @if (ShowPageNumber || ShowTotalCount)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&nbsp;</a>
+                </li>
+            }
+            @if (Table.PageNumber > 0)
+            {
+                <li class="page-item" @onclick="@(() => Table.FirstPage())" title="First"><a class="page-link" href="javascript:;">First</a></li>
+                <li class="page-item" @onclick="@(() => Table.PreviousPage())" title="Previous"><a class="page-link" href="javascript:;">Previous</a></li>
+            }
+            @if (Table.PageNumber < TotalPages)
+            {
+                <li class="page-item" @onclick="@(() => Table.NextPage())" title="Next"><a class="page-link" href="javascript:;">Next</a></li>
+                <li class="page-item" @onclick="@(() => Table.LastPage())" title="Last"><a class="page-link" href="javascript:;">Last</a></li>
+            }
         </ul>
     </div>
 }
