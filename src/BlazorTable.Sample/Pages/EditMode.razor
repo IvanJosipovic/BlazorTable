@@ -53,12 +53,15 @@
             $@context.fund
         </Template>
         <EditorTemplate>
-            <input type="text" @bind-value="@context.fund" class="form-control form-control-sm" />
+            <input type="number" step=".01" @bind-value="@context.fund" class="form-control form-control-sm" />
         </EditorTemplate>
     </Column>
     <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Width="10%">
         <Template>
-            @context.created_date.ToShortDateString()
+            @if (context.created_date.HasValue)
+            {
+                @context.created_date.Value.ToShortDateString()
+            }
         </Template>
         <EditorTemplate>
             <input type="date" @bind-value="@context.created_date" class="form-control form-control-sm" />
@@ -67,8 +70,8 @@
     <Pager TableItem="PersonData" ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
-@code {
-
+@code 
+{
     private ITable<PersonData> Table;
 
     private PersonData[] data;
@@ -80,13 +83,13 @@
 
     public class PersonData
     {
-        public int id { get; set; }
+        public int? id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string email { get; set; }
-        public bool confirmed { get; set; }
-        public float fund { get; set; }
-        public DateTime created_date { get; set; }
+        public bool? confirmed { get; set; }
+        public float? fund { get; set; }
+        public DateTime? created_date { get; set; }
     }
 
     private void ToggleEdit()

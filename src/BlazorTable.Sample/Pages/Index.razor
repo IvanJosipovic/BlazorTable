@@ -44,13 +44,17 @@
     </Column>
     <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Width="10%">
         <Template>
-            @context.created_date.ToShortDateString()
+            @if (context.created_date.HasValue)
+            {
+                @context.created_date.Value.ToShortDateString()
+            }
         </Template>
     </Column>
     <Pager TableItem="PersonData" ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
-@code {
+@code
+{
     private PersonData[] data;
 
     protected override async Task OnInitializedAsync()
@@ -60,12 +64,12 @@
 
     public class PersonData
     {
-        public int id { get; set; }
+        public int? id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string email { get; set; }
-        public bool confirmed { get; set; }
-        public float fund { get; set; }
-        public DateTime created_date { get; set; }
+        public bool? confirmed { get; set; }
+        public float? fund { get; set; }
+        public DateTime? created_date { get; set; }
     }
 }
