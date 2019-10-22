@@ -27,16 +27,12 @@ namespace BlazorTable
 
                 if (FilterManager.Column.Filter != null)
                 {
-                    var type = FilterManager.Column.Filter.Body.GetType().FullName;
-                    
                     bool NotCondition = false;
 
                     Expression method;
 
-                    if (FilterManager.Column.Filter.Body is UnaryExpression)
+                    if (FilterManager.Column.Filter.Body is UnaryExpression unary)
                     {
-                        var unary = ((UnaryExpression)FilterManager.Column.Filter.Body);
-
                         NotCondition = unary.NodeType == ExpressionType.Not;
 
                         method = unary.Operand;

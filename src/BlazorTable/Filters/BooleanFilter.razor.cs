@@ -25,8 +25,7 @@ namespace BlazorTable
 
                 if (FilterManager.Column.Filter != null)
                 {
-                    var unary = FilterManager.Column.Filter.Body;
-                    switch (unary.NodeType)
+                    switch (FilterManager.Column.Filter.Body.NodeType)
                     {
                         case ExpressionType.IsTrue:
                             Condition = BooleanCondition.True;
