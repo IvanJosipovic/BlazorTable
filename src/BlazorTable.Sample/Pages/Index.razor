@@ -5,14 +5,14 @@
 <h1>BlazorTable</h1>
 
 <a href="https://github.com/IvanJosipovic/BlazorTable">Github</a>
-<a href="https://github.com/IvanJosipovic/BlazorTable"><img src="https://img.shields.io/github/stars/IvanJosipovic/BlazorTable"/></a>
+<a href="https://github.com/IvanJosipovic/BlazorTable"><img src="https://img.shields.io/github/stars/IvanJosipovic/BlazorTable" /></a>
 &nbsp;
-<a href="https://www.nuget.org/packages/BlazorTable"><img src="https://img.shields.io/nuget/vpre/BlazorTable.svg"/></a>
+<a href="https://www.nuget.org/packages/BlazorTable"><img src="https://img.shields.io/nuget/vpre/BlazorTable.svg" /></a>
 <br />
 <br />
 
 <Table TableItem="PersonData" Items="data" PageSize="15">
-    <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true" Filterable="false" Width="10%">
+    <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true" Width="10%">
         <Template>
             @context.id
         </Template>
@@ -32,14 +32,19 @@
             <a href="mailto:@context.email">@context.email</a>
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Gender" Property="@(x => x.gender)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Confirmed" Property="@(x => x.confirmed)" Sortable="true" Width="10%">
         <Template>
-            @context.gender
+            @context.confirmed.ToString()
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="IP" Property="@(x => x.ip_address)" Sortable="true" Filterable="true" Width="20%">
+    <Column TableItem="PersonData" Title="Fund" Property="@(x => x.fund)" Sortable="true" Width="10%">
         <Template>
-            @context.ip_address
+            $@context.fund
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Width="10%">
+        <Template>
+            @context.created_date.ToShortDateString()
         </Template>
     </Column>
     <Pager TableItem="PersonData" ShowPageNumber="true" ShowTotalCount="true" />
@@ -59,7 +64,8 @@
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string email { get; set; }
-        public string gender { get; set; }
-        public string ip_address { get; set; }
+        public bool confirmed { get; set; }
+        public float fund { get; set; }
+        public DateTime created_date { get; set; }
     }
 }

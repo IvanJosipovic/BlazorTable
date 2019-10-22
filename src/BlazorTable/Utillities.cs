@@ -40,7 +40,6 @@ namespace BlazorTable
             return CallMethodType(expression, type, method, new[] { parameter }, new[] { value });
         }
 
-
         public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
         {
             MethodInfo methodInfo = type.GetMethod(method, parameters);
