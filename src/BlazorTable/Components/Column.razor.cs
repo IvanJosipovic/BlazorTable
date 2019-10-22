@@ -39,8 +39,7 @@ namespace BlazorTable
 
         [Parameter]
         public Expression<Func<TableItem, object>> Property { get; set; }
-        
-        [Parameter]
+
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
         public bool SortColumn { get; set; }
@@ -94,7 +93,7 @@ namespace BlazorTable
                 }
 
                 Table.Columns.ForEach(x => x.SortColumn = false);
-                
+
                 SortColumn = true;
 
                 Table.Update();
