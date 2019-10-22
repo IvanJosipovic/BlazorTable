@@ -65,30 +65,24 @@ namespace BlazorTable
                     FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
-                            Expression.IsTrue(Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()))
-                            ),
+                            Expression.IsTrue(Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()))),
                         FilterManager.Column.Property.Parameters);
                     break;
                 case BooleanCondition.False:
                     FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
-                            Expression.IsFalse(Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()))
-                            ),
+                            Expression.IsFalse(Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()))),
                         FilterManager.Column.Property.Parameters);
                     break;
                 case BooleanCondition.IsNull:
                     FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.Equal(
-                            FilterManager.Column.Property.Body,
-                            Expression.Constant(null)),
+                        Expression.Equal(FilterManager.Column.Property.Body, Expression.Constant(null)),
                         FilterManager.Column.Property.Parameters);
                     break;
                 case BooleanCondition.IsNotNull:
                     FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.NotEqual(
-                            FilterManager.Column.Property.Body,
-                            Expression.Constant(null)),
+                        Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
                         FilterManager.Column.Property.Parameters);
                     break;
             }
