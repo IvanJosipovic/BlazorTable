@@ -15,7 +15,10 @@ namespace BlazorTable
 
         private BooleanCondition Condition { get; set; }
 
-        public List<Type> FilterTypes => new List<Type>() { typeof(bool) };
+        public List<Type> FilterTypes => new List<Type>()
+        {
+            typeof(bool?), typeof(bool)
+        };
 
         protected override void OnInitialized()
         {
@@ -25,7 +28,17 @@ namespace BlazorTable
 
                 if (FilterManager.Column.Filter != null)
                 {
-                    switch (FilterManager.Column.Filter.Body.NodeType)
+                    var nodeType = FilterManager.Column.Filter.Body.NodeType;
+
+                    if (FilterManager.Column.Filter.Body is BinaryExpression binaryExpression)
+                    {
+                        if (binaryExpression.NodeType == ExpressionType.AndAlso)
+                        {
+                            nodeType = binaryExpression.Right.NodeType;
+                        }
+                    }
+
+                    switch (nodeType)
                     {
                         case ExpressionType.IsTrue:
                             Condition = BooleanCondition.True;
@@ -50,14 +63,18 @@ namespace BlazorTable
             {
                 case BooleanCondition.True:
                     FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.IsTrue(
-                            Expression.Convert(FilterManager.Column.Property.Body, typeof(bool))),
+                        Expression.AndAlso(
+                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.IsTrue(Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()))
+                            ),
                         FilterManager.Column.Property.Parameters);
                     break;
                 case BooleanCondition.False:
                     FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.IsFalse(
-                            Expression.Convert(FilterManager.Column.Property.Body, typeof(bool))),
+                        Expression.AndAlso(
+                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.IsFalse(Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()))
+                            ),
                         FilterManager.Column.Property.Parameters);
                     break;
                 case BooleanCondition.IsNull:

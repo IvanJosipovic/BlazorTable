@@ -9,6 +9,11 @@ namespace BlazorTable
 {
     internal static class Utillities
     {
+        public static Type GetNonNullableType(this Type type)
+        {
+            return Nullable.GetUnderlyingType(type) ?? type;
+        }
+
         public static string GetDescription<T>(this T e) where T : IConvertible
         {
             if (e is Enum)
