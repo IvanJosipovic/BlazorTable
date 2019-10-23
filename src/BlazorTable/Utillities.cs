@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -9,6 +10,44 @@ namespace BlazorTable
 {
     internal static class Utillities
     {
+        public static IEnumerable<T> OrEmptyIfNull<T>(this IEnumerable<T> source)
+        {
+            return source ?? Enumerable.Empty<T>();
+        }
+
+        public static IDictionary<T, V> OrEmptyIfNull<T, V>(this IDictionary<T, V> source)
+        {
+            return source ?? new Dictionary<T, V>();
+        }
+
+        public static bool IsNumeric(this Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Byte:
+                case TypeCode.SByte:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
+                    return true;
+                case TypeCode.Object:
+                    if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        return Nullable.GetUnderlyingType(type).IsNumeric();
+                        //return IsNumeric(Nullable.GetUnderlyingType(type));
+                    }
+                    return false;
+                default:
+                    return false;
+            }
+        }
+
         public static Type GetNonNullableType(this Type type)
         {
             return Nullable.GetUnderlyingType(type) ?? type;
@@ -53,7 +92,7 @@ namespace BlazorTable
                 Expression.Call(
                     expression.Body,
                     methodInfo,
-                    values.Select(x => Expression.Constant(x))),
+                    values.OrEmptyIfNull().Select(Expression.Constant)),
                 expression.Parameters);
         }
 

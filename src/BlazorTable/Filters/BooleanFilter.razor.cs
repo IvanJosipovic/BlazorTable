@@ -17,12 +17,12 @@ namespace BlazorTable
 
         public List<Type> FilterTypes => new List<Type>()
         {
-            typeof(bool?), typeof(bool)
+            typeof(bool)
         };
 
         protected override void OnInitialized()
         {
-            if (FilterTypes.Contains(FilterManager.Column.Type))
+            if (FilterTypes.Contains(FilterManager.Column.Type.GetNonNullableType()))
             {
                 FilterManager.Filter = this;
 
@@ -30,12 +30,10 @@ namespace BlazorTable
                 {
                     var nodeType = FilterManager.Column.Filter.Body.NodeType;
 
-                    if (FilterManager.Column.Filter.Body is BinaryExpression binaryExpression)
+                    if (FilterManager.Column.Filter.Body is BinaryExpression binaryExpression
+                        && binaryExpression.NodeType == ExpressionType.AndAlso)
                     {
-                        if (binaryExpression.NodeType == ExpressionType.AndAlso)
-                        {
-                            nodeType = binaryExpression.Right.NodeType;
-                        }
+                        nodeType = binaryExpression.Right.NodeType;
                     }
 
                     switch (nodeType)

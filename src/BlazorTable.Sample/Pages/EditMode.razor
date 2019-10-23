@@ -8,7 +8,7 @@
 <br />
 <br />
 <Table TableItem="PersonData" Items="data" PageSize="15" @ref="Table">
-    <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @context.id
         </Template>
@@ -40,17 +40,17 @@
             <input type="email" @bind-value="@context.email" class="form-control form-control-sm" />
         </EditorTemplate>
     </Column>
-    <Column TableItem="PersonData" Title="Confirmed" Property="@(x => x.confirmed)" Sortable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Confirmed" Property="@(x => x.confirmed)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @context.confirmed.ToString()
         </Template>
         <EditorTemplate>
-            <input type="checkbox" @bind-value="@context.confirmed" class="form-control form-control-sm"  checked="@(context.confirmed)"/>
+            <input type="checkbox" @bind-value="@context.confirmed" class="form-control form-control-sm" checked="@(context.confirmed)"/>
         </EditorTemplate>
     </Column>
-    <Column TableItem="PersonData" Title="Fund" Property="@(x => x.fund)" Sortable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Fund" Property="@(x => x.fund)" Sortable="true" Filterable="true" Width="10%">
         <Template>
-            $@context.fund
+            @(context.fund.HasValue ? context.fund.Value.ToString("C") : string.Empty)
         </Template>
         <EditorTemplate>
             <input type="number" step=".01" @bind-value="@context.fund" class="form-control form-control-sm" />
@@ -58,10 +58,7 @@
     </Column>
     <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Width="10%">
         <Template>
-            @if (context.created_date.HasValue)
-            {
-                @context.created_date.Value.ToShortDateString()
-            }
+            @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
         </Template>
         <EditorTemplate>
             <input type="date" @bind-value="@context.created_date" class="form-control form-control-sm" />
