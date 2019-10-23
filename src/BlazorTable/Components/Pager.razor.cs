@@ -10,6 +10,12 @@ namespace BlazorTable
         [Parameter]
         public bool AlwaysShow { get; set; }
 
+        [Parameter]
+        public bool ShowPageNumber { get; set; }
+
+        [Parameter]
+        public bool ShowTotalCount { get; set; }
+
         private long TotalPages { get; set; }
 
         protected override void OnParametersSet()

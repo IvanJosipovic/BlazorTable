@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace BlazorTable
 {
@@ -27,16 +26,12 @@ namespace BlazorTable
 
                 if (FilterManager.Column.Filter != null)
                 {
-                    var type = FilterManager.Column.Filter.Body.GetType().FullName;
-                    
                     bool NotCondition = false;
 
                     Expression method;
 
-                    if (FilterManager.Column.Filter.Body is UnaryExpression)
+                    if (FilterManager.Column.Filter.Body is UnaryExpression unary)
                     {
-                        var unary = ((UnaryExpression)FilterManager.Column.Filter.Body);
-
                         NotCondition = unary.NodeType == ExpressionType.Not;
 
                         method = unary.Operand;
@@ -46,18 +41,17 @@ namespace BlazorTable
                         method = FilterManager.Column.Filter.Body;
                     }
 
-                    var methodCall = (MethodCallExpression)method;
-
-                    var MethodName = methodCall.Method.Name;
-
-                    if (methodCall.Arguments[0] != null && methodCall.Arguments[0] is ConstantExpression)
+                    if (method is MethodCallExpression methodCall)
                     {
-                        var filterText = ((ConstantExpression)(methodCall.Arguments[0]));
+                        var MethodName = methodCall.Method.Name;
 
-                        FilterText = filterText.Value.ToString();
+                        if (methodCall.Arguments[0] != null && methodCall.Arguments[0] is ConstantExpression constantExpression)
+                        {
+                            FilterText = constantExpression.Value.ToString();
+                        }
+
+                        Condition = GetConditionFromMethod(MethodName, NotCondition);
                     }
-
-                    Condition = GetConditionFromMethod(MethodName, NotCondition);
                 }
             }
         }
