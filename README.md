@@ -1,6 +1,7 @@
 # BlazorTable
 [![Demo](https://img.shields.io/badge/Live-Demo-Blue?style=flat-square)](https://BlazorTable.netlify.com/)
 [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/BlazorTable.svg?style=flat-square)](https://www.nuget.org/packages/BlazorTable)
+[![Nuget (with prereleases)](https://img.shields.io/nuget/dt/BlazorTable.svg?style=flat-square)](https://www.nuget.org/packages/BlazorTable)
 ![](https://github.com/IvanJosipovic/BlazorTable/workflows/CI/CD/badge.svg)
 
 **Work in progress!**
