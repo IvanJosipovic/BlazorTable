@@ -2,13 +2,14 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq.Expressions;
 
 namespace BlazorTable
 {
     public partial class NumberFilter<TableItem> : IFilter<TableItem>
     {
-        [CascadingParameter(Name = "FilterManager")] public IFilterManager<TableItem> FilterManager { get; set; }
+        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
         [Inject] public ILogger<NumberFilter<TableItem>> Logger { get; set; }
 
@@ -18,13 +19,13 @@ namespace BlazorTable
 
         protected override void OnInitialized()
         {
-            if (FilterManager.Column.Type.IsNumeric())
+            if (Column.Type.IsNumeric())
             {
-                FilterManager.Filter = this;
+                Column.FilterControl = this;
 
-                if (FilterManager.Column.Filter != null)
+                if (Column.Filter != null)
                 {
-                    if (FilterManager.Column.Filter.Body is BinaryExpression binaryExpression)
+                    if (Column.Filter.Body is BinaryExpression binaryExpression)
                     {
                         if (binaryExpression.NodeType == ExpressionType.AndAlso)
                         {
@@ -74,74 +75,73 @@ namespace BlazorTable
             }
         }
 
-        public void ApplyFilter()
+        public Expression<Func<TableItem, bool>> GetFilter()
         {
             switch (Condition)
             {
                 case NumberCondition.IsEqualTo:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
+                    return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.Equal(
-                                Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, FilterManager.Column.Type.GetNonNullableType())))),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                        Column.Property.Parameters);
+
                 case NumberCondition.IsNotEqualTo:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
+                    return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.NotEqual(
-                                Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, FilterManager.Column.Type.GetNonNullableType())))),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                        Column.Property.Parameters);
+
                 case NumberCondition.IsGreaterThanOrEqualTo:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
+                    return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.GreaterThanOrEqual(
-                                Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, FilterManager.Column.Type.GetNonNullableType())))),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                        Column.Property.Parameters);
+
                 case NumberCondition.IsGreaterThan:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
+                    return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.GreaterThan(
-                                Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, FilterManager.Column.Type.GetNonNullableType())))),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                        Column.Property.Parameters);
+
                 case NumberCondition.IsLessThanOrEqualTo:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
+                    return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.LessThanOrEqual(
-                                Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, FilterManager.Column.Type.GetNonNullableType())))),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                        Column.Property.Parameters);
+
                 case NumberCondition.IsLessThan:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
+                    return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.LessThan(
-                                Expression.Convert(FilterManager.Column.Property.Body, FilterManager.Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, FilterManager.Column.Type.GetNonNullableType())))),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                        Column.Property.Parameters);
+
                 case NumberCondition.IsNull:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.Equal(FilterManager.Column.Property.Body, Expression.Constant(null)),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                    return Expression.Lambda<Func<TableItem, bool>>(
+                            Expression.Equal(Column.Property.Body, Expression.Constant(null)),
+                        Column.Property.Parameters);
+
                 case NumberCondition.IsNotNull:
-                    FilterManager.Column.Filter = Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.NotEqual(FilterManager.Column.Property.Body, Expression.Constant(null)),
-                        FilterManager.Column.Property.Parameters);
-                    break;
+                    return Expression.Lambda<Func<TableItem, bool>>(
+                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
+                        Column.Property.Parameters);
                 default:
                     throw new ArgumentException(Condition + " is not defined!");
             }

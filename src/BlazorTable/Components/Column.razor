@@ -10,7 +10,10 @@
                 <StringFilter TableItem="TableItem" />
                 <BooleanFilter TableItem="TableItem" />
                 <NumberFilter TableItem="TableItem" />
-                @*@this.CustomIFilters(this)*@
+                @if (this.CustomIFilters != null)
+                {
+                    this.CustomIFilters(this);
+                }
             </FilterManager>
 
         </BlazorStrap.BSPopoverBody>

@@ -6,6 +6,9 @@ namespace BlazorTable
 {
     public interface IColumn<TableItem>
     {
+        /// <summary>
+        /// Parent Table
+        /// </summary>
         ITable<TableItem> Table { get; set; }
 
         /// <summary>
@@ -48,8 +51,6 @@ namespace BlazorTable
         /// </summary>
         Type Type { get; }
 
-        IFilterManager<TableItem> FilterManager { get; set; }
-
         /// <summary>
         /// Property which this column is for<br />
         /// Required when Sortable = true<br />
@@ -72,6 +73,14 @@ namespace BlazorTable
         /// </summary>
         RenderFragment<TableItem> Template { get; set; }
 
+        /// <summary>
+        /// Currently applied Filter Control
+        /// </summary>
+        IFilter<TableItem> FilterControl { get; set; }
+
+        /// <summary>
+        /// Place custom controls which implement IFilter
+        /// </summary>
         RenderFragment<Column<TableItem>> CustomIFilters { get; set; }
 
         /// <summary>
