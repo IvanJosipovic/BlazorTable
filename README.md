@@ -19,11 +19,12 @@ A simple Table Control for Blazor
     - Filtering
       	- Strings
         - Numbers
+        - Dates
+
 ## Todo
 - Client Side
     - Filtering
-        - Dates
-        - Custom Filter
+        - Custom Component
 - Remove dependency on Bootstrap + BlazorStrap
 
 
