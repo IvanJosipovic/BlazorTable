@@ -33,7 +33,7 @@ jobs:
       with:
         dotnet-version: 2.2.402
     - name: SonarQube End
-      run: dotnet sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
+      run: temp/dotnet-sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
       env:
         SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}      
     - name: Deploy to Test
