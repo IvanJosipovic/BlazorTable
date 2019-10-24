@@ -56,7 +56,7 @@
             <input type="number" step=".01" @bind-value="@context.fund" class="form-control form-control-sm" />
         </EditorTemplate>
     </Column>
-    <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
         </Template>

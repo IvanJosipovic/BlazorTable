@@ -41,7 +41,7 @@
             @(context.fund.HasValue ? context.fund.Value.ToString("C") : string.Empty)
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
         </Template>

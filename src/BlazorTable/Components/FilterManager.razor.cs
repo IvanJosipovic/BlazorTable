@@ -11,8 +11,6 @@ namespace BlazorTable
 
         [Inject] public ILogger<FilterManager<TableItem>> Logger { get; set; }
 
-        public IFilter<TableItem> Filter { get; set; }
-
         protected override void OnInitialized()
         {
         }
@@ -20,11 +18,14 @@ namespace BlazorTable
         private void ApplyFilter()
         {
             Column.ToggleFilter();
-            if (Filter != null)
+            if (Column.FilterControl != null)
             {
-                Column.Filter = Filter.GetFilter();
+                Column.Filter = Column.FilterControl.GetFilter();
                 Column.Table.Update();
                 Column.Table.FirstPage();
+            } else
+            {
+                Logger.LogInformation("Filter is null");
             }
         }
 
