@@ -14,10 +14,31 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
+        dotnet-version: 2.2.402
+    - name: SonarQube Install
+      run: dotnet tool install dotnet-sonarscanner --tool-path ./
+    - name: SonarQube Start
+      run: ./dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=$SONARQUBE_TOKEN
+      env:
+        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
         dotnet-version: 3.1.100-preview1-014459
+    - name: Dotnet Build
+      run: dotnet build --configuration Release
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample
-      run: dotnet publish --configuration Release
+      run: dotnet publish --configuration Release      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 2.2.402
+    - name: SonarQube End
+      run: ./dotnet-sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
+      env:
+        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Deploy to Test
       id: netlify
       uses: ivanjosipovic/actions/cli@master
