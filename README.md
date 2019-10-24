@@ -3,6 +3,7 @@
 [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/BlazorTable.svg?style=flat-square)](https://www.nuget.org/packages/BlazorTable)
 [![Nuget (with prereleases)](https://img.shields.io/nuget/dt/BlazorTable.svg?style=flat-square)](https://www.nuget.org/packages/BlazorTable)
 ![](https://github.com/IvanJosipovic/BlazorTable/workflows/CI/CD/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=IvanJosipovic_BlazorTable&metric=alert_status)](https://sonarcloud.io/dashboard?id=IvanJosipovic_BlazorTable)
 
 **Work in progress!**
 
