@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 3.1.100-preview1-014459
     - name: SonarQube Install
-      run: dotnet tool install --global dotnet-sonarscanner
+      run: dotnet tool install dotnet-sonarscanner
     - name: SonarQube Start
       run: dotnet sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=$SONARQUBE_TOKEN
       env:
