@@ -15,20 +15,20 @@ jobs:
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.100-preview1-014459
-    - name: SonarCube Start
+    - name: SonarQube Start
       run: |
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=$SONARCUBE_TOKEN
+        dotnet sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=$SONARQUBE_TOKEN
       env:
-        SONARCUBE_TOKEN: ${{ secrets.SONARCUBE_TOKEN }}
+        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample
       run: dotnet publish --configuration Release
-    - name: SonarCube End
+    - name: SonarQube End
       run: |
-        dotnet sonarscanner end /d:sonar.login=$SONARCUBE_TOKEN
+        dotnet sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
       env:
-        SONARCUBE_TOKEN: ${{ secrets.SONARCUBE_TOKEN }}      
+        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}      
     - name: Deploy to Test
       id: netlify
       uses: ivanjosipovic/actions/cli@master
