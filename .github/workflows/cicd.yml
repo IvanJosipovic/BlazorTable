@@ -16,9 +16,9 @@ jobs:
       with:
         dotnet-version: 2.2.402
     - name: SonarQube Install
-      run: dotnet tool install dotnet-sonarscanner --tool-path temp
+      run: dotnet tool install dotnet-sonarscanner --tool-path .
     - name: SonarQube Start
-      run: temp/dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=$SONARQUBE_TOKEN
+      run: dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=$SONARQUBE_TOKEN
       env:
         SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
     - name: Setup .NET Core
@@ -33,7 +33,7 @@ jobs:
       with:
         dotnet-version: 2.2.402
     - name: SonarQube End
-      run: temp/dotnet-sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
+      run: dotnet-sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
       env:
         SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}      
     - name: Deploy to Test
