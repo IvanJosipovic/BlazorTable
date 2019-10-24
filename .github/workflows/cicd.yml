@@ -37,7 +37,8 @@ jobs:
     - name: SonarQube End
       run: ./dotnet-sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
       env:
-        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}      
+        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Deploy to Test
       id: netlify
       uses: ivanjosipovic/actions/cli@master
