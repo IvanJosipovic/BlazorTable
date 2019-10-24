@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -50,7 +49,7 @@ namespace BlazorTable
 
         public Type Type { get; private set; }
 
-        public IFilterManager<TableItem> FilterManager { get; set; }
+        public IFilter<TableItem> FilterControl { get; set; }
 
         public void Dispose()
         {

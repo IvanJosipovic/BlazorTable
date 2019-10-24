@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorTable
 {
-    public partial class FilterManager<TableItem> : IFilterManager<TableItem>
+    public partial class FilterManager<TableItem>
     {
         [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
@@ -11,21 +11,21 @@ namespace BlazorTable
 
         [Inject] public ILogger<FilterManager<TableItem>> Logger { get; set; }
 
-        public IFilter<TableItem> Filter { get; set; }
-
         protected override void OnInitialized()
         {
-            Column.FilterManager = this;
         }
 
         private void ApplyFilter()
         {
             Column.ToggleFilter();
-            if (Filter != null)
+            if (Column.FilterControl != null)
             {
-                Filter.ApplyFilter();
+                Column.Filter = Column.FilterControl.GetFilter();
                 Column.Table.Update();
                 Column.Table.FirstPage();
+            } else
+            {
+                Logger.LogInformation("Filter is null");
             }
         }
 

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
 
 namespace BlazorTable
 {
-    public partial class NumberFilter<TableItem> : IFilter<TableItem>
+    public partial class DateFilter<TableItem> : IFilter<TableItem>
     {
         [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
 
@@ -15,11 +14,11 @@ namespace BlazorTable
 
         private NumberCondition Condition { get; set; }
 
-        private string FilterValue { get; set; }
+        private DateTime FilterValue { get; set; } = DateTime.Now;
 
         protected override void OnInitialized()
         {
-            if (Column.Type.IsNumeric())
+            if (Column.Type.GetNonNullableType() == typeof(DateTime))
             {
                 Column.FilterControl = this;
 
@@ -64,7 +63,7 @@ namespace BlazorTable
                     if (binaryExpression.Right is BinaryExpression binaryExpression2 
                         && binaryExpression2.Right is ConstantExpression constantExpression)
                     {
-                        FilterValue = constantExpression.Value.ToString();
+                        FilterValue = DateTime.Parse(constantExpression.Value.ToString(), CultureInfo.InvariantCulture);
                     }
                 }
             }
@@ -80,7 +79,7 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.Equal(
                                 Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                                Expression.Constant(FilterValue))),
                         Column.Property.Parameters);
 
                 case NumberCondition.IsNotEqualTo:
@@ -89,7 +88,7 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.NotEqual(
                                 Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                                Expression.Constant(FilterValue))),
                         Column.Property.Parameters);
 
                 case NumberCondition.IsGreaterThanOrEqualTo:
@@ -98,7 +97,7 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.GreaterThanOrEqual(
                                 Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                                Expression.Constant(FilterValue))),
                         Column.Property.Parameters);
 
                 case NumberCondition.IsGreaterThan:
@@ -107,7 +106,7 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.GreaterThan(
                                 Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                                Expression.Constant(FilterValue))),
                         Column.Property.Parameters);
 
                 case NumberCondition.IsLessThanOrEqualTo:
@@ -116,7 +115,7 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.LessThanOrEqual(
                                 Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                                Expression.Constant(FilterValue))),
                         Column.Property.Parameters);
 
                 case NumberCondition.IsLessThan:
@@ -125,7 +124,7 @@ namespace BlazorTable
                             Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                             Expression.LessThan(
                                 Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                                Expression.Constant(FilterValue))),
                         Column.Property.Parameters);
 
                 case NumberCondition.IsNull:
@@ -137,36 +136,10 @@ namespace BlazorTable
                     return Expression.Lambda<Func<TableItem, bool>>(
                             Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
                         Column.Property.Parameters);
+
                 default:
                     throw new ArgumentException(Condition + " is not defined!");
             }
         }
-    }
-
-    public enum NumberCondition
-    {
-        [Description("Is equal to")]
-        IsEqualTo,
-
-        [Description("Is not equal to")]
-        IsNotEqualTo,
-
-        [Description("Is greater than or equal to")]
-        IsGreaterThanOrEqualTo,
-
-        [Description("Is greater than")]
-        IsGreaterThan,
-
-        [Description("Is less than or equal to")]
-        IsLessThanOrEqualTo,
-
-        [Description("Is less than")]
-        IsLessThan,
-
-        [Description("Is null")]
-        IsNull,
-
-        [Description("Is not null")]
-        IsNotNull
     }
 }

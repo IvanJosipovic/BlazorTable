@@ -1,7 +1,7 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
 
-@if (FilterManager.Column.Type == FilterType)
+@if (Column.Type == FilterType)
 {
     <select class="form-control form-control-sm" value="@Condition" @onchange="@((x) => Condition = (StringCondition)Enum.Parse(typeof(StringCondition), x.Value.ToString()))">
         @foreach (var option in (StringCondition[])Enum.GetValues(typeof(StringCondition)))
