@@ -14,7 +14,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 2.2.7
+        dotnet-version: 2.2.402
     - name: SonarQube Install
       run: dotnet tool install dotnet-sonarscanner --tool-path temp
     - name: SonarQube Start
@@ -31,7 +31,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 2.2.7
+        dotnet-version: 2.2.402
     - name: SonarQube End
       run: dotnet sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
       env:
