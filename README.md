@@ -9,9 +9,6 @@
 
 A simple Table Control for Blazor
 
-
-
-
 ## Features
 - Edit Mode ([Template Switching](/src/BlazorTable.Sample/Pages/EditMode.razor))
 - Client Side
@@ -21,11 +18,8 @@ A simple Table Control for Blazor
       	- Strings
         - Numbers
         - Dates
-
-## Todo
-- Client Side
-    - Filtering
         - Custom Component
+## Todo
 - Remove dependency on Bootstrap + BlazorStrap
 
 
