@@ -12,6 +12,9 @@
     <Version>0.0.6-alpha</Version>
     <PackageReleaseNotes>Experimental</PackageReleaseNotes>
     <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/IvanJosipovic/BlazorTable</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
