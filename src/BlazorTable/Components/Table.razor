@@ -44,9 +44,9 @@
                             @foreach (IColumn<TableItem> column in Columns)
                             {
                                 <td>
-                                    @if (IsEditMode && column.EditorTemplate != null)
+                                    @if (IsEditMode && column.EditTemplate != null)
                                     {
-                                        @column.EditorTemplate(item)
+                                        @column.EditTemplate(item)
                                     }
                                     else
                                     {

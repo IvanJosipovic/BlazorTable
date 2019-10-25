@@ -14,7 +14,7 @@ namespace BlazorTable
         [Parameter]
         public string Title
         {
-            get { return _title ?? Property.GetPropertyMemberInfo()?.Name; }
+            get { return _title ?? Field.GetPropertyMemberInfo()?.Name; }
             set { _title = value; }
         }
 
@@ -31,13 +31,13 @@ namespace BlazorTable
         public RenderFragment<TableItem> Template { get; set; }
 
         [Parameter]
-        public RenderFragment<TableItem> EditorTemplate { get; set; }
+        public RenderFragment<TableItem> EditTemplate { get; set; }
 
         [Parameter]
         public RenderFragment<Column<TableItem>> CustomIFilters { get; set; }
 
         [Parameter]
-        public Expression<Func<TableItem, object>> Property { get; set; }
+        public Expression<Func<TableItem, object>> Field { get; set; }
 
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
@@ -63,17 +63,17 @@ namespace BlazorTable
 
         protected override void OnParametersSet()
         {
-            if ((Sortable && Property == null) || (Filterable && Property == null))
+            if ((Sortable && Field == null) || (Filterable && Field == null))
             {
                 throw new InvalidOperationException($"Column {Title} Property parameter is null");
             }
 
-            if (Title == null && Property == null)
+            if (Title == null && Field == null)
             {
                 throw new InvalidOperationException("A Column has both Title and Property parameters null");
             }
 
-            Type = Property?.GetPropertyMemberInfo().GetMemberUnderlyingType();
+            Type = Field?.GetPropertyMemberInfo().GetMemberUnderlyingType();
         }
 
         public void ToggleFilter()

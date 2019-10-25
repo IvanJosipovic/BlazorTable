@@ -62,26 +62,26 @@ namespace BlazorTable
                 case BooleanCondition.True:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
-                            Expression.IsTrue(Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()))),
-                        Column.Property.Parameters);
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Expression.IsTrue(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
+                        Column.Field.Parameters);
 
                 case BooleanCondition.False:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
-                            Expression.IsFalse(Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()))),
-                        Column.Property.Parameters);
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Expression.IsFalse(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
+                        Column.Field.Parameters);
 
                 case BooleanCondition.IsNull:
                     return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.Equal(Column.Property.Body, Expression.Constant(null)),
-                        Column.Property.Parameters);
+                        Expression.Equal(Column.Field.Body, Expression.Constant(null)),
+                        Column.Field.Parameters);
 
                 case BooleanCondition.IsNotNull:
                     return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
-                        Column.Property.Parameters);
+                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                        Column.Field.Parameters);
             }
 
             return null;

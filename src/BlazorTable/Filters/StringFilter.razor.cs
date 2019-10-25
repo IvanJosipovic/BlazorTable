@@ -97,25 +97,25 @@ namespace BlazorTable
         public Expression<Func<TableItem, bool>> GetFilter()
         {
             FilterText = FilterText?.Trim();
-
+            
             switch (Condition)
             {
                 case StringCondition.Contains:
-                    return Utillities.CallMethodType(Column.Property, typeof(string), nameof(string.Contains), typeof(string), FilterText);
+                    return Utillities.CallMethodType(Column.Field, typeof(string), nameof(string.Contains), typeof(string), FilterText);
                 case StringCondition.DoesNotContain:
-                    return Utillities.CallMethodType(Column.Property, typeof(string), nameof(string.Contains), typeof(string), FilterText).Not();
+                    return Utillities.CallMethodType(Column.Field, typeof(string), nameof(string.Contains), typeof(string), FilterText).Not();
                 case StringCondition.StartsWith:
-                    return Utillities.CallMethodType(Column.Property, typeof(string), nameof(string.StartsWith), typeof(string), FilterText);
+                    return Utillities.CallMethodType(Column.Field, typeof(string), nameof(string.StartsWith), typeof(string), FilterText);
                 case StringCondition.EndsWith:
-                    return Utillities.CallMethodType(Column.Property, typeof(string), nameof(string.EndsWith), typeof(string), FilterText);
+                    return Utillities.CallMethodType(Column.Field, typeof(string), nameof(string.EndsWith), typeof(string), FilterText);
                 case StringCondition.IsEqualTo:
-                    return Utillities.CallMethodType(Column.Property, typeof(string), nameof(string.Equals), typeof(string), FilterText);
+                    return Utillities.CallMethodType(Column.Field, typeof(string), nameof(string.Equals), typeof(string), FilterText);
                 case StringCondition.IsNotEqualTo:
-                    return Utillities.CallMethodType(Column.Property, typeof(string), nameof(string.Equals), typeof(string), FilterText).Not();
+                    return Utillities.CallMethodType(Column.Field, typeof(string), nameof(string.Equals), typeof(string), FilterText).Not();
                 case StringCondition.IsNullOrEmpty:
-                    return Utillities.CallMethodTypeStaticSelf(Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string));
+                    return Utillities.CallMethodTypeStaticSelf(Column.Field, typeof(string), nameof(string.IsNullOrEmpty), typeof(string));
                 case StringCondition.IsNotNulOrEmpty:
-                    return Utillities.CallMethodTypeStaticSelf(Column.Property, typeof(string), nameof(string.IsNullOrEmpty), typeof(string)).Not();
+                    return Utillities.CallMethodTypeStaticSelf(Column.Field, typeof(string), nameof(string.IsNullOrEmpty), typeof(string)).Not();
                 default:
                     throw new ArgumentException(Condition + " is not defined!");
             }

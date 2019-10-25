@@ -72,11 +72,11 @@ namespace BlazorTable
                 {
                     if (sortColumn.SortDescending)
                     {
-                        query = query.OrderByDescending(sortColumn.Property);
+                        query = query.OrderByDescending(sortColumn.Field);
                     }
                     else
                     {
-                        query = query.OrderBy(sortColumn.Property);
+                        query = query.OrderBy(sortColumn.Field);
                     }
                 }
 
