@@ -62,37 +62,43 @@ namespace BlazorTable
 
         private StringCondition GetConditionFromMethod(string method, bool not)
         {
-            if (method == nameof(string.IndexOf) && !not)
+            if (not)
+            {
+                if (method == nameof(string.IndexOf))
+                {
+                    return StringCondition.DoesNotContain;
+                }
+                else if (method == nameof(string.Equals))
+                {
+                    return StringCondition.IsNotEqualTo;
+                }
+                else if (method == nameof(string.IsNullOrEmpty))
+                {
+                    return StringCondition.IsNotNulOrEmpty;
+                }
+
+                throw new InvalidOperationException("Shouldn't be here");
+            }
+
+            if (method == nameof(string.IndexOf))
             {
                 return StringCondition.Contains;
             }
-            else if (method == nameof(string.IndexOf) && not)
-            {
-                return StringCondition.DoesNotContain;
-            }
-            else if (method == nameof(string.StartsWith) && !not)
+            else if (method == nameof(string.StartsWith))
             {
                 return StringCondition.StartsWith;
             }
-            else if (method == nameof(string.EndsWith) && !not)
+            else if (method == nameof(string.EndsWith))
             {
                 return StringCondition.EndsWith;
             }
-            else if (method == nameof(string.Equals) && !not)
+            else if (method == nameof(string.Equals))
             {
                 return StringCondition.IsEqualTo;
             }
-            else if (method == nameof(string.Equals) && not)
-            {
-                return StringCondition.IsNotEqualTo;
-            }
-            else if (method == nameof(string.IsNullOrEmpty) && !not)
+            else if (method == nameof(string.IsNullOrEmpty))
             {
                 return StringCondition.IsNullOrEmpty;
-            }
-            else if (method == nameof(string.IsNullOrEmpty) && not)
-            {
-                return StringCondition.IsNotNulOrEmpty;
             }
 
             throw new InvalidOperationException("Shouldn't be here");
