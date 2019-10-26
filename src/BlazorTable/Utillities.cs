@@ -78,30 +78,6 @@ namespace BlazorTable
             return null; // could also return string.Empty
         }
 
-        public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter, object value)
-        {
-            return CallMethodType(expression, type, method, new[] { parameter }, new[] { value });
-        }
-
-        public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
-        {
-            return Expression.Lambda<Func<T, bool>>(
-                Expression.Call(
-                    expression.Body,
-                    type.GetMethod(method, parameters),
-                    values.OrEmptyIfNull().Select(Expression.Constant)),
-                expression.Parameters);
-        }
-
-        public static Expression<Func<T, bool>> CallMethodTypeStaticSelf<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter)
-        {
-            return Expression.Lambda<Func<T, bool>>(
-                Expression.Call(
-                    type.GetMethod(method, new[] { parameter }),
-                    expression.Body),
-                expression.Parameters);
-        }
-
         public static Type GetMemberUnderlyingType(this MemberInfo member)
         {
             switch (member.MemberType)
@@ -131,11 +107,6 @@ namespace BlazorTable
             }
 
             return body?.Member;
-        }
-
-        public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> expression)
-        {
-            return Expression.Lambda<Func<T, bool>>(Expression.Not(expression.Body), expression.Parameters[0]);
         }
     }
 }
