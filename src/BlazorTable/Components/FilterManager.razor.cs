@@ -11,10 +11,6 @@ namespace BlazorTable
 
         [Inject] public ILogger<FilterManager<TableItem>> Logger { get; set; }
 
-        protected override void OnInitialized()
-        {
-        }
-
         private void ApplyFilter()
         {
             Column.ToggleFilter();

@@ -9,9 +9,6 @@
 
 A simple Table Control for Blazor
 
-
-
-
 ## Features
 - Edit Mode ([Template Switching](/src/BlazorTable.Sample/Pages/EditMode.razor))
 - Client Side
@@ -21,11 +18,11 @@ A simple Table Control for Blazor
       	- Strings
         - Numbers
         - Dates
-
+        - Custom Component
 ## Todo
 - Client Side
     - Filtering
-        - Custom Component
+      - Enums
 - Remove dependency on Bootstrap + BlazorStrap
 
 
@@ -34,37 +31,37 @@ A simple Table Control for Blazor
 
 ```csharp
 <Table TableItem="PersonData" Items="data" PageSize="15">
-    <Column TableItem="PersonData" Title="Id" Property="@(x => x.id)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @context.id
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="First Name" Property="@(x => x.first_name)" Sortable="true" Filterable="true" Width="20%">
+    <Column TableItem="PersonData" Title="First Name" Field="@(x => x.first_name)" Sortable="true" Filterable="true" Width="20%">
         <Template>
             @context.first_name
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Last Name" Property="@(x => x.last_name)" Sortable="true" Filterable="true" Width="20%">
+    <Column TableItem="PersonData" Title="Last Name" Field="@(x => x.last_name)" Sortable="true" Filterable="true" Width="20%">
         <Template>
             @context.last_name
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Email" Property="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
+    <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
         <Template>
             <a href="mailto:@context.email">@context.email</a>
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Confirmed" Property="@(x => x.confirmed)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Confirmed" Field="@(x => x.confirmed)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @context.confirmed.ToString()
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Fund" Property="@(x => x.fund)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Fund" Field="@(x => x.fund)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             $@context.fund
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Created Date" Property="@(x => x.created_date)" Sortable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Sortable="true" Width="10%">
         <Template>
             @context.created_date.ToShortDateString()
         </Template>

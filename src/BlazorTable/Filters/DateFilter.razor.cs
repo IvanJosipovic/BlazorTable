@@ -60,7 +60,7 @@ namespace BlazorTable
                         }
                     }
 
-                    if (binaryExpression.Right is BinaryExpression binaryExpression2 
+                    if (binaryExpression.Right is BinaryExpression binaryExpression2
                         && binaryExpression2.Right is ConstantExpression constantExpression)
                     {
                         FilterValue = DateTime.Parse(constantExpression.Value.ToString(), CultureInfo.InvariantCulture);
@@ -76,66 +76,66 @@ namespace BlazorTable
                 case NumberCondition.IsEqualTo:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.Equal(
-                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(FilterValue))),
-                        Column.Property.Parameters);
+                        Column.Field.Parameters);
 
                 case NumberCondition.IsNotEqualTo:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.NotEqual(
-                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(FilterValue))),
-                        Column.Property.Parameters);
+                        Column.Field.Parameters);
 
                 case NumberCondition.IsGreaterThanOrEqualTo:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.GreaterThanOrEqual(
-                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(FilterValue))),
-                        Column.Property.Parameters);
+                        Column.Field.Parameters);
 
                 case NumberCondition.IsGreaterThan:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.GreaterThan(
-                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(FilterValue))),
-                        Column.Property.Parameters);
+                        Column.Field.Parameters);
 
                 case NumberCondition.IsLessThanOrEqualTo:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.LessThanOrEqual(
-                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(FilterValue))),
-                        Column.Property.Parameters);
+                        Column.Field.Parameters);
 
                 case NumberCondition.IsLessThan:
                     return Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.LessThan(
-                                Expression.Convert(Column.Property.Body, Column.Type.GetNonNullableType()),
+                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(FilterValue))),
-                        Column.Property.Parameters);
+                        Column.Field.Parameters);
 
                 case NumberCondition.IsNull:
                     return Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.Equal(Column.Property.Body, Expression.Constant(null)),
-                        Column.Property.Parameters);
+                            Expression.Equal(Column.Field.Body, Expression.Constant(null)),
+                        Column.Field.Parameters);
 
                 case NumberCondition.IsNotNull:
                     return Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.NotEqual(Column.Property.Body, Expression.Constant(null)),
-                        Column.Property.Parameters);
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                        Column.Field.Parameters);
 
                 default:
                     throw new ArgumentException(Condition + " is not defined!");

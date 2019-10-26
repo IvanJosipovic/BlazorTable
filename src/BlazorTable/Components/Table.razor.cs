@@ -28,7 +28,7 @@ namespace BlazorTable
         [Parameter]
         public IEnumerable<TableItem> Items { get; set; }
 
-        [Inject] ILogger<ITable<TableItem>> Logger { get; set; }
+        [Inject] private ILogger<ITable<TableItem>> Logger { get; set; }
 
         private IEnumerable<TableItem> TempItems { get; set; }
 
@@ -66,17 +66,17 @@ namespace BlazorTable
 
                 TotalCount = query.Count();
 
-                var sortColumn = Columns.FirstOrDefault(x => x.SortColumn);
+                var sortColumn = Columns.Find(x => x.SortColumn);
 
                 if (sortColumn != null)
                 {
                     if (sortColumn.SortDescending)
                     {
-                        query = query.OrderByDescending(sortColumn.Property);
+                        query = query.OrderByDescending(sortColumn.Field);
                     }
                     else
                     {
-                        query = query.OrderBy(sortColumn.Property);
+                        query = query.OrderBy(sortColumn.Field);
                     }
                 }
 

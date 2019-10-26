@@ -46,7 +46,7 @@ namespace BlazorTable
         void LastPage();
 
         /// <summary>
-        /// Redraws the Table using EditorTemplate instead of Template
+        /// Redraws the Table using EditTemplate instead of Template
         /// </summary>
         void ToggleEditMode();
 

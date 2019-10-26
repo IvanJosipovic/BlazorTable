@@ -10,9 +10,9 @@ jobs:
     timeout-minutes: 10
     steps:
     - name: Checkout code
-      uses: actions/checkout@master
+      uses: actions/checkout@v1
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
+      uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.402
     - name: SonarQube Install
@@ -22,7 +22,7 @@ jobs:
       env:
         SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
+      uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.100-preview1-014459
     - name: Dotnet Build
@@ -31,7 +31,7 @@ jobs:
       working-directory: src/BlazorTable.Sample
       run: dotnet publish --configuration Release      
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
+      uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.402
     - name: SonarQube End

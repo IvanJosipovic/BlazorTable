@@ -52,11 +52,11 @@ namespace BlazorTable
         Type Type { get; }
 
         /// <summary>
-        /// Property which this column is for<br />
+        /// Field which this column is for<br />
         /// Required when Sortable = true<br />
         /// Required when Filterable = true
         /// </summary>
-        Expression<Func<TableItem, object>> Property { get; set; }
+        Expression<Func<TableItem, object>> Field { get; set; }
 
         /// <summary>
         /// Filter expression
@@ -66,7 +66,7 @@ namespace BlazorTable
         /// <summary>
         /// Edit Mode Item Template
         /// </summary>
-        RenderFragment<TableItem> EditorTemplate { get; set; }
+        RenderFragment<TableItem> EditTemplate { get; set; }
 
         /// <summary>
         /// Normal Item Template

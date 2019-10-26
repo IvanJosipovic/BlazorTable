@@ -40,7 +40,6 @@ namespace BlazorTable
                     if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
                         return Nullable.GetUnderlyingType(type).IsNumeric();
-                        //return IsNumeric(Nullable.GetUnderlyingType(type));
                     }
                     return false;
                 default:
@@ -79,32 +78,6 @@ namespace BlazorTable
             return null; // could also return string.Empty
         }
 
-        public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter, object value)
-        {
-            return CallMethodType(expression, type, method, new[] { parameter }, new[] { value });
-        }
-
-        public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
-        {
-            MethodInfo methodInfo = type.GetMethod(method, parameters);
-
-            return Expression.Lambda<Func<T, bool>>(
-                Expression.Call(
-                    expression.Body,
-                    methodInfo,
-                    values.OrEmptyIfNull().Select(Expression.Constant)),
-                expression.Parameters);
-        }
-
-        public static Expression<Func<T, bool>> CallMethodTypeStaticSelf<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter)
-        {
-            MethodInfo methodInfo = type.GetMethod(method, new[] { parameter });
-
-            var call = Expression.Call(methodInfo, expression.Body);
-
-            return Expression.Lambda<Func<T, bool>>(call, expression.Parameters);
-        }
-
         public static Type GetMemberUnderlyingType(this MemberInfo member)
         {
             switch (member.MemberType)
@@ -134,11 +107,6 @@ namespace BlazorTable
             }
 
             return body?.Member;
-        }
-
-        public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> expression)
-        {
-            return Expression.Lambda<Func<T, bool>>(Expression.Not(expression.Body), expression.Parameters[0]);
         }
     }
 }
