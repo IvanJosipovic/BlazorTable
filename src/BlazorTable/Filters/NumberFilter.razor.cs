@@ -61,7 +61,7 @@ namespace BlazorTable
                         }
                     }
 
-                    if (binaryExpression.Right is BinaryExpression binaryExpression2 
+                    if (binaryExpression.Right is BinaryExpression binaryExpression2
                         && binaryExpression2.Right is ConstantExpression constantExpression)
                     {
                         FilterValue = constantExpression.Value.ToString();

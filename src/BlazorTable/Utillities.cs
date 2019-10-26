@@ -40,7 +40,6 @@ namespace BlazorTable
                     if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
                         return Nullable.GetUnderlyingType(type).IsNumeric();
-                        //return IsNumeric(Nullable.GetUnderlyingType(type));
                     }
                     return false;
                 default:
@@ -86,23 +85,21 @@ namespace BlazorTable
 
         public static Expression<Func<T, bool>> CallMethodType<T>(Expression<Func<T, object>> expression, Type type, string method, Type[] parameters, object[] values)
         {
-            MethodInfo methodInfo = type.GetMethod(method, parameters);
-
             return Expression.Lambda<Func<T, bool>>(
                 Expression.Call(
                     expression.Body,
-                    methodInfo,
+                    type.GetMethod(method, parameters),
                     values.OrEmptyIfNull().Select(Expression.Constant)),
                 expression.Parameters);
         }
 
         public static Expression<Func<T, bool>> CallMethodTypeStaticSelf<T>(Expression<Func<T, object>> expression, Type type, string method, Type parameter)
         {
-            MethodInfo methodInfo = type.GetMethod(method, new[] { parameter });
-
-            var call = Expression.Call(methodInfo, expression.Body);
-
-            return Expression.Lambda<Func<T, bool>>(call, expression.Parameters);
+            return Expression.Lambda<Func<T, bool>>(
+                Expression.Call(
+                    type.GetMethod(method, new[] { parameter }),
+                    expression.Body),
+                expression.Parameters);
         }
 
         public static Type GetMemberUnderlyingType(this MemberInfo member)
