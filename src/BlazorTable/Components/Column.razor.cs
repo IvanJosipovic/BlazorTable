@@ -53,7 +53,7 @@ namespace BlazorTable
 
         public void Dispose()
         {
-            this.Table.RemoveColumn(this);
+            Table.RemoveColumn(this);
         }
 
         protected override void OnInitialized()
