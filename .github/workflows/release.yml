@@ -10,9 +10,9 @@ jobs:
     timeout-minutes: 10
     steps:
     - name: Checkout code
-      uses: actions/checkout@master
+      uses: actions/checkout@v1
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
+      uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.100-preview1-014459
     - name: Dotnet Pack 
@@ -25,7 +25,7 @@ jobs:
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
     - name: Create Release
-      uses: actions/create-release@master
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
