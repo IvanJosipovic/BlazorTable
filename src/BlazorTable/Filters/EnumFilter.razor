@@ -1,0 +1,22 @@
+﻿@namespace BlazorTable
+@typeparam TableItem
+
+@if (Column.Type.GetNonNullableType().IsEnum)
+{
+    <select class="form-control form-control-sm" value="@Condition" @onchange="@((x) => Condition = (EnumCondition)Enum.Parse(typeof(EnumCondition), x.Value.ToString()))">
+        @foreach (EnumCondition option in Enum.GetValues(typeof(EnumCondition)))
+        {
+            <option value="@option">@option.GetDescription()</option>
+        }
+    </select>
+    
+    @if (Condition != EnumCondition.IsNull && Condition != EnumCondition.IsNotNull)
+    {
+        <select class="form-control form-control-sm" value="@FilterValue" @onchange="@((x) => FilterValue = Enum.Parse(Column.Type.GetNonNullableType(), x.Value.ToString()))">
+            @foreach (var option in Enum.GetValues(Column.Type.GetNonNullableType()))
+            {
+                <option value="@option">@((option as Enum).GetDescription() ?? option)</option>
+            }
+        </select>
+    }
+}

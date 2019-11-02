@@ -19,7 +19,7 @@ namespace BlazorTable
 
         protected override void OnInitialized()
         {
-            if (Column.Type.IsNumeric())
+            if (Column.Type.IsNumeric() && !Column.Type.GetNonNullableType().IsEnum)
             {
                 Column.FilterControl = this;
 
