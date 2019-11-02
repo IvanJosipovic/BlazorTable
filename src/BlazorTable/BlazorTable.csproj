@@ -9,7 +9,6 @@
     <Authors>Ivan Josipovic</Authors>
     <PackageProjectUrl>https://BlazorTable.netlify.com</PackageProjectUrl>
     <PackageTags>Blazor;Table;Grid;DataTable;Data;Sort;Filter;AspNetCore;AspNet</PackageTags>
-    <Version>0.0.8-preview1</Version>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/IvanJosipovic/BlazorTable</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
