@@ -17,13 +17,11 @@ jobs:
         dotnet-version: 3.1.100-preview1-014459
     - name: Dotnet Pack 
       working-directory: src/BlazorTable
-      run: dotnet pack --configuration Release
+      run: dotnet pack -c Release -p:Version=${GITHUB_REF##*/v}
     - name: Dotnet Nuget Push   
       working-directory: src/BlazorTable/bin/Release
-      run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
+      run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
       continue-on-error: true
-      env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
     - name: Create Release
       uses: actions/create-release@master
       env:
