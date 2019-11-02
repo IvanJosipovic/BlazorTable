@@ -23,7 +23,7 @@ jobs:
       run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
       continue-on-error: true
     - name: Create Release
-      uses: actions/create-release@v1
+      uses: actions/create-release@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
