@@ -18,11 +18,9 @@ A simple Table Control for Blazor
       	- Strings
         - Numbers
         - Dates
+        - Enums
         - Custom Component
 ## Todo
-- Client Side
-    - Filtering
-      - Enums
 - Remove dependency on Bootstrap + BlazorStrap
 
 

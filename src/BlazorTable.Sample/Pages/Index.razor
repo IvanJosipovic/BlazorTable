@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject HttpClient Http
 @using BlazorTable
+@using System.ComponentModel
 
 <h1>BlazorTable</h1>
 
@@ -16,14 +17,9 @@
             @context.id
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="First Name" Field="@(x => x.first_name)" Sortable="true" Filterable="true" Width="20%">
+    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%">
         <Template>
-            @context.first_name
-        </Template>
-    </Column>
-    <Column TableItem="PersonData" Title="Last Name" Field="@(x => x.last_name)" Sortable="true" Filterable="true" Width="20%">
-        <Template>
-            @context.last_name
+            @context.full_name
         </Template>
     </Column>
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
@@ -31,19 +27,24 @@
             <a href="mailto:@context.email">@context.email</a>
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Confirmed" Field="@(x => x.confirmed)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Paid" Field="@(x => x.paid)" Sortable="true" Filterable="true" Width="10%">
         <Template>
-            @context.confirmed.ToString()
+            @context.paid.ToString()
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Fund" Field="@(x => x.fund)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%">
         <Template>
-            @(context.fund.HasValue ? context.fund.Value.ToString("C") : string.Empty)
+            @(context.price)
         </Template>
     </Column>
     <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Enum" Field="@(x => x.cc_type)" Sortable="true" Filterable="true" Width="10%">
+        <Template>
+            @context.cc_type
         </Template>
     </Column>
     <Pager TableItem="PersonData" ShowPageNumber="true" ShowTotalCount="true" />
@@ -61,11 +62,19 @@
     public class PersonData
     {
         public int? id { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
+        public string full_name { get; set; }
         public string email { get; set; }
-        public bool? confirmed { get; set; }
-        public float? fund { get; set; }
-        public DateTime? created_date { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public CreditCard? cc_type { get; set; }
+        public DateTime? created_date { get; set; }     
+    }
+
+    public enum CreditCard
+    {
+        none = 0,
+        [Description("MasterCard")]
+        MasterCard = 1,
+        Visa = 2
     }
 }

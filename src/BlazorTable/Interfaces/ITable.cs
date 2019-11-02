@@ -56,6 +56,21 @@ namespace BlazorTable
         List<IColumn<TableItem>> Columns { get; }
 
         /// <summary>
+        /// Table Element CSS
+        /// </summary>
+        string TableClass { get; set; }
+
+        /// <summary>
+        /// Table Body CSS
+        /// </summary>
+        string TableBodyClass { get; set; }
+
+        /// <summary>
+        /// Table Head CSS
+        /// </summary>
+        string TableHeadClass { get; set; }
+
+        /// <summary>
         /// Adds a Column to the Table
         /// </summary>
         /// <param name="column"></param>
