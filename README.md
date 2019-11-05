@@ -7,7 +7,7 @@
 
 **Work in progress!**
 
-A simple Table Control for Blazor
+A simple Table Control for Blazor with Sorting, Paging and Filtering
 
 ## Features
 - Edit Mode ([Template Switching](/src/BlazorTable.Sample/Pages/EditMode.razor))
