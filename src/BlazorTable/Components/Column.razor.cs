@@ -38,6 +38,9 @@ namespace BlazorTable
 
         [Parameter]
         public Expression<Func<TableItem, object>> Field { get; set; }
+        
+        [Parameter]
+        public Align Align { get; set; }
 
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
