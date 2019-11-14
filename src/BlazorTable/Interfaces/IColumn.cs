@@ -92,5 +92,10 @@ namespace BlazorTable
         /// Direction of sorting
         /// </summary>
         bool SortDescending { get; set; }
+
+        /// <summary>
+        /// Horizontal alignment
+        /// </summary>
+        Align Align { get; set; }
     }
 }
