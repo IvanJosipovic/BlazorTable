@@ -14,7 +14,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.100-preview2-014569
+        dotnet-version: 3.1.100-preview3-014645
     - name: Dotnet Pack 
       working-directory: src/BlazorTable
       run: dotnet pack -c Release -p:Version=${GITHUB_REF##*/v}
