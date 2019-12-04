@@ -20,7 +20,7 @@ namespace BlazorTable
 
         protected override void OnParametersSet()
         {
-            TotalPages = Table.TotalCount / Table.PageSize;
+            TotalPages = (Table.TotalCount + Table.PageSize - 1) / Table.PageSize;
         }
     }
 }
