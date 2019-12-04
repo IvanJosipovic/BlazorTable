@@ -2,7 +2,7 @@
 @typeparam TableItem
 
 <CascadingValue Value="(IColumn<TableItem>)this" Name="Column">
-    <Popover Target="@($"Filter-{Title}")" IsOpen="@FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
+    <Popover Reference="@this.FilterRef" IsOpen="@FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
         <h3 class="popover-header">Filter</h3>
         <div class="popover-body">
 

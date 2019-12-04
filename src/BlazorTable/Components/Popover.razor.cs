@@ -8,13 +8,11 @@ namespace BlazorTable
 {
     public partial class Popover
     {
-        internal ElementReference MyRef { get; set; }
+        [Parameter(CaptureUnmatchedValues = true)]
+        public IDictionary<string, object> UnknownParameters { get; set; }
 
-        [Parameter] 
+        [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }
-
-        [Parameter] 
-        public string AnimationClass { get; set; }
 
         [Parameter]
         public bool? IsOpen
@@ -35,20 +33,28 @@ namespace BlazorTable
             }
         }
 
-        public bool Manual { get; set; } = false;
+        [Parameter]
+        public Placement Placement { get; set; } = Placement.Auto;
+
+        [Parameter]
+        public ElementReference Reference { get; set; }
+
+        [Parameter]
+        public RenderFragment ChildContent { get; set; }
+
+        [Parameter]
+        public bool DismissOnNextClick { get; set; } = true;
+
+        [Inject]
+        protected IJSRuntime JSRuntime { get; set; }
+
+        public bool Manual { get; set; }
 
         private bool _isOpen { get; set; }
 
-        internal virtual Task Changed(bool e)
+        protected virtual Task Changed(bool e)
         {
             return Task.CompletedTask;
-        }
-
-        public virtual void Show()
-        {
-            _isOpen = true;
-            if (!Manual) Changed(_isOpen);
-            IsOpenChanged.InvokeAsync(true);
         }
 
         public virtual void Hide()
@@ -58,40 +64,20 @@ namespace BlazorTable
             IsOpenChanged.InvokeAsync(false);
         }
 
-        public virtual void Toggle()
-        {
-            _isOpen = !_isOpen;
-            if (!Manual) Changed(_isOpen);
-            IsOpenChanged.InvokeAsync(_isOpen);
-        }
-
-        [Parameter(CaptureUnmatchedValues = true)]
-        public IDictionary<string, object> UnknownParameters { get; set; }
-        
-        [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
-
         protected string Classname => $"popover bs-popover-{Placement.ToDescriptionString()} {(IsOpen == true ? "show" : string.Empty)}";
+
+        protected ElementReference MyRef { get; set; }
 
         protected ElementReference Arrow { get; set; }
 
-        protected override void OnAfterRender(bool firstrun)
+        protected override void OnAfterRender(bool firstRender)
         {
             if (IsOpen ?? false)
             {
                 var placement = Placement.ToDescriptionString();
-                JSRuntime.InvokeVoidAsync("BlazorTablePopper", Target, Id, Arrow, placement);
+                JSRuntime.InvokeVoidAsync("BlazorTablePopper", Reference, MyRef, Arrow, placement);
             }
         }
-
-        protected string Id => Target + "-popover";
-
-        [Parameter] public Placement Placement { get; set; } = Placement.Auto;
-        [Parameter] public string Target { get; set; }
-        [Parameter] public string Class { get; set; }
-        [Parameter] public string Style { get; set; }
-        [Parameter] public RenderFragment ChildContent { get; set; }
-        [Parameter] public bool DismissOnNextClick { get; set; } = true;
 
         protected void OnClick()
         {

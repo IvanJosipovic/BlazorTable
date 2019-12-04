@@ -52,6 +52,8 @@ namespace BlazorTable
 
         public Type Type { get; private set; }
 
+        public ElementReference FilterRef { get; set; }
+
         public IFilter<TableItem> FilterControl { get; set; }
 
         public void Dispose()
