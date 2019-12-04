@@ -26,7 +26,7 @@
                         @if (column.Filterable)
                         {
                             <div class="float-right">
-                                <a href="javascript:;" id="@($"Filter-{column.Title}")" @onclick="@((x) => column.ToggleFilter())" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
+                                <a href="javascript:;" @ref="column.FilterRef" id="@($"Filter-{column.Title}")" @onclick="@((x) => column.ToggleFilter())" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
                             </div>
                         }
                     </th>

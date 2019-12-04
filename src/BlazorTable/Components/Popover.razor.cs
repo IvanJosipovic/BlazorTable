@@ -37,7 +37,7 @@ namespace BlazorTable
         public Placement Placement { get; set; } = Placement.Auto;
 
         [Parameter]
-        public string Target { get; set; }
+        public ElementReference Reference { get; set; }
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
@@ -75,7 +75,7 @@ namespace BlazorTable
             if (IsOpen ?? false)
             {
                 var placement = Placement.ToDescriptionString();
-                JSRuntime.InvokeVoidAsync("BlazorTablePopper", Target, MyRef, Arrow, placement);
+                JSRuntime.InvokeVoidAsync("BlazorTablePopper", Reference, MyRef, Arrow, placement);
             }
         }
 

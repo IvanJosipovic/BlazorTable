@@ -97,5 +97,10 @@ namespace BlazorTable
         /// Horizontal alignment
         /// </summary>
         Align Align { get; set; }
+
+        /// <summary>
+        /// Filter Icon Element
+        /// </summary>
+        ElementReference FilterRef { get; set; }
     }
 }
