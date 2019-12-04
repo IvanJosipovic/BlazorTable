@@ -70,7 +70,7 @@ namespace BlazorTable
 
         protected ElementReference Arrow { get; set; }
 
-        protected override void OnAfterRender(bool firstrun)
+        protected override void OnAfterRender(bool firstRender)
         {
             if (IsOpen ?? false)
             {
