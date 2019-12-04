@@ -9,6 +9,11 @@
 
 A simple Table Control for Blazor with Sorting, Paging and Filtering
 
+## Install
+
+- Add Nuget [BlazorTable](https://www.nuget.org/packages/BlazorTable)
+- Add `<script src="_content/BlazorTable/BlazorTable.min.js"></script>` to the index.html or _Hosts.cshtml
+
 ## Features
 - Edit Mode ([Template Switching](/src/BlazorTable.Sample/Pages/EditMode.razor))
 - Client Side
@@ -20,9 +25,8 @@ A simple Table Control for Blazor with Sorting, Paging and Filtering
         - Dates
         - Enums
         - Custom Component
-## Todo
-- Remove dependency on Bootstrap + BlazorStrap
-
+## Dependencies
+- Bootstrap 4 CSS
 
 ## Sample
 [Example](/src/BlazorTable.Sample/Pages/Index.razor)

@@ -2,9 +2,9 @@
 @typeparam TableItem
 
 <CascadingValue Value="(IColumn<TableItem>)this" Name="Column">
-    <BlazorStrap.CustomBSPopover Target="@($"Filter-{Title}")" IsOpen="@FilterOpen" Placement="BlazorStrap.Placement.Bottom" DismissOnNextClick="false">
-        <BlazorStrap.BSPopoverHeader>Filter</BlazorStrap.BSPopoverHeader>
-        <BlazorStrap.BSPopoverBody>
+    <Popover Target="@($"Filter-{Title}")" IsOpen="@FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
+        <h3 class="popover-header">Filter</h3>
+        <div class="popover-body">
 
             <FilterManager TableItem="TableItem">
                 <StringFilter TableItem="TableItem" />
@@ -18,6 +18,6 @@
                 }
             </FilterManager>
 
-        </BlazorStrap.BSPopoverBody>
-    </BlazorStrap.CustomBSPopover>
+        </div>
+    </Popover>
 </CascadingValue>
