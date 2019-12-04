@@ -48,7 +48,7 @@ namespace BlazorTable
         [Inject]
         protected IJSRuntime JSRuntime { get; set; }
 
-        public bool Manual { get; set; } = false;
+        public bool Manual { get; set; }
 
         private bool _isOpen { get; set; }
 
