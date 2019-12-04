@@ -22,9 +22,7 @@ jobs:
       run: dotnet tool install dotnet-sonarscanner --tool-path ./
 
     - name: SonarQube Start
-      run: ./dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=$SONARQUBE_TOKEN
-      env:
-        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+      run: ./dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
 
     - name: Dotnet Build
       run: dotnet build --configuration Release
@@ -34,9 +32,8 @@ jobs:
       run: dotnet publish --configuration Release
 
     - name: SonarQube End
-      run: ./dotnet-sonarscanner end /d:sonar.login=$SONARQUBE_TOKEN
+      run: ./dotnet-sonarscanner end /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
       env:
-        SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy to Test
