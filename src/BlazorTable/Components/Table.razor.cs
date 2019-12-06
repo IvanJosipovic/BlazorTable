@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -23,12 +25,16 @@ namespace BlazorTable
         public int PageSize { get; set; }
 
         [Parameter]
+        public bool ColumnReorder { get; set; }
+
+        [Parameter]
         public RenderFragment ChildContent { get; set; }
 
         [Parameter]
         public IEnumerable<TableItem> Items { get; set; }
 
-        [Inject] private ILogger<ITable<TableItem>> Logger { get; set; }
+        [Inject]
+        private ILogger<ITable<TableItem>> Logger { get; set; }
 
         private IEnumerable<TableItem> TempItems { get; set; }
 
@@ -41,11 +47,6 @@ namespace BlazorTable
         public bool IsEditMode { get; private set; }
 
         protected override void OnParametersSet()
-        {
-            Update();
-        }
-
-        protected override void OnInitialized()
         {
             Update();
         }
@@ -95,13 +96,13 @@ namespace BlazorTable
         public void AddColumn(IColumn<TableItem> column)
         {
             Columns.Add(column);
-            StateHasChanged();
+            Refresh();
         }
 
         public void RemoveColumn(IColumn<TableItem> column)
         {
             Columns.Remove(column);
-            StateHasChanged();
+            Refresh();
         }
 
         public void FirstPage()
@@ -145,6 +146,31 @@ namespace BlazorTable
 
         public void Refresh()
         {
+            StateHasChanged();
+        }
+
+        private int DragSourceId;
+
+        private void HandleDragStart(int index)
+        {
+            DragSourceId = index;
+        }
+
+        private List<ElementReference> filterElementReferences = new List<ElementReference>();
+
+        private void HandleDrop(int index)
+        {
+            var col = Columns[DragSourceId];
+
+            Columns.RemoveAt(DragSourceId);
+
+            if (DragSourceId + 1 < index)
+            {
+                index--;
+            }
+
+            Columns.Insert(index, col);
+
             StateHasChanged();
         }
     }

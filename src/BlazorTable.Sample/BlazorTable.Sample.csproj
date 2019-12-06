@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <BlazorLinkOnBuild>true</BlazorLinkOnBuild>
+    <BlazorLinkOnBuild Condition="'$(Configuration)'=='Debug'">false</BlazorLinkOnBuild>
+    <BlazorLinkOnBuild Condition="'$(Configuration)'!='Debug'">true</BlazorLinkOnBuild>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

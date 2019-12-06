@@ -11,6 +11,11 @@ namespace BlazorTable
         int PageSize { get; }
 
         /// <summary>
+        /// Allow Columns to be reordered
+        /// </summary>
+        bool ColumnReorder { get; set; }
+
+        /// <summary>
         /// Current Page Number
         /// </summary>
         int PageNumber { get; }
