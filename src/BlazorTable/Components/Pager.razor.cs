@@ -15,12 +15,5 @@ namespace BlazorTable
 
         [Parameter]
         public bool ShowTotalCount { get; set; }
-
-        private long TotalPages { get; set; }
-
-        protected override void OnParametersSet()
-        {
-            TotalPages = (Table.TotalCount + Table.PageSize - 1) / Table.PageSize;
-        }
     }
 }

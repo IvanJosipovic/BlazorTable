@@ -46,6 +46,8 @@ namespace BlazorTable
 
         public bool IsEditMode { get; private set; }
 
+        public int TotalPages => (TotalCount + PageSize - 1) / PageSize;
+
         protected override void OnParametersSet()
         {
             Update();
@@ -116,7 +118,7 @@ namespace BlazorTable
 
         public void NextPage()
         {
-            if (PageNumber < TotalCount / PageSize)
+            if (PageNumber + 1 < TotalPages)
             {
                 PageNumber++;
                 Update();
@@ -125,7 +127,7 @@ namespace BlazorTable
 
         public void PreviousPage()
         {
-            if (PageNumber >= 1)
+            if (PageNumber > 0)
             {
                 PageNumber--;
                 Update();
@@ -134,7 +136,7 @@ namespace BlazorTable
 
         public void LastPage()
         {
-            PageNumber = TotalCount / PageSize;
+            PageNumber = TotalPages - 1;
             Update();
         }
 

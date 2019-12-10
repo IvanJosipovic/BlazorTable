@@ -26,6 +26,11 @@ namespace BlazorTable
         int TotalCount { get; }
 
         /// <summary>
+        /// Total Pages
+        /// </summary>
+        public int TotalPages { get; }
+
+        /// <summary>
         /// Is Table in Edit mode
         /// </summary>
         bool IsEditMode { get; }
