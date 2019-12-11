@@ -17,9 +17,10 @@
                         @ondrop="@(() => HandleDrop(index))"
                         @ondragstart="@(() => HandleDragStart(index))"
                         ondragover="event.preventDefault();"
-                        draggable="@(ColumnReorder.ToString())">
+                        draggable="@(ColumnReorder.ToString())"
+                        @key="column">
 
-                        <div @onclick="@(() => column.SortBy())">
+                        <div @onclick="@(() => column.SortBy())" >
                             <span>@column.Title</span>
 
                             @if (column.SortColumn)
@@ -46,10 +47,10 @@
                 {
                     foreach (TableItem item in TempItems)
                     {
-                        <tr>
+                        <tr @key="item">
                             @foreach (IColumn<TableItem> column in Columns)
                             {
-                                <td style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)">
+                                <td @key="column" style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)">
                                     @if (IsEditMode && column.EditTemplate != null)
                                     {
                                         @column.EditTemplate(item)
