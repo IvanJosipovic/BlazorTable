@@ -15,6 +15,7 @@ A simple Table Control for Blazor with Sorting, Paging and Filtering
 - Add ```<script src="_content/BlazorTable/BlazorTable.min.js"></script>``` to the index.html or _Hosts.cshtml
 
 ## Features
+- Column Reordering
 - Edit Mode ([Template Switching](/src/BlazorTable.Sample/Pages/EditMode.razor))
 - Client Side
 	- Paging
