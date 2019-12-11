@@ -9,8 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTable.Sample", "src\B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3CBA7388-6E6D-4D90-8C11-FE6970C465A3}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\cicd.yml = .github\workflows\cicd.yml
 		README.md = README.md
+		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTable.SampleServer", "src\BlazorTable.SampleServer\BlazorTable.SampleServer.csproj", "{537D6905-461A-4180-B2F6-D64ADBBE9941}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +30,10 @@ Global
 		{AC356BF1-0B40-4138-AC10-8585B5082FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC356BF1-0B40-4138-AC10-8585B5082FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC356BF1-0B40-4138-AC10-8585B5082FD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{537D6905-461A-4180-B2F6-D64ADBBE9941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{537D6905-461A-4180-B2F6-D64ADBBE9941}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{537D6905-461A-4180-B2F6-D64ADBBE9941}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{537D6905-461A-4180-B2F6-D64ADBBE9941}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

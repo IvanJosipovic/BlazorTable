@@ -3,33 +3,40 @@
 
 @if (Columns.Any())
 {
+    
     <table class="@TableClass" @attributes="UnknownParameters">
         <thead class="@TableHeadClass">
-            <tr>
+            <tr style="cursor: pointer;">
+                @{ int colIndex = 0;}
+
                 @foreach (IColumn<TableItem> column in Columns)
                 {
-                    <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "")">
-                        <span @onclick="@(() => column.SortBy())" style="@(column.Sortable ? "cursor: pointer;" : "")">@column.Title</span>
+                    int index = colIndex;
 
-                        @if (column.SortColumn)
-                        {
-                            if (column.SortDescending)
-                            { 
-                                <span>&#11014;</span> 
-                            } 
-                            else 
-                            { 
-                                <span>&#11015;</span> 
+                    <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
+                        @ondrop="@(() => HandleDrop(index))"
+                        @ondragstart="@(() => HandleDragStart(index))"
+                        ondragover="event.preventDefault();"
+                        draggable="@(ColumnReorder.ToString())"
+                        @key="column">
+
+                        <div @onclick="@(() => column.SortBy())" >
+                            <span>@column.Title</span>
+
+                            @if (column.SortColumn)
+                            {
+                                if (column.SortDescending) { <span>&#11014;</span> } else { <span>&#11015;</span> }
                             }
-                        }
 
-                        @if (column.Filterable)
-                        {
-                            <div class="float-right">
-                                <a href="javascript:;" @ref="column.FilterRef" id="@($"Filter-{column.Title}")" @onclick="@((x) => column.ToggleFilter())" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
-                            </div>
-                        }
+                            @if (column.Filterable)
+                            {
+                                <div class="float-right" @onclick="@((x) => column.ToggleFilter())" @onclick:stopPropagation>
+                                    <a href="javascript:;" @ref="column.FilterRef" id="@(Guid.NewGuid())" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
+                                </div>
+                            }
+                        </div>
                     </th>
+                    { colIndex = colIndex + 1; }
                 }
             </tr>
         </thead>
@@ -40,10 +47,10 @@
                 {
                     foreach (TableItem item in TempItems)
                     {
-                        <tr>
+                        <tr @key="item">
                             @foreach (IColumn<TableItem> column in Columns)
                             {
-                                <td style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)">
+                                <td @key="column" style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)">
                                     @if (IsEditMode && column.EditTemplate != null)
                                     {
                                         @column.EditTemplate(item)
@@ -59,12 +66,12 @@
                 }
                 else
                 {
-                    <tr><td colspan="@Columns.Count" style="text-align:center"><h1>No items...</h1></td></tr>
+                    <tr><td colspan="@Columns.Count" style="text-align: center"><h1>No items...</h1></td></tr>
                 }
             }
             else
             {
-                <tr><td colspan="@Columns.Count" style="text-align:center"><h1>Loading...</h1></td></tr>
+                <tr><td colspan="@Columns.Count" style="text-align: center"><h1>Loading...</h1></td></tr>
             }
         </tbody>
     </table>
