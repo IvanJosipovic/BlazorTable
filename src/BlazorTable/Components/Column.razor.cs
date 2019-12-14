@@ -38,9 +38,15 @@ namespace BlazorTable
 
         [Parameter]
         public Expression<Func<TableItem, object>> Field { get; set; }
-        
+
         [Parameter]
         public Align Align { get; set; }
+
+        /// <summary>
+        /// Set the format for values if not template
+        /// </summary>
+        [Parameter]
+        public string Format { get; set; }
 
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
@@ -111,11 +117,14 @@ namespace BlazorTable
         /// <returns></returns>
         public string Render(TableItem data)
         {
-            if (data == null) return string.Empty;
+            if (data == null || Field ==null) return string.Empty;
             var compiled = Field.Compile();
             var value = compiled.Invoke(data);
-            return value?.ToString();
+            if (string.IsNullOrEmpty(Format))
+                return value?.ToString();
+
+            if (value == null) return string.Empty;
+            return string.Format($"{{0:{Format}}}", value);
         }
-        
     }
 }

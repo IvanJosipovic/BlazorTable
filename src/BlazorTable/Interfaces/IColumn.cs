@@ -32,6 +32,11 @@ namespace BlazorTable
         bool Filterable { get; set; }
 
         /// <summary>
+        /// Format used without a template
+        /// </summary>
+        string Format { get; set; }
+
+        /// <summary>
         /// Filter Panel is open
         /// </summary>
         bool FilterOpen { get; }
