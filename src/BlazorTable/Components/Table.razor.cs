@@ -158,8 +158,6 @@ namespace BlazorTable
             DragSourceId = index;
         }
 
-        private List<ElementReference> filterElementReferences = new List<ElementReference>();
-
         private void HandleDrop(int index)
         {
             var col = Columns[DragSourceId];
