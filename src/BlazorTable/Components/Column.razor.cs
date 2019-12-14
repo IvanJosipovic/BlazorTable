@@ -103,5 +103,19 @@ namespace BlazorTable
                 Table.Update();
             }
         }
+
+        /// <summary>
+        /// Render a default value if no template
+        /// </summary>
+        /// <param name="data">data row</param>
+        /// <returns></returns>
+        public string Render(TableItem data)
+        {
+            if (data == null) return string.Empty;
+            var compiled = Field.Compile();
+            var value = compiled.Invoke(data);
+            return value?.ToString();
+        }
+        
     }
 }

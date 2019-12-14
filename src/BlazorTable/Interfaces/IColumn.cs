@@ -102,5 +102,12 @@ namespace BlazorTable
         /// Filter Icon Element
         /// </summary>
         ElementReference FilterRef { get; set; }
+
+        /// <summary>
+        /// Default render if no Template specified
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        string Render(TableItem item);
     }
 }

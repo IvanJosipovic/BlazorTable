@@ -3,7 +3,7 @@
 
 @if (Columns.Any())
 {
-    
+
     <table class="@TableClass" @attributes="UnknownParameters">
         <thead class="@TableHeadClass">
             <tr style="cursor: pointer;">
@@ -20,12 +20,15 @@
                         draggable="@(ColumnReorder.ToString())"
                         @key="column">
 
-                        <div @onclick="@(() => column.SortBy())" >
+                        <div @onclick="@(() => column.SortBy())">
                             <span>@column.Title</span>
 
                             @if (column.SortColumn)
                             {
-                                if (column.SortDescending) { <span>&#11014;</span> } else { <span>&#11015;</span> }
+                                if (column.SortDescending)
+                                {<span>&#11014;</span> }
+                                else
+                                { <span>&#11015;</span>}
                             }
 
                             @if (column.Filterable)
@@ -57,7 +60,14 @@
                                     }
                                     else
                                     {
-                                        @column.Template(item)
+                                        if (column.Template == null)
+                                        {
+                                            @column.Render(item);
+                                        }
+                                        else
+                                        {
+                                            @column.Template(item);
+                                        }
                                     }
                                 </td>
                             }
