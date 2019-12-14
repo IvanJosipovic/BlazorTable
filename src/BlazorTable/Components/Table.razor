@@ -7,15 +7,11 @@
     <table class="@TableClass" @attributes="UnknownParameters">
         <thead class="@TableHeadClass">
             <tr style="cursor: pointer;">
-                @{ int colIndex = 0;}
-
                 @foreach (IColumn<TableItem> column in Columns)
                 {
-                    int index = colIndex;
-
                     <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
-                        @ondrop="@(() => HandleDrop(index))"
-                        @ondragstart="@(() => HandleDragStart(index))"
+                        @ondrop="@(() => HandleDrop(column))"
+                        @ondragstart="@(() => HandleDragStart(column))"
                         ondragover="event.preventDefault();"
                         draggable="@(ColumnReorder.ToString())"
                         @key="column">
@@ -36,8 +32,6 @@
                             }
                         </div>
                     </th>
-
-                    colIndex++;
                 }
             </tr>
         </thead>
