@@ -180,6 +180,11 @@ namespace BlazorTable
             StateHasChanged();
         }
 
+        /// <summary>
+        /// Return row class for item if expression is specified
+        /// </summary>
+        /// <param name="item">TableItem to return for</param>
+        /// <returns></returns>
         private string RowClass(TableItem item)
         {
             if (TableRowClass == null) return null;
