@@ -35,7 +35,7 @@
             <input type="checkbox" @bind-value="@context.paid" class="form-control form-control-sm" checked="@(context.paid)" />
         </EditTemplate>
     </Column>
-    <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%" Format="C">
         <EditTemplate>
             <input type="number" step=".01" @bind-value="@context.price" class="form-control form-control-sm" />
         </EditTemplate>
