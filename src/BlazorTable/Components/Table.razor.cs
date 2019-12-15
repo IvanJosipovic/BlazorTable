@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BlazorTable
@@ -20,6 +21,9 @@ namespace BlazorTable
 
         [Parameter]
         public string TableBodyClass { get; set; } = "";
+
+        [Parameter]
+        public Expression<Func<TableItem, string>> TableRowClass { get; set; }
 
         [Parameter]
         public int PageSize { get; set; }
@@ -174,6 +178,13 @@ namespace BlazorTable
             Columns.Insert(index, col);
 
             StateHasChanged();
+        }
+
+        private string RowClass(TableItem item)
+        {
+            if (TableRowClass == null) return null;
+            var expr = TableRowClass.Compile();
+            return expr.Invoke(item);
         }
     }
 }
