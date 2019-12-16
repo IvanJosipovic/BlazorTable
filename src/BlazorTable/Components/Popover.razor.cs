@@ -9,7 +9,7 @@ namespace BlazorTable
     public partial class Popover
     {
         [Parameter(CaptureUnmatchedValues = true)]
-        public IDictionary<string, object> UnknownParameters { get; set; }
+        public IReadOnlyDictionary<string, object> UnknownParameters { get; set; }
 
         [Parameter]
         public EventCallback<bool> IsOpenChanged { get; set; }

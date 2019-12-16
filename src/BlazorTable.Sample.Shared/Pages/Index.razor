@@ -12,17 +12,9 @@
 <br />
 <br />
 
-<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true">
-    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%">
-        <Template>
-            @context.id
-        </Template>
-    </Column>
-    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%">
-        <Template>
-            @context.full_name
-        </Template>
-    </Column>
+<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" TableRowClass="@(x => x.RowClass)">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" />
+    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
         <Template>
             <a href="mailto:@context.email">@context.email</a>
@@ -33,11 +25,7 @@
             @context.paid.ToString()
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%">
-        <Template>
-            @(context.price)
-        </Template>
-    </Column>
+    <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%" Format="C" Align="Align.Right" />
     <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Sortable="true" Filterable="true" Width="10%">
         <Template>
             @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
@@ -68,7 +56,13 @@
         public bool? paid { get; set; }
         public decimal? price { get; set; }
         public CreditCard? cc_type { get; set; }
-        public DateTime? created_date { get; set; }     
+        public DateTime? created_date { get; set; }
+
+        /// <summary>
+        /// Returns row CSS if price over 800
+        /// </summary>
+        public string RowClass => price.GetValueOrDefault(0) > 800 ? "table-danger" : null;
+
     }
 
     public enum CreditCard

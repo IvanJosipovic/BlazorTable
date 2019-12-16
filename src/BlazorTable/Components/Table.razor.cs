@@ -3,14 +3,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace BlazorTable
 {
     public partial class Table<TableItem> : ITable<TableItem>
     {
         [Parameter(CaptureUnmatchedValues = true)]
-        public IDictionary<string, object> UnknownParameters { get; set; }
+        public IReadOnlyDictionary<string, object> UnknownParameters { get; set; }
 
         [Parameter]
         public string TableClass { get; set; } = "table table-striped table-bordered table-hover table-sm";
@@ -20,6 +20,9 @@ namespace BlazorTable
 
         [Parameter]
         public string TableBodyClass { get; set; } = "";
+
+        [Parameter]
+        public Expression<Func<TableItem, string>> TableRowClass { get; set; }
 
         [Parameter]
         public int PageSize { get; set; }
@@ -151,29 +154,34 @@ namespace BlazorTable
             StateHasChanged();
         }
 
-        private int DragSourceId;
+        private IColumn<TableItem> DragSource;
 
-        private void HandleDragStart(int index)
+        private void HandleDragStart(IColumn<TableItem> column)
         {
-            DragSourceId = index;
+            DragSource = column;
         }
 
-        private List<ElementReference> filterElementReferences = new List<ElementReference>();
-
-        private void HandleDrop(int index)
+        private void HandleDrop(IColumn<TableItem> column)
         {
-            var col = Columns[DragSourceId];
+            int index = Columns.FindIndex(a => a == column);
 
-            Columns.RemoveAt(DragSourceId);
+            Columns.Remove(DragSource);
 
-            if (DragSourceId + 1 < index)
-            {
-                index--;
-            }
-
-            Columns.Insert(index, col);
+            Columns.Insert(index, DragSource);
 
             StateHasChanged();
+        }
+
+        /// <summary>
+        /// Return row class for item if expression is specified
+        /// </summary>
+        /// <param name="item">TableItem to return for</param>
+        /// <returns></returns>
+        private string RowClass(TableItem item)
+        {
+            if (TableRowClass == null) return null;
+            var expr = TableRowClass.Compile();
+            return expr.Invoke(item);
         }
     }
 }
