@@ -10,17 +10,11 @@
 <br />
 <Table TableItem="PersonData" Items="data" PageSize="15" @ref="Table" ColumnReorder="true">
     <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%">
-        <Template>
-            @context.id
-        </Template>
         <EditTemplate>
             <input type="number" @bind-value="@context.id" class="form-control form-control-sm" />
         </EditTemplate>
     </Column>
     <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%">
-        <Template>
-            @context.full_name
-        </Template>
         <EditTemplate>
             <input type="text" @bind-value="@context.full_name" class="form-control form-control-sm" />
         </EditTemplate>
@@ -42,9 +36,6 @@
         </EditTemplate>
     </Column>
     <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%">
-        <Template>
-            @(context.price.HasValue ? context.price.Value.ToString("C") : string.Empty)
-        </Template>
         <EditTemplate>
             <input type="number" step=".01" @bind-value="@context.price" class="form-control form-control-sm" />
         </EditTemplate>
