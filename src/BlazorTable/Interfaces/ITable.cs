@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace BlazorTable
 {
@@ -79,6 +81,11 @@ namespace BlazorTable
         /// Table Head CSS
         /// </summary>
         string TableHeadClass { get; set; }
+
+        /// <summary>
+        /// Optional: expression to use for row class
+        /// </summary>
+        Expression<Func<TableItem, string>> TableRowClass { get; set; }
 
         /// <summary>
         /// Adds a Column to the Table

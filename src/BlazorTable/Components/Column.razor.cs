@@ -43,7 +43,7 @@ namespace BlazorTable
         public Align Align { get; set; }
 
         /// <summary>
-        /// Set the format for values if not template
+        /// Set the format for values if no template
         /// </summary>
         [Parameter]
         public string Format { get; set; }

@@ -50,7 +50,7 @@
                 {
                     foreach (TableItem item in TempItems)
                     {
-                        <tr @key="item">
+                        <tr @key="item" class="@RowClass(item)">
                             @foreach (IColumn<TableItem> column in Columns)
                             {
                                 <td @key="column" style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)">
