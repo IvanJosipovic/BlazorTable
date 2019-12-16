@@ -20,6 +20,9 @@ namespace BlazorTable
         public string TableBodyClass { get; set; } = "";
 
         [Parameter]
+        public Expression<Func<TableItem, string>> TableRowClass { get; set; }
+
+        [Parameter]
         public int PageSize { get; set; }
 
         [Parameter]
@@ -165,6 +168,18 @@ namespace BlazorTable
             Columns.Insert(index, DragSource);
 
             StateHasChanged();
+        }
+
+        /// <summary>
+        /// Return row class for item if expression is specified
+        /// </summary>
+        /// <param name="item">TableItem to return for</param>
+        /// <returns></returns>
+        private string RowClass(TableItem item)
+        {
+            if (TableRowClass == null) return null;
+            var expr = TableRowClass.Compile();
+            return expr.Invoke(item);
         }
     }
 }
