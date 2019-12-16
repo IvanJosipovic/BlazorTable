@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace BlazorTable
 {
     public partial class Table<TableItem> : ITable<TableItem>
     {
         [Parameter(CaptureUnmatchedValues = true)]
-        public IDictionary<string, object> UnknownParameters { get; set; }
+        public IReadOnlyDictionary<string, object> UnknownParameters { get; set; }
 
         [Parameter]
         public string TableClass { get; set; } = "table table-striped table-bordered table-hover table-sm";

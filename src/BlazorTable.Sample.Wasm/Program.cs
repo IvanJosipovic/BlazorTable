@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace BlazorTable.Sample
+namespace BlazorTable.Sample.Wasm
 {
     public class Program
     {

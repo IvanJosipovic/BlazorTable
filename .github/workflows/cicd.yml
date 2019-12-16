@@ -28,7 +28,7 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Dotnet Publish
-      working-directory: src/BlazorTable.Sample
+      working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish --configuration Release
 
     - name: SonarQube End
@@ -40,7 +40,7 @@ jobs:
       id: netlify
       uses: ivanjosipovic/actions/cli@master
       with:
-        args: deploy --json -d src/BlazorTable.Sample/bin/Release/netstandard2.1/publish/BlazorTable.Sample/dist/
+        args: deploy --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/BlazorTable.Sample.Wasm/dist/
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -56,7 +56,7 @@ jobs:
       if: github.ref == 'refs/heads/master'
       uses: ivanjosipovic/actions/cli@master
       with:
-        args: deploy --prod --json -d src/BlazorTable.Sample/bin/Release/netstandard2.1/publish/BlazorTable.Sample/dist/
+        args: deploy --prod --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/BlazorTable.Sample.Wasm/dist/
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
