@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlazorTable\BlazorTable.csproj" />
+    <ProjectReference Include="..\BlazorTable.Sample.Shared\BlazorTable.Sample.Shared.csproj" />
   </ItemGroup>
 
 </Project>

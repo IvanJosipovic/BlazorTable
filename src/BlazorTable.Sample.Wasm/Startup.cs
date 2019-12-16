@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorTable.Sample
+namespace BlazorTable.Sample.Wasm
 {
     public class Startup
     {
@@ -11,7 +11,7 @@ namespace BlazorTable.Sample
 
         public void Configure(IComponentsApplicationBuilder app)
         {
-            app.AddComponent<App>("app");
+            app.AddComponent<Shared.App>("app");
         }
     }
 }
