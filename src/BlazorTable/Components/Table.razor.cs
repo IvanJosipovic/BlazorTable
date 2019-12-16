@@ -180,8 +180,14 @@ namespace BlazorTable
         private string RowClass(TableItem item)
         {
             if (TableRowClass == null) return null;
-            var expr = TableRowClass.Compile();
-            return expr.Invoke(item);
+            if(_tableRowClassCompiled==null)
+                _tableRowClassCompiled = TableRowClass.Compile();
+            return _tableRowClassCompiled.Invoke(item);
         }
+
+        /// <summary>
+        /// Save compiled TableRowClass property to avoid repeated Compile() calls
+        /// </summary>
+        private Func<TableItem, string> _tableRowClassCompiled = null;
     }
 }
