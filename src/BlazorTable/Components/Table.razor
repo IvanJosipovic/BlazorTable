@@ -7,15 +7,11 @@
     <table class="@TableClass" @attributes="UnknownParameters">
         <thead class="@TableHeadClass">
             <tr style="cursor: pointer;">
-                @{ int colIndex = 0;}
-
                 @foreach (IColumn<TableItem> column in Columns)
                 {
-                    int index = colIndex;
-
                     <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
-                        @ondrop="@(() => HandleDrop(index))"
-                        @ondragstart="@(() => HandleDragStart(index))"
+                        @ondrop="@(() => HandleDrop(column))"
+                        @ondragstart="@(() => HandleDragStart(column))"
                         ondragover="event.preventDefault();"
                         draggable="@(ColumnReorder.ToString())"
                         @key="column">
@@ -34,12 +30,11 @@
                             @if (column.Filterable)
                             {
                                 <div class="float-right" @onclick="@((x) => column.ToggleFilter())" @onclick:stopPropagation>
-                                    <a href="javascript:;" @ref="column.FilterRef" id="@(Guid.NewGuid())" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
+                                    <a href="javascript:;" @ref="column.FilterRef" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
                                 </div>
                             }
                         </div>
                     </th>
-                    { colIndex = colIndex + 1; }
                 }
             </tr>
         </thead>

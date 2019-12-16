@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -155,27 +152,20 @@ namespace BlazorTable
             StateHasChanged();
         }
 
-        private int DragSourceId;
+        private IColumn<TableItem> DragSource;
 
-        private void HandleDragStart(int index)
+        private void HandleDragStart(IColumn<TableItem> column)
         {
-            DragSourceId = index;
+            DragSource = column;
         }
 
-        private List<ElementReference> filterElementReferences = new List<ElementReference>();
-
-        private void HandleDrop(int index)
+        private void HandleDrop(IColumn<TableItem> column)
         {
-            var col = Columns[DragSourceId];
+            int index = Columns.FindIndex(a => a == column);
 
-            Columns.RemoveAt(DragSourceId);
+            Columns.Remove(DragSource);
 
-            if (DragSourceId + 1 < index)
-            {
-                index--;
-            }
-
-            Columns.Insert(index, col);
+            Columns.Insert(index, DragSource);
 
             StateHasChanged();
         }
