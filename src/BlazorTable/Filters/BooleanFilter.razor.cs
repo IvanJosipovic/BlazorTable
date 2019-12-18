@@ -57,34 +57,34 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
-            switch (Condition)
+            return Condition switch
             {
-                case BooleanCondition.True:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                BooleanCondition.True =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.IsTrue(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case BooleanCondition.False:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                BooleanCondition.False =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.IsFalse(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
-                        Column.Field.Parameters);
+                            Column.Field.Parameters),
 
-                case BooleanCondition.IsNull:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                BooleanCondition.IsNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.Equal(Column.Field.Body, Expression.Constant(null)),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case BooleanCondition.IsNotNull:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                BooleanCondition.IsNotNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                        Column.Field.Parameters);
-            }
+                        Column.Field.Parameters),
 
-            return null;
+                _ => null,
+            };
         }
     }
 

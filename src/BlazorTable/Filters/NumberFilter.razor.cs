@@ -72,74 +72,74 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
-            switch (Condition)
+            return Condition switch
             {
-                case NumberCondition.IsEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                            Expression.Equal(
-                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                NumberCondition.IsEqualTo =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                            Expression.AndAlso(
+                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Expression.Equal(
+                                    Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
+                                    Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                            Column.Field.Parameters),
 
-                case NumberCondition.IsNotEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                            Expression.NotEqual(
-                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                NumberCondition.IsNotEqualTo =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                            Expression.AndAlso(
+                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Expression.NotEqual(
+                                    Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
+                                    Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                            Column.Field.Parameters),
 
-                case NumberCondition.IsGreaterThanOrEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                NumberCondition.IsGreaterThanOrEqualTo =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.GreaterThanOrEqual(
                                 Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case NumberCondition.IsGreaterThan:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                            Expression.GreaterThan(
-                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                NumberCondition.IsGreaterThan =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                            Expression.AndAlso(
+                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Expression.GreaterThan(
+                                    Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
+                                    Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                            Column.Field.Parameters),
 
-                case NumberCondition.IsLessThanOrEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                            Expression.LessThanOrEqual(
-                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                NumberCondition.IsLessThanOrEqualTo =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                            Expression.AndAlso(
+                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Expression.LessThanOrEqual(
+                                    Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
+                                    Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                            Column.Field.Parameters),
 
-                case NumberCondition.IsLessThan:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                            Expression.LessThan(
-                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                NumberCondition.IsLessThan =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                            Expression.AndAlso(
+                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Expression.LessThan(
+                                    Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
+                                    Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                            Column.Field.Parameters),
 
-                case NumberCondition.IsNull:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.Equal(Column.Field.Body, Expression.Constant(null)),
-                        Column.Field.Parameters);
+                NumberCondition.IsNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.Equal(Column.Field.Body, Expression.Constant(null)),
+                    Column.Field.Parameters),
 
-                case NumberCondition.IsNotNull:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                        Column.Field.Parameters);
-                default:
-                    throw new ArgumentException(Condition + " is not defined!");
-            }
+                NumberCondition.IsNotNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                    Column.Field.Parameters),
+
+                _ => throw new ArgumentException(Condition + " is not defined!"),
+            };
         }
     }
 
