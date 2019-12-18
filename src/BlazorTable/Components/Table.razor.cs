@@ -12,27 +12,48 @@ namespace BlazorTable
         [Parameter(CaptureUnmatchedValues = true)]
         public IReadOnlyDictionary<string, object> UnknownParameters { get; set; }
 
+        /// <summary>
+        /// Table CSS Class (Defaults to Bootstrap 4)
+        /// </summary>
         [Parameter]
         public string TableClass { get; set; } = "table table-striped table-bordered table-hover table-sm";
 
+        /// <summary>
+        /// Table Head Class (Defaults to Bootstrap 4)
+        /// </summary>
         [Parameter]
         public string TableHeadClass { get; set; } = "thead-light text-dark";
 
+        /// <summary>
+        /// Table Body Class
+        /// </summary>
         [Parameter]
         public string TableBodyClass { get; set; } = "";
 
+        /// <summary>
+        /// Expression to set Row Class
+        /// </summary>
         [Parameter]
         public Expression<Func<TableItem, string>> TableRowClass { get; set; }
 
+        /// <summary>
+        /// Page Size, defaults to 15
+        /// </summary>
         [Parameter]
         public int PageSize { get; set; } = 15;
 
+        /// <summary>
+        /// Allow Columns to be reordered
+        /// </summary>
         [Parameter]
         public bool ColumnReorder { get; set; }
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        /// <summary>
+        /// Collection to display in the table
+        /// </summary>
         [Parameter]
         public IEnumerable<TableItem> Items { get; set; }
 
@@ -41,14 +62,29 @@ namespace BlazorTable
 
         private IEnumerable<TableItem> TempItems { get; set; }
 
+        /// <summary>
+        /// List of All Available Columns
+        /// </summary>
         public List<IColumn<TableItem>> Columns { get; } = new List<IColumn<TableItem>>();
 
+        /// <summary>
+        /// Current Page Number
+        /// </summary>
         public int PageNumber { get; private set; }
 
+        /// <summary>
+        /// Total Count of Item
+        /// </summary>
         public int TotalCount { get; private set; }
 
+        /// <summary>
+        /// Is Table in Edit mode
+        /// </summary>
         public bool IsEditMode { get; private set; }
 
+        /// <summary>
+        /// Total Pages
+        /// </summary>
         public int TotalPages => (TotalCount + PageSize - 1) / PageSize;
 
         protected override void OnParametersSet()
@@ -92,24 +128,38 @@ namespace BlazorTable
             return Items;
         }
 
+        /// <summary>
+        /// Gets Data and redraws the Table
+        /// </summary>
         public void Update()
         {
             TempItems = GetData();
             Refresh();
         }
 
+        /// <summary>
+        /// Adds a Column to the Table
+        /// </summary>
+        /// <param name="column"></param>
         public void AddColumn(IColumn<TableItem> column)
         {
             Columns.Add(column);
             Refresh();
         }
 
+        /// <summary>
+        /// Removes a Column from the Table
+        /// </summary>
+        /// <param name="column"></param>
         public void RemoveColumn(IColumn<TableItem> column)
         {
             Columns.Remove(column);
             Refresh();
         }
 
+        /// <summary>
+        /// Go to First Page
+        /// </summary>
         public void FirstPage()
         {
             if (PageNumber != 0)
@@ -119,6 +169,9 @@ namespace BlazorTable
             }
         }
 
+        /// <summary>
+        /// Go to Next Page
+        /// </summary>
         public void NextPage()
         {
             if (PageNumber + 1 < TotalPages)
@@ -128,6 +181,9 @@ namespace BlazorTable
             }
         }
 
+        /// <summary>
+        /// Go to Previous Page
+        /// </summary>
         public void PreviousPage()
         {
             if (PageNumber > 0)
@@ -137,30 +193,50 @@ namespace BlazorTable
             }
         }
 
+        /// <summary>
+        /// Go to Last Page
+        /// </summary>
         public void LastPage()
         {
             PageNumber = TotalPages - 1;
             Update();
         }
 
+        /// <summary>
+        /// Redraws the Table using EditTemplate instead of Template
+        /// </summary>
         public void ToggleEditMode()
         {
             IsEditMode = !IsEditMode;
             StateHasChanged();
         }
 
+        /// <summary>
+        /// Redraws Table without Getting Data
+        /// </summary>
         public void Refresh()
         {
             StateHasChanged();
         }
 
+        /// <summary>
+        /// Save currently dragged column
+        /// </summary>
         private IColumn<TableItem> DragSource;
 
+        /// <summary>
+        /// Handles the Column Reoder Drag Start and set Dragsource
+        /// </summary>
+        /// <param name="column"></param>
         private void HandleDragStart(IColumn<TableItem> column)
         {
             DragSource = column;
         }
 
+        /// <summary>
+        /// Handles Drag Drop and inserts DragSource column before itself
+        /// </summary>
+        /// <param name="column"></param>
         private void HandleDrop(IColumn<TableItem> column)
         {
             int index = Columns.FindIndex(a => a == column);
@@ -180,7 +256,7 @@ namespace BlazorTable
         private string RowClass(TableItem item)
         {
             if (TableRowClass == null) return null;
-            if(_tableRowClassCompiled==null)
+            if(_tableRowClassCompiled == null)
                 _tableRowClassCompiled = TableRowClass.Compile();
             return _tableRowClassCompiled.Invoke(item);
         }

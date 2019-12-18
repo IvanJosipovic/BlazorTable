@@ -108,5 +108,10 @@ namespace BlazorTable
         /// Gets Data and redraws the Table
         /// </summary>
         void Update();
+
+        /// <summary>
+        /// Collection to display in the table
+        /// </summary>
+        public IEnumerable<TableItem> Items { get; set; }
     }
 }

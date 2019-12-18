@@ -13,6 +13,7 @@
     <RepositoryUrl>https://github.com/IvanJosipovic/BlazorTable</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
