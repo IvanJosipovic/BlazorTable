@@ -25,7 +25,7 @@ namespace BlazorTable
         public Expression<Func<TableItem, string>> TableRowClass { get; set; }
 
         [Parameter]
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 15;
 
         [Parameter]
         public bool ColumnReorder { get; set; }
