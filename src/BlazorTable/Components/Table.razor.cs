@@ -9,6 +9,8 @@ namespace BlazorTable
 {
     public partial class Table<TableItem> : ITable<TableItem>
     {
+        const int DEFAULT_PAGE_SIZE = 10;
+
         [Parameter(CaptureUnmatchedValues = true)]
         public IReadOnlyDictionary<string, object> UnknownParameters { get; set; }
 
@@ -40,7 +42,7 @@ namespace BlazorTable
         /// Page Size, defaults to 15
         /// </summary>
         [Parameter]
-        public int PageSize { get; set; } = 15;
+        public int PageSize { get; set; } = DEFAULT_PAGE_SIZE;
 
         /// <summary>
         /// Allow Columns to be reordered
@@ -82,10 +84,7 @@ namespace BlazorTable
         /// </summary>
         public bool IsEditMode { get; private set; }
 
-        /// <summary>
-        /// Total Pages
-        /// </summary>
-        public int TotalPages => (TotalCount + PageSize - 1) / PageSize;
+        public int TotalPages => PageSize <= 0 ? 1 : (TotalCount + PageSize - 1) / PageSize;
 
         protected override void OnParametersSet()
         {
@@ -121,8 +120,11 @@ namespace BlazorTable
                         query = query.OrderBy(sortColumn.Field);
                     }
                 }
-
-                return query.Skip(PageNumber * PageSize).Take(PageSize).ToList();
+                // if PageSize is zero, we return all rows and no paging
+                if (PageSize <= 0)
+                    return query.ToList();
+                else                
+                    return query.Skip(PageNumber * PageSize).Take(PageSize).ToList();
             }
 
             return Items;
