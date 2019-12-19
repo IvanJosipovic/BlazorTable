@@ -16,7 +16,7 @@ A simple Table Control for Blazor with Sorting, Paging and Filtering
 
 ## Features
 - Column Reordering
-- Edit Mode ([Template Switching](/src/BlazorTable.Sample/Pages/EditMode.razor))
+- Edit Mode ([Template Switching](/src/BlazorTable.Sample.Shared/Pages/EditMode.razor))
 - Client Side
 	- Paging
 	- Sorting
