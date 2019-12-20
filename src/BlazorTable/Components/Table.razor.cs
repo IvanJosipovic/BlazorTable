@@ -271,8 +271,10 @@ namespace BlazorTable
         private string RowClass(TableItem item)
         {
             if (TableRowClass == null) return null;
+
             if(_tableRowClassCompiled == null)
                 _tableRowClassCompiled = TableRowClass.Compile();
+
             return _tableRowClassCompiled.Invoke(item);
         }
 
