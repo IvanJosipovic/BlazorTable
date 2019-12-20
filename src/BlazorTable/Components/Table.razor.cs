@@ -54,6 +54,12 @@ namespace BlazorTable
         public RenderFragment ChildContent { get; set; }
 
         /// <summary>
+        /// IQueryable data source to display in the table
+        /// </summary>
+        [Parameter]
+        public IQueryable<TableItem> ItemsQueryable { get; set; }
+
+        /// <summary>
         /// Collection to display in the table
         /// </summary>
         [Parameter]
@@ -84,6 +90,9 @@ namespace BlazorTable
         /// </summary>
         public bool IsEditMode { get; private set; }
 
+        /// <summary>
+        /// Total Pages
+        /// </summary>
         public int TotalPages => PageSize <= 0 ? 1 : (TotalCount + PageSize - 1) / PageSize;
 
         protected override void OnParametersSet()
@@ -93,19 +102,22 @@ namespace BlazorTable
 
         private IEnumerable<TableItem> GetData()
         {
-            if (Items != null)
+            if (Items != null || ItemsQueryable != null)
             {
-                var query = Items.AsQueryable();
+                if (Items != null)
+                {
+                    ItemsQueryable = Items.AsQueryable();
+                }
 
                 foreach (var item in Columns)
                 {
                     if (item.Filter != null)
                     {
-                        query = query.Where(item.Filter);
+                        ItemsQueryable = ItemsQueryable.Where(item.Filter);
                     }
                 }
 
-                TotalCount = query.Count();
+                TotalCount = ItemsQueryable.Count();
 
                 var sortColumn = Columns.Find(x => x.SortColumn);
 
@@ -113,18 +125,19 @@ namespace BlazorTable
                 {
                     if (sortColumn.SortDescending)
                     {
-                        query = query.OrderByDescending(sortColumn.Field);
+                        ItemsQueryable = ItemsQueryable.OrderByDescending(sortColumn.Field);
                     }
                     else
                     {
-                        query = query.OrderBy(sortColumn.Field);
+                        ItemsQueryable = ItemsQueryable.OrderBy(sortColumn.Field);
                     }
                 }
+
                 // if PageSize is zero, we return all rows and no paging
                 if (PageSize <= 0)
-                    return query.ToList();
-                else                
-                    return query.Skip(PageNumber * PageSize).Take(PageSize).ToList();
+                    return ItemsQueryable.ToList();
+                else
+                    return ItemsQueryable.Skip(PageNumber * PageSize).Take(PageSize).ToList();
             }
 
             return Items;
