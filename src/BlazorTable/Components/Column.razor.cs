@@ -180,14 +180,24 @@ namespace BlazorTable
         /// <returns></returns>
         public string Render(TableItem data)
         {
-            if (data == null || Field ==null) return string.Empty;
-            var compiled = Field.Compile();
-            var value = compiled.Invoke(data);
-            if (string.IsNullOrEmpty(Format))
-                return value?.ToString();
+            if (data == null || Field == null) return string.Empty;
+
+            if (renderCompiled == null)
+                renderCompiled = Field.Compile();
+
+            var value = renderCompiled.Invoke(data);
 
             if (value == null) return string.Empty;
+
+            if (string.IsNullOrEmpty(Format))
+                return value.ToString();
+            
             return string.Format($"{{0:{Format}}}", value);
         }
+
+        /// <summary>
+        /// Save compiled renderCompiled property to avoid repeated Compile() calls
+        /// </summary>
+        private Func<TableItem, object> renderCompiled;
     }
 }
