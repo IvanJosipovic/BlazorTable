@@ -1,3 +1,7 @@
+on:
+  pull_request:
+    branches:
+      - '*'
 name: Build
 jobs:
   build:
