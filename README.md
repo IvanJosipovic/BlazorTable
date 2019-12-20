@@ -33,7 +33,7 @@ Blazor Table Component with Sorting, Paging and Filtering
 - Bootstrap 4 CSS
 
 ## Sample
-[Example](/src/BlazorTable.Sample/Pages/Index.razor)
+[Example Page](/src/BlazorTable.Sample.Shared/Pages/Index.razor)
 
 ```csharp
 <Table TableItem="PersonData" Items="data" PageSize="15">
