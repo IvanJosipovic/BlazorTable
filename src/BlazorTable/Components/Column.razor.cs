@@ -193,7 +193,7 @@ namespace BlazorTable
             if (string.IsNullOrEmpty(Format))
                 return value.ToString();
 
-            return string.Format(CultureInfo.InvariantCulture, $"{{0:{Format}}}", value);
+            return string.Format(CultureInfo.CurrentCulture, $"{{0:{Format}}}", value);
         }
 
         /// <summary>
