@@ -1,0 +1,22 @@
+on:
+  pull_request:
+    branches:
+      - '*'
+name: Build
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v1
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
+
+    - name: Dotnet Build
+      run: dotnet build --configuration Release

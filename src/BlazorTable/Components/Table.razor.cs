@@ -9,7 +9,7 @@ namespace BlazorTable
 {
     public partial class Table<TableItem> : ITable<TableItem>
     {
-        const int DEFAULT_PAGE_SIZE = 10;
+        private const int DEFAULT_PAGE_SIZE = 10;
 
         [Parameter(CaptureUnmatchedValues = true)]
         public IReadOnlyDictionary<string, object> UnknownParameters { get; set; }

@@ -5,6 +5,10 @@ using System.Linq.Expressions;
 
 namespace BlazorTable
 {
+    /// <summary>
+    /// BlazorTable Interface
+    /// </summary>
+    /// <typeparam name="TableItem"></typeparam>
     public interface ITable<TableItem>
     {
         /// <summary>

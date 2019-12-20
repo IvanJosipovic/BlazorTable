@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
+using System.Globalization;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -191,8 +192,8 @@ namespace BlazorTable
 
             if (string.IsNullOrEmpty(Format))
                 return value.ToString();
-            
-            return string.Format($"{{0:{Format}}}", value);
+
+            return string.Format(CultureInfo.InvariantCulture, $"{{0:{Format}}}", value);
         }
 
         /// <summary>
