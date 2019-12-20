@@ -16,7 +16,7 @@ namespace BlazorTable
         ITable<TableItem> Table { get; set; }
 
         /// <summary>
-        /// Title (Optional, will use Property Name if null)
+        /// Title (Optional, will use Field Name if null)
         /// </summary>
         string Title { get; set; }
 

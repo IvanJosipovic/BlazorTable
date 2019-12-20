@@ -20,7 +20,7 @@ namespace BlazorTable
         private string _title;
 
         /// <summary>
-        /// Title (Optional, will use Property Name if null)
+        /// Title (Optional, will use Field Name if null)
         /// </summary>
         [Parameter]
         public string Title
