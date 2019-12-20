@@ -5,14 +5,17 @@
 ![](https://github.com/IvanJosipovic/BlazorTable/workflows/CI/CD/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=IvanJosipovic_BlazorTable&metric=alert_status)](https://sonarcloud.io/dashboard?id=IvanJosipovic_BlazorTable)
 
-**Work in progress!** 
 
-A simple Table Control for Blazor with Sorting, Paging and Filtering
+Blazor Table Component with Sorting, Paging and Filtering
 
 ## Install
 
-- Add Nuget [BlazorTable](https://www.nuget.org/packages/BlazorTable)
-- Add ```<script src="_content/BlazorTable/BlazorTable.min.js"></script>``` to the index.html or _Hosts.cshtml
+- Add [BlazorTable Nuget](https://www.nuget.org/packages/BlazorTable)
+  - dotnet add package BlazorTable
+  - or
+  - Install-Package BlazorTable  
+- Add to the index.html or _Hosts.cshtml
+  - `<script src="_content/BlazorTable/BlazorTable.min.js"></script>`
 
 ## Features
 - Column Reordering
