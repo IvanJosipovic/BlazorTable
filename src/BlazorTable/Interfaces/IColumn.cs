@@ -113,7 +113,7 @@ namespace BlazorTable
         ElementReference FilterRef { get; set; }
 
         /// <summary>
-        /// Column CSS
+        /// Column CSS Class
         /// </summary>
         string Class { get; set; }
 
