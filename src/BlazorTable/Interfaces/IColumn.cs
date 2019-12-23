@@ -113,6 +113,11 @@ namespace BlazorTable
         ElementReference FilterRef { get; set; }
 
         /// <summary>
+        /// Column CSS
+        /// </summary>
+        string Class { get; set; }
+
+        /// <summary>
         /// Default render if no Template specified
         /// </summary>
         /// <param name="item"></param>

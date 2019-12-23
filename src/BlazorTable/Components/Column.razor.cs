@@ -86,6 +86,12 @@ namespace BlazorTable
         public string Format { get; set; }
 
         /// <summary>
+        /// Column CSS Class
+        /// </summary>
+        [Parameter]
+        public string Class { get; set; }
+
+        /// <summary>
         /// Filter expression
         /// </summary>
         public Expression<Func<TableItem, bool>> Filter { get; set; }
@@ -200,5 +206,7 @@ namespace BlazorTable
         /// Save compiled renderCompiled property to avoid repeated Compile() calls
         /// </summary>
         private Func<TableItem, object> renderCompiled;
+
+
     }
 }
