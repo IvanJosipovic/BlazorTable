@@ -149,7 +149,7 @@ namespace BlazorTable
                     var dta = ItemsQueryable.Skip(PageNumber * PageSize).Take(PageSize) as DataServiceQuery<TableItem>;
                     var response = await dta.ExecuteAsync();
 
-                    return (response as QueryOperationResponse<TableItem>).ToList();
+                    return response.ToList();
                 }
             }
 
