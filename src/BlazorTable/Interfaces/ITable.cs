@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -111,7 +112,7 @@ namespace BlazorTable
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
-        void Update();
+        Task Update();
 
         /// <summary>
         /// IQueryable data source to display in the table

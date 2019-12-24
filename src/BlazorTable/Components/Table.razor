@@ -42,10 +42,10 @@
         <tbody class="@TableBodyClass">
             @if (TempItems != null)
             {
-                if (TempItems.Any())
+                //if (TempItems.Any())
+                //{
+                foreach (TableItem item in TempItems)
                 {
-                    foreach (TableItem item in TempItems)
-                    {
                         <tr @key="item" class="@RowClass(item)">
                             @foreach (IColumn<TableItem> column in Columns)
                             {
@@ -70,11 +70,11 @@
                             }
                         </tr>
                     }
-                }
+                @*}
                 else
                 {
                     <tr><td colspan="@Columns.Count" style="text-align: center"><h1>No items...</h1></td></tr>
-                }
+                }*@
             }
             else
             {

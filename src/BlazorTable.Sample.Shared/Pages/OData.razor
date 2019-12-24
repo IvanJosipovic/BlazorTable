@@ -1,0 +1,25 @@
+﻿@page "/Odata"
+@inject HttpClient Http
+@using BlazorTable
+@using System.ComponentModel
+@using Microsoft.OData.SampleService.Models.TripPin;
+
+<h1>OData</h1>
+<br />
+<br />
+
+<Table TableItem="Person" Items="context.People" PageSize="15" ColumnReorder="true">
+    <Column TableItem="Person" Title="First Name" Field="@(x => x.FirstName)" Sortable="true" Filterable="true" Width="10%" />
+    <Column TableItem="Person" Title="Gender" Field="@(x => x.Gender)" Sortable="true" Filterable="true" Width="10%" />
+    <Pager TableItem="Person" ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    private DefaultContainer context;
+
+    protected override void OnInitialized()
+    {
+        context = new DefaultContainer(new Uri("https://services.odata.org/V4/TripPinServiceRW"));
+    }
+}

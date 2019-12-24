@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using Microsoft.OData.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -100,7 +102,7 @@ namespace BlazorTable
             Update();
         }
 
-        private IEnumerable<TableItem> GetData()
+        private async Task<IEnumerable<TableItem>> GetData()
         {
             if (Items != null || ItemsQueryable != null)
             {
@@ -117,7 +119,11 @@ namespace BlazorTable
                     }
                 }
 
-                TotalCount = ItemsQueryable.Count();
+                try
+                {
+                    TotalCount = ItemsQueryable.Count();
+                } catch { }
+                
 
                 var sortColumn = Columns.Find(x => x.SortColumn);
 
@@ -135,9 +141,16 @@ namespace BlazorTable
 
                 // if PageSize is zero, we return all rows and no paging
                 if (PageSize <= 0)
-                    return ItemsQueryable.ToList();
+                {
+                    return ItemsQueryable;
+                }
                 else
-                    return ItemsQueryable.Skip(PageNumber * PageSize).Take(PageSize).ToList();
+                {
+                    var dta = ItemsQueryable.Skip(PageNumber * PageSize).Take(PageSize) as DataServiceQuery<TableItem>;
+                    var response = await dta.ExecuteAsync();
+
+                    return (response as QueryOperationResponse<TableItem>).ToList();
+                }
             }
 
             return Items;
@@ -146,9 +159,9 @@ namespace BlazorTable
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
-        public void Update()
+        public async Task Update()
         {
-            TempItems = GetData();
+            TempItems = await GetData();
             Refresh();
         }
 
