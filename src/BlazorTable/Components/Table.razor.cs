@@ -97,9 +97,9 @@ namespace BlazorTable
         /// </summary>
         public int TotalPages => PageSize <= 0 ? 1 : (TotalCount + PageSize - 1) / PageSize;
 
-        protected override void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
-            Update();
+            await Update();
         }
 
         private async Task<IEnumerable<TableItem>> GetData()
