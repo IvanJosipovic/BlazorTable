@@ -8,7 +8,7 @@ namespace BlazorTable
     /// Table Column
     /// </summary>
     /// <typeparam name="TableItem"></typeparam>
-    public interface IColumn<TableItem>
+    public interface IColumn<TableItem> : IDisposable
     {
         /// <summary>
         /// Parent Table
