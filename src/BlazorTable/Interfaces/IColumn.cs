@@ -4,6 +4,10 @@ using System.Linq.Expressions;
 
 namespace BlazorTable
 {
+    /// <summary>
+    /// Table Column
+    /// </summary>
+    /// <typeparam name="TableItem"></typeparam>
     public interface IColumn<TableItem>
     {
         /// <summary>
@@ -32,7 +36,7 @@ namespace BlazorTable
         bool Filterable { get; set; }
 
         /// <summary>
-        /// Format used without a template
+        /// Set the format for values if no template
         /// </summary>
         string Format { get; set; }
 

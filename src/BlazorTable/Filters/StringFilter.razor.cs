@@ -108,10 +108,10 @@ namespace BlazorTable
         {
             FilterText = FilterText?.Trim();
 
-            switch (Condition)
+            return Condition switch
             {
-                case StringCondition.Contains:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                StringCondition.Contains =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.GreaterThanOrEqual(
@@ -120,10 +120,10 @@ namespace BlazorTable
                                     typeof(string).GetMethod(nameof(string.IndexOf), new[] { typeof(string), typeof(StringComparison) }),
                                     new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) }),
                                 Expression.Constant(0))),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case StringCondition.DoesNotContain:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                StringCondition.DoesNotContain =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.LessThanOrEqual(
@@ -132,67 +132,66 @@ namespace BlazorTable
                                     typeof(string).GetMethod(nameof(string.IndexOf), new[] { typeof(string), typeof(StringComparison) }),
                                     new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) }),
                                 Expression.Constant(-1))),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case StringCondition.StartsWith:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                StringCondition.StartsWith =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.Call(
                                 Column.Field.Body,
                                 typeof(string).GetMethod(nameof(string.StartsWith), new[] { typeof(string), typeof(StringComparison) }),
                                 new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) })),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case StringCondition.EndsWith:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                StringCondition.EndsWith =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.Call(
                                 Column.Field.Body,
                                 typeof(string).GetMethod(nameof(string.EndsWith), new[] { typeof(string), typeof(StringComparison) }),
                                 new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) })),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case StringCondition.IsEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                StringCondition.IsEqualTo =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.Call(
                                 Column.Field.Body,
                                 typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string), typeof(StringComparison) }),
                                 new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) })),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case StringCondition.IsNotEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                    Expression.AndAlso(
-                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                        Expression.Not(
-                            Expression.Call(
-                                Column.Field.Body,
-                                typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string), typeof(StringComparison) }),
-                                new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) }))),
-                    Column.Field.Parameters);
+                StringCondition.IsNotEqualTo =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.AndAlso(
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Expression.Not(
+                                Expression.Call(
+                                    Column.Field.Body,
+                                    typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string), typeof(StringComparison) }),
+                                    new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) }))),
+                        Column.Field.Parameters),
 
-                case StringCondition.IsNullOrEmpty:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                StringCondition.IsNullOrEmpty =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.Call(
-                                typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string)}),
+                                typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string) }),
                             Column.Field.Body),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case StringCondition.IsNotNulOrEmpty:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                StringCondition.IsNotNulOrEmpty =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.Not(
                             Expression.Call(
-                                    typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string)}),
+                                    typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string) }),
                             Column.Field.Body)),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                default:
-                    throw new ArgumentException(Condition + " is not defined!");
-            }
+                _ => throw new ArgumentException(Condition + " is not defined!"),
+            };
         }
     }
 

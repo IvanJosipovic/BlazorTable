@@ -5,14 +5,15 @@
     <RazorLangVersion>3.0</RazorLangVersion>
     <IsPackable>true</IsPackable>
     <Title>BlazorTable</Title>
-    <Description>A simple Table Control for Blazor with Sorting, Paging and Filtering</Description>
+    <Description>Blazor Table Component with Sorting, Paging and Filtering</Description>
     <Authors>Ivan Josipovic</Authors>
     <PackageProjectUrl>https://BlazorTable.netlify.com</PackageProjectUrl>
-    <PackageTags>Blazor;Table;Grid;DataTable;Data;Sort;Filter;AspNetCore;AspNet</PackageTags>
+    <PackageTags>Blazor;Table;Component;Grid;DataTable;Data;Sort;Filter;AspNetCore;AspNet</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/IvanJosipovic/BlazorTable</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -46,7 +46,6 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
     - name: Get Test Address
-      continue-on-error: true
       run: |
         $url = $(ConvertFrom-Json '${{ steps.netlify.outputs.output }}').deploy_url;
         Write-Output $url;

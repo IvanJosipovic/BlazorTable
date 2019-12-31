@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace BlazorTable
 {
+    /// <summary>
+    /// BlazorTable Interface
+    /// </summary>
+    /// <typeparam name="TableItem"></typeparam>
     public interface ITable<TableItem>
     {
         /// <summary>
@@ -108,5 +112,15 @@ namespace BlazorTable
         /// Gets Data and redraws the Table
         /// </summary>
         void Update();
+
+        /// <summary>
+        /// IQueryable data source to display in the table
+        /// </summary>
+        IQueryable<TableItem> ItemsQueryable { get; set; }
+
+        /// <summary>
+        /// Collection to display in the table
+        /// </summary>
+        IEnumerable<TableItem> Items { get; set; }
     }
 }

@@ -62,38 +62,37 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
-            switch (Condition)
+            return Condition switch
             {
-                case EnumCondition.IsEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
+                EnumCondition.IsEqualTo =>
+                    Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
                             Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
                             Expression.Equal(
                                 Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                        Column.Field.Parameters),
 
-                case EnumCondition.IsNotEqualTo:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                            Expression.NotEqual(
-                                Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
-                                Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
-                        Column.Field.Parameters);
+                EnumCondition.IsNotEqualTo => Expression.Lambda<Func<TableItem, bool>>(
+                    Expression.AndAlso(
+                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                        Expression.NotEqual(
+                            Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
+                            Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
+                    Column.Field.Parameters),
 
-                case EnumCondition.IsNull:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.Equal(Column.Field.Body, Expression.Constant(null)),
-                        Column.Field.Parameters);
-
-                case EnumCondition.IsNotNull:
-                    return Expression.Lambda<Func<TableItem, bool>>(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                        Column.Field.Parameters);
-                default:
-                    throw new ArgumentException(Condition + " is not defined!");
-            }
+                EnumCondition.IsNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.Equal(Column.Field.Body, Expression.Constant(null)),
+                    Column.Field.Parameters),
+                
+                EnumCondition.IsNotNull =>
+                    Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                    Column.Field.Parameters),
+                
+                _ => throw new ArgumentException(Condition + " is not defined!"),
+            };
         }
 
         public enum EnumCondition
