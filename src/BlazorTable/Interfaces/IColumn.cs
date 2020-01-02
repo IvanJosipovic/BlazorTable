@@ -8,7 +8,7 @@ namespace BlazorTable
     /// Table Column
     /// </summary>
     /// <typeparam name="TableItem"></typeparam>
-    public interface IColumn<TableItem>
+    public interface IColumn<TableItem> : IDisposable
     {
         /// <summary>
         /// Parent Table
@@ -16,7 +16,7 @@ namespace BlazorTable
         ITable<TableItem> Table { get; set; }
 
         /// <summary>
-        /// Title (Optional, will use Property Name if null)
+        /// Title (Optional, will use Field Name if null)
         /// </summary>
         string Title { get; set; }
 
@@ -111,6 +111,11 @@ namespace BlazorTable
         /// Filter Icon Element
         /// </summary>
         ElementReference FilterRef { get; set; }
+
+        /// <summary>
+        /// Column CSS Class
+        /// </summary>
+        string Class { get; set; }
 
         /// <summary>
         /// Default render if no Template specified

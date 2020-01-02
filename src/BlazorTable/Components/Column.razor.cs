@@ -20,7 +20,7 @@ namespace BlazorTable
         private string _title;
 
         /// <summary>
-        /// Title (Optional, will use Property Name if null)
+        /// Title (Optional, will use Field Name if null)
         /// </summary>
         [Parameter]
         public string Title
@@ -84,6 +84,12 @@ namespace BlazorTable
         /// </summary>
         [Parameter]
         public string Format { get; set; }
+
+        /// <summary>
+        /// Column CSS Class
+        /// </summary>
+        [Parameter]
+        public string Class { get; set; }
 
         /// <summary>
         /// Filter expression
