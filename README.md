@@ -8,6 +8,8 @@
 
 Blazor Table Component with Sorting, Paging and Filtering
 
+[![Sample Gif](/BlazorTable.gif)](/BlazorTable.gif)
+
 ## Install
 
 - Add [BlazorTable Nuget](https://www.nuget.org/packages/BlazorTable)
