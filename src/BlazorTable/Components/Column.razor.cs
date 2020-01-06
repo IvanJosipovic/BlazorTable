@@ -126,11 +126,6 @@ namespace BlazorTable
         /// </summary>
         public IFilter<TableItem> FilterControl { get; set; }
 
-        public void Dispose()
-        {
-            Table.RemoveColumn(this);
-        }
-
         protected override void OnInitialized()
         {
             Table.AddColumn(this);
