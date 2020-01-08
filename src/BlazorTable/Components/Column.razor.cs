@@ -97,6 +97,18 @@ namespace BlazorTable
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
         /// <summary>
+        /// True if this is the default Sort Column
+        /// </summary>
+        [Parameter]
+        public bool? DefaultSortColumn { get; set; }
+
+        /// <summary>
+        /// Direction of default sorting
+        /// </summary>
+        [Parameter]
+        public bool? DefaultSortDescending { get; set; }
+
+        /// <summary>
         /// True if this is the current Sort Column
         /// </summary>
         public bool SortColumn { get; set; }
@@ -129,6 +141,16 @@ namespace BlazorTable
         protected override void OnInitialized()
         {
             Table.AddColumn(this);
+
+            if (DefaultSortDescending.HasValue)
+            {
+                this.SortDescending = DefaultSortDescending.Value;
+            }
+
+            if (DefaultSortColumn.HasValue)
+            {
+                this.SortColumn = DefaultSortColumn.Value;
+            }
         }
 
         protected override void OnParametersSet()
