@@ -118,6 +118,16 @@ namespace BlazorTable
         string Class { get; set; }
 
         /// <summary>
+        /// True if this is the default Sort Column
+        /// </summary>
+        bool? DefaultSortColumn { get; set; }
+
+        /// <summary>
+        /// Direction of default sorting
+        /// </summary>
+        bool? DefaultSortDescending { get; set; }
+
+        /// <summary>
         /// Default render if no Template specified
         /// </summary>
         /// <param name="item"></param>

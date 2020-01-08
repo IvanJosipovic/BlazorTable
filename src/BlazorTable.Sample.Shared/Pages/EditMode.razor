@@ -9,7 +9,7 @@
 <br />
 <br />
 <Table TableItem="PersonData" Items="data" PageSize="15" @ref="Table" ColumnReorder="true">
-    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true">
         <EditTemplate>
             <input type="number" @bind-value="@context.id" class="form-control form-control-sm" />
         </EditTemplate>
