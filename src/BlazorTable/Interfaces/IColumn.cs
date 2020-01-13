@@ -16,7 +16,7 @@ namespace BlazorTable
         ITable<TableItem> Table { get; set; }
 
         /// <summary>
-        /// Title (Optional, will use Property Name if null)
+        /// Title (Optional, will use Field Name if null)
         /// </summary>
         string Title { get; set; }
 
@@ -111,6 +111,21 @@ namespace BlazorTable
         /// Filter Icon Element
         /// </summary>
         ElementReference FilterRef { get; set; }
+
+        /// <summary>
+        /// Column CSS Class
+        /// </summary>
+        string Class { get; set; }
+
+        /// <summary>
+        /// True if this is the default Sort Column
+        /// </summary>
+        bool? DefaultSortColumn { get; set; }
+
+        /// <summary>
+        /// Direction of default sorting
+        /// </summary>
+        bool? DefaultSortDescending { get; set; }
 
         /// <summary>
         /// Default render if no Template specified

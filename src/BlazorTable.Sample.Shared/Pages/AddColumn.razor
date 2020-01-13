@@ -1,19 +1,15 @@
-﻿@page "/"
+﻿@page "/AddColumn"
 @inject HttpClient Http
 @using BlazorTable
 @using System.ComponentModel
 
-<h1>BlazorTable</h1>
+<h1>Add Column Programmatically</h1>
 
-<a href="https://github.com/IvanJosipovic/BlazorTable"><img alt="GitHub stars" src="https://img.shields.io/github/stars/IvanJosipovic/BlazorTable?style=social"></a>
-&nbsp;
-<a href="https://www.nuget.org/packages/BlazorTable"><img src="https://img.shields.io/nuget/vpre/BlazorTable.svg?style=flat-square" /></a>
-<a href="https://www.nuget.org/packages/BlazorTable"><img src="https://img.shields.io/nuget/dt/BlazorTable.svg?style=flat-square"></a>
+<button class="btn btn-sm btn-danger" title="Add Column" @onclick="@((x) => Add())">Add Column</button>
 <br />
 <br />
-
-<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" TableRowClass="@(x => x.RowClass)">
-    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
+<Table TableItem="PersonData" Items="data" PageSize="15" @ref="Table" ColumnReorder="true">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%"  DefaultSortColumn="true"  />
     <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
         <Template>
@@ -31,16 +27,13 @@
             @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
         </Template>
     </Column>
-    <Column TableItem="PersonData" Title="Enum" Field="@(x => x.cc_type)" Sortable="true" Filterable="true" Width="10%">
-        <Template>
-            @context.cc_type
-        </Template>
-    </Column>
     <Pager TableItem="PersonData" ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
 @code
 {
+    private ITable<PersonData> Table;
+
     private PersonData[] data;
 
     protected override async Task OnInitializedAsync()
@@ -57,12 +50,6 @@
         public decimal? price { get; set; }
         public CreditCard? cc_type { get; set; }
         public DateTime? created_date { get; set; }
-
-        /// <summary>
-        /// Returns row CSS if price over 800
-        /// </summary>
-        public string RowClass => price.GetValueOrDefault(0) > 800 ? "table-danger" : null;
-
     }
 
     public enum CreditCard
@@ -71,5 +58,19 @@
         [Description("MasterCard")]
         MasterCard = 1,
         Visa = 2
+    }
+
+    private void Add()
+    {
+        var col = new Column<PersonData>() 
+        { 
+            Title = "Enum",
+            Field = (x) => x.cc_type,
+            Sortable = true,
+            Filterable = true,
+            Width = "10%"
+        };
+
+        Table.AddColumn(col);
     }
 }

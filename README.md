@@ -8,6 +8,8 @@
 
 Blazor Table Component with Sorting, Paging and Filtering
 
+[![Sample Gif](https://raw.githubusercontent.com/IvanJosipovic/BlazorTable/master/BlazorTable.gif)](/BlazorTable.gif)
+
 ## Install
 
 - Add [BlazorTable Nuget](https://www.nuget.org/packages/BlazorTable)
@@ -19,7 +21,7 @@ Blazor Table Component with Sorting, Paging and Filtering
 
 ## Features
 - Column Reordering
-- Edit Mode ([Template Switching](/src/BlazorTable.Sample.Shared/Pages/EditMode.razor))
+- Edit Mode ([Template Switching](https://github.com/IvanJosipovic/BlazorTable/blob/master/src/BlazorTable.Sample.Shared/Pages/EditMode.razor))
 - Client Side
 	- Paging
 	- Sorting
@@ -33,7 +35,7 @@ Blazor Table Component with Sorting, Paging and Filtering
 - Bootstrap 4 CSS
 
 ## Sample
-[Example Page](/src/BlazorTable.Sample.Shared/Pages/Index.razor)
+[Example Page](https://github.com/IvanJosipovic/BlazorTable/blob/master/src/BlazorTable.Sample.Shared/Pages/Index.razor)
 
 ```csharp
 <Table TableItem="PersonData" Items="data" PageSize="15">

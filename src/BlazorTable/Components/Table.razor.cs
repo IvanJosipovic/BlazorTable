@@ -281,6 +281,6 @@ namespace BlazorTable
         /// <summary>
         /// Save compiled TableRowClass property to avoid repeated Compile() calls
         /// </summary>
-        private Func<TableItem, string> _tableRowClassCompiled = null;
+        private Func<TableItem, string> _tableRowClassCompiled;
     }
 }

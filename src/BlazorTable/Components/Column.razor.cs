@@ -20,7 +20,7 @@ namespace BlazorTable
         private string _title;
 
         /// <summary>
-        /// Title (Optional, will use Property Name if null)
+        /// Title (Optional, will use Field Name if null)
         /// </summary>
         [Parameter]
         public string Title
@@ -86,9 +86,27 @@ namespace BlazorTable
         public string Format { get; set; }
 
         /// <summary>
+        /// Column CSS Class
+        /// </summary>
+        [Parameter]
+        public string Class { get; set; }
+
+        /// <summary>
         /// Filter expression
         /// </summary>
         public Expression<Func<TableItem, bool>> Filter { get; set; }
+
+        /// <summary>
+        /// True if this is the default Sort Column
+        /// </summary>
+        [Parameter]
+        public bool? DefaultSortColumn { get; set; }
+
+        /// <summary>
+        /// Direction of default sorting
+        /// </summary>
+        [Parameter]
+        public bool? DefaultSortDescending { get; set; }
 
         /// <summary>
         /// True if this is the current Sort Column
@@ -120,14 +138,19 @@ namespace BlazorTable
         /// </summary>
         public IFilter<TableItem> FilterControl { get; set; }
 
-        public void Dispose()
-        {
-            Table.RemoveColumn(this);
-        }
-
         protected override void OnInitialized()
         {
             Table.AddColumn(this);
+
+            if (DefaultSortDescending.HasValue)
+            {
+                this.SortDescending = DefaultSortDescending.Value;
+            }
+
+            if (DefaultSortColumn.HasValue)
+            {
+                this.SortColumn = DefaultSortColumn.Value;
+            }
         }
 
         protected override void OnParametersSet()

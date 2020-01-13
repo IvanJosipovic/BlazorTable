@@ -14,7 +14,8 @@
                         @ondragstart="@(() => HandleDragStart(column))"
                         ondragover="event.preventDefault();"
                         draggable="@(ColumnReorder.ToString())"
-                        @key="column">
+                        @key="column"
+                        class="@(column.Class)">
 
                         <div @onclick="@(() => column.SortBy())">
                             <span>@column.Title</span>
@@ -22,9 +23,9 @@
                             @if (column.SortColumn)
                             {
                                 if (column.SortDescending)
-                                {<span>&#11014;</span> }
+                                { <span>&#11014;</span> }
                                 else
-                                { <span>&#11015;</span>}
+                                { <span>&#11015;</span> }
                             }
 
                             @if (column.Filterable)
@@ -48,7 +49,8 @@
                         <tr @key="item" class="@RowClass(item)">
                             @foreach (IColumn<TableItem> column in Columns)
                             {
-                                <td @key="column" style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)">
+                                <td @key="column" style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)"
+                                    class="@(column.Class)">
                                     @if (IsEditMode && column.EditTemplate != null)
                                     {
                                         @column.EditTemplate(item)
