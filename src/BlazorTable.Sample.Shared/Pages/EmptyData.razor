@@ -6,14 +6,6 @@
 <h1>EmptyDataTemplate</h1>
 
 <p>The <code>EmptyDataTemplate</code> can be used to display custom text when there are no rows to display.</p>
-<pre style="font-family:Consolas;font-size:13px;color:gainsboro;background:#1e1e1e;"><span style="color:gray;">&lt;</span><span style="font-weight:bold;color:#ff8040;">EmptyDataTemplate</span>&nbsp;<span style="font-weight:bold;color:#9cdcfe;">TableItem</span><span style="color:#b4b4b4;">=</span><span style="color:#c8c8c8;">&quot;</span><span style="color:#4ec9b0;">SampleData</span><span style="color:#c8c8c8;">&quot;</span><span style="color:gray;">&gt;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:gray;">&lt;</span><span style="font-weight:bold;color:#ff8040;">Template</span><span style="color:gray;">&gt;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:gray;">&lt;</span><span style="color:#569cd6;">div</span>&nbsp;<span style="color:#9cdcfe;">class</span><span style="color:#b4b4b4;">=</span><span style="color:#c8c8c8;">&quot;text-center&quot;</span><span style="color:gray;">&gt;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No&nbsp;rows&nbsp;found!
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:gray;">&lt;/</span><span style="color:#569cd6;">div</span><span style="color:gray;">&gt;</span>
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:gray;">&lt;/</span><span style="font-weight:bold;color:#ff8040;">Template</span><span style="color:gray;">&gt;</span>
-<span style="color:gray;">&lt;/</span><span style="font-weight:bold;color:#ff8040;">EmptyDataTemplate</span><span style="color:gray;">&gt;</span>
-</pre>
 <br />
 <Table TableItem="SampleData" Items="data" PageSize="15" @ref="Table" ColumnReorder="true">
     <Column TableItem="SampleData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
