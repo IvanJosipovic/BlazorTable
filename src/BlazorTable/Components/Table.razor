@@ -3,7 +3,6 @@
 
 @if (Columns.Any())
 {
-
     <table class="@TableClass" @attributes="UnknownParameters">
         <thead class="@TableHeadClass">
             <tr style="cursor: pointer;">
@@ -23,9 +22,9 @@
                             @if (column.SortColumn)
                             {
                                 if (column.SortDescending)
-                                { <span>&#11014;</span> }
+                                {<span>&#11014;</span> }
                                 else
-                                { <span>&#11015;</span> }
+                                { <span>&#11015;</span>}
                             }
 
                             @if (column.Filterable)
@@ -71,9 +70,13 @@
                         </tr>
                     }
                 }
-                else
+                else if (_emptyDataTemplate != null)
                 {
-                    <tr><td colspan="@Columns.Count" style="text-align: center"><h1>No items...</h1></td></tr>
+                    <tr>
+                        <td colspan="@Columns.Count">
+                            @_emptyDataTemplate
+                        </td>
+                    </tr>
                 }
             }
             else
