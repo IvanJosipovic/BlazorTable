@@ -122,5 +122,12 @@ namespace BlazorTable
         /// Collection to display in the table
         /// </summary>
         IEnumerable<TableItem> Items { get; set; }
+
+        /// <summary>
+        /// Set the EmptyDataTemplate for the table
+        /// </summary>
+        /// <param name="template"></param>
+        void SetEmptyDataTemplate(EmptyDataTemplate<TableItem> template);
+
     }
 }
