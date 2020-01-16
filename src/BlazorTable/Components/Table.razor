@@ -81,7 +81,20 @@
             }
             else
             {
-                <tr><td colspan="@Columns.Count" style="text-align: center"><h1>Loading...</h1></td></tr>
+                <tr>
+                    <td colspan="@Columns.Count">
+                        @if (_loadingDataTemplate != null)
+                        {
+                            @_loadingDataTemplate
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                Loading...
+                            </div>
+                        }
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

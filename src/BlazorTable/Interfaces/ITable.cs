@@ -129,5 +129,10 @@ namespace BlazorTable
         /// <param name="template"></param>
         void SetEmptyDataTemplate(EmptyDataTemplate<TableItem> template);
 
+        /// <summary>
+        /// Set the LoadingDataTemplate for the table
+        /// </summary>
+        /// <param name="template"></param>
+        void SetLoadingDataTemplate(LoadingDataTemplate<TableItem> template);
     }
 }

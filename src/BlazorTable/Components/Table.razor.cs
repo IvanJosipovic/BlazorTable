@@ -293,5 +293,16 @@ namespace BlazorTable
         }
 
         private RenderFragment _emptyDataTemplate;
+        
+        /// <summary>
+        /// Set the template to use for loading data
+        /// </summary>
+        /// <param name="emptyDataTemplate"></param>
+        public void SetLoadingDataTemplate(LoadingDataTemplate<TableItem> emptyDataTemplate)
+        {
+            _loadingDataTemplate = emptyDataTemplate?.Template;
+        }
+
+        private RenderFragment _loadingDataTemplate;
     }
 }
