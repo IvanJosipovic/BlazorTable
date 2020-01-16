@@ -13,7 +13,7 @@
     <LoadingDataTemplate TableItem="SampleData">
         <Template>
             <div class="text-center">
-                <h1>Custom Loading Text</h1>
+                <h1>Custom Loading Template</h1>
             </div>
         </Template>
     </LoadingDataTemplate>
@@ -28,6 +28,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Task.Delay(2000);
+        data = Array.Empty<SampleData>();
     }
 
     public class SampleData
