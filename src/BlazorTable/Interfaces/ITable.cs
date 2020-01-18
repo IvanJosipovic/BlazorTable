@@ -8,7 +8,6 @@ namespace BlazorTable
     /// <summary>
     /// BlazorTable Interface
     /// </summary>
-    /// <typeparam name="TableItem"></typeparam>
     public interface ITable
     {
         /// <summary>
