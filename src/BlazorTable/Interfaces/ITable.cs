@@ -9,7 +9,7 @@ namespace BlazorTable
     /// BlazorTable Interface
     /// </summary>
     /// <typeparam name="TableItem"></typeparam>
-    public interface ITable<TableItem>
+    public interface ITable
     {
         /// <summary>
         /// Page Size
@@ -67,11 +67,6 @@ namespace BlazorTable
         void ToggleEditMode();
 
         /// <summary>
-        /// List of All Available Columns
-        /// </summary>
-        List<IColumn<TableItem>> Columns { get; }
-
-        /// <summary>
         /// Table Element CSS
         /// </summary>
         string TableClass { get; set; }
@@ -87,23 +82,6 @@ namespace BlazorTable
         string TableHeadClass { get; set; }
 
         /// <summary>
-        /// Optional: expression to use for row class
-        /// </summary>
-        Expression<Func<TableItem, string>> TableRowClass { get; set; }
-
-        /// <summary>
-        /// Adds a Column to the Table
-        /// </summary>
-        /// <param name="column"></param>
-        void AddColumn(IColumn<TableItem> column);
-
-        /// <summary>
-        /// Removes a Column from the Table
-        /// </summary>
-        /// <param name="column"></param>
-        void RemoveColumn(IColumn<TableItem> column);
-
-        /// <summary>
         /// Redraws Table without Getting Data
         /// </summary>
         void Refresh();
@@ -114,25 +92,15 @@ namespace BlazorTable
         void Update();
 
         /// <summary>
-        /// IQueryable data source to display in the table
-        /// </summary>
-        IQueryable<TableItem> ItemsQueryable { get; set; }
-
-        /// <summary>
-        /// Collection to display in the table
-        /// </summary>
-        IEnumerable<TableItem> Items { get; set; }
-
-        /// <summary>
         /// Set the EmptyDataTemplate for the table
         /// </summary>
         /// <param name="template"></param>
-        void SetEmptyDataTemplate(EmptyDataTemplate<TableItem> template);
+        void SetEmptyDataTemplate(EmptyDataTemplate template);
 
         /// <summary>
         /// Set the LoadingDataTemplate for the table
         /// </summary>
         /// <param name="template"></param>
-        void SetLoadingDataTemplate(LoadingDataTemplate<TableItem> template);
+        void SetLoadingDataTemplate(LoadingDataTemplate template);
     }
 }

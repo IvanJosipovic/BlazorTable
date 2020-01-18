@@ -287,7 +287,7 @@ namespace BlazorTable
         /// Set the template to use for empty data
         /// </summary>
         /// <param name="emptyDataTemplate"></param>
-        public void SetEmptyDataTemplate(EmptyDataTemplate<TableItem> emptyDataTemplate)
+        public void SetEmptyDataTemplate(EmptyDataTemplate emptyDataTemplate)
         {
             _emptyDataTemplate = emptyDataTemplate?.Template;
         }
@@ -298,7 +298,7 @@ namespace BlazorTable
         /// Set the template to use for loading data
         /// </summary>
         /// <param name="emptyDataTemplate"></param>
-        public void SetLoadingDataTemplate(LoadingDataTemplate<TableItem> emptyDataTemplate)
+        public void SetLoadingDataTemplate(LoadingDataTemplate emptyDataTemplate)
         {
             _loadingDataTemplate = emptyDataTemplate?.Template;
         }

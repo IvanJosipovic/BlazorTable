@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -11,13 +6,13 @@ namespace BlazorTable
     /// Child content for empty dataset
     /// </summary>
     /// <typeparam name="TableItem"></typeparam>
-    public partial class EmptyDataTemplate<TableItem>
+    public partial class EmptyDataTemplate
     {
         /// <summary>
         /// Parent table
         /// </summary>
         [CascadingParameter(Name = "Table")]
-        public ITable<TableItem> Table { get; set; }
+        public ITable Table { get; set; }
 
         /// <summary>
         /// Content to show
@@ -32,6 +27,5 @@ namespace BlazorTable
         {
             Table.SetEmptyDataTemplate(this);
         }
-
     }
 }
