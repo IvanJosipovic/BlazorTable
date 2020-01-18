@@ -9,9 +9,8 @@ namespace BlazorTable
 {
     public partial class NumberFilter<TableItem> : IFilter<TableItem>
     {
-        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
-
-        [Inject] public ILogger<NumberFilter<TableItem>> Logger { get; set; }
+        [CascadingParameter(Name = "Column")]
+        public IColumn<TableItem> Column { get; set; }
 
         private NumberCondition Condition { get; set; }
 
