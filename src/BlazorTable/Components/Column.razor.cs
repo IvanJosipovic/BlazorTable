@@ -63,7 +63,7 @@ namespace BlazorTable
         /// Place custom controls which implement IFilter
         /// </summary>
         [Parameter]
-        public RenderFragment<Column<TableItem>> CustomIFilters { get; set; }
+        public RenderFragment<IColumn<TableItem>> CustomIFilters { get; set; }
 
         /// <summary>
         /// Field which this column is for<br />

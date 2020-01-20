@@ -10,14 +10,14 @@
 <Table TableItem="SampleData" Items="data" PageSize="15" @ref="Table" ColumnReorder="true">
     <Column TableItem="SampleData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="SampleData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
-    <LoadingDataTemplate TableItem="SampleData">
+    <LoadingDataTemplate>
         <Template>
             <div class="text-center">
                 <h1>Custom Loading Template</h1>
             </div>
         </Template>
     </LoadingDataTemplate>
-    <Pager TableItem="SampleData" ShowPageNumber="true" ShowTotalCount="true" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
 @code
@@ -37,5 +37,4 @@
         public int? id { get; set; }
         public string full_name { get; set; }
     }
-
 }

@@ -8,9 +8,8 @@ namespace BlazorTable
 {
     public partial class StringFilter<TableItem> : IFilter<TableItem>
     {
-        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
-
-        [Inject] public ILogger<StringFilter<TableItem>> Logger { get; set; }
+        [CascadingParameter(Name = "Column")]
+        public IColumn<TableItem> Column { get; set; }
 
         private StringCondition Condition { get; set; }
 
@@ -64,44 +63,24 @@ namespace BlazorTable
         {
             if (not)
             {
-                if (method == nameof(string.IndexOf))
+                return method switch
                 {
-                    return StringCondition.DoesNotContain;
-                }
-                else if (method == nameof(string.Equals))
-                {
-                    return StringCondition.IsNotEqualTo;
-                }
-                else if (method == nameof(string.IsNullOrEmpty))
-                {
-                    return StringCondition.IsNotNulOrEmpty;
-                }
-
-                throw new InvalidOperationException("Shouldn't be here");
+                    nameof(string.IndexOf) => StringCondition.DoesNotContain,
+                    nameof(string.Equals) => StringCondition.IsNotEqualTo,
+                    nameof(string.IsNullOrEmpty) => StringCondition.IsNotNulOrEmpty,
+                    _ => throw new InvalidOperationException("Shouldn't be here"),
+                };
             }
 
-            if (method == nameof(string.IndexOf))
+            return method switch
             {
-                return StringCondition.Contains;
-            }
-            else if (method == nameof(string.StartsWith))
-            {
-                return StringCondition.StartsWith;
-            }
-            else if (method == nameof(string.EndsWith))
-            {
-                return StringCondition.EndsWith;
-            }
-            else if (method == nameof(string.Equals))
-            {
-                return StringCondition.IsEqualTo;
-            }
-            else if (method == nameof(string.IsNullOrEmpty))
-            {
-                return StringCondition.IsNullOrEmpty;
-            }
-
-            throw new InvalidOperationException("Shouldn't be here");
+                nameof(string.IndexOf) => StringCondition.Contains,
+                nameof(string.StartsWith) => StringCondition.StartsWith,
+                nameof(string.EndsWith) => StringCondition.EndsWith,
+                nameof(string.Equals) => StringCondition.IsEqualTo,
+                nameof(string.IsNullOrEmpty) => StringCondition.IsNullOrEmpty,
+                _ => throw new InvalidOperationException("Shouldn't be here"),
+            };
         }
 
         public Expression<Func<TableItem, bool>> GetFilter()

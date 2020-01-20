@@ -90,7 +90,7 @@ namespace BlazorTable
         /// <summary>
         /// Place custom controls which implement IFilter
         /// </summary>
-        RenderFragment<Column<TableItem>> CustomIFilters { get; set; }
+        RenderFragment<IColumn<TableItem>> CustomIFilters { get; set; }
 
         /// <summary>
         /// True if this is the current Sort Column

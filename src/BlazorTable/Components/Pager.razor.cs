@@ -6,10 +6,10 @@ namespace BlazorTable
     /// BlazorTable Pager
     /// </summary>
     /// <typeparam name="TableItem"></typeparam>
-    public partial class Pager<TableItem>
+    public partial class Pager
     {
         [CascadingParameter(Name = "Table")]
-        public ITable<TableItem> Table { get; set; }
+        public ITable Table { get; set; }
 
         /// <summary>
         /// Always show Pager, otherwise only show if TotalPages > 1
