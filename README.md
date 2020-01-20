@@ -14,8 +14,6 @@ Blazor Table Component with Sorting, Paging and Filtering
 
 - Add [BlazorTable Nuget](https://www.nuget.org/packages/BlazorTable)
   - dotnet add package BlazorTable
-  - or
-  - Install-Package BlazorTable  
 - Add to the index.html or _Hosts.cshtml
   - `<script src="_content/BlazorTable/BlazorTable.min.js"></script>`
 
@@ -54,6 +52,6 @@ Blazor Table Component with Sorting, Paging and Filtering
             @context.created_date.ToShortDateString()
         </Template>
     </Column>
-    <Pager TableItem="PersonData" ShowPageNumber="true" ShowTotalCount="true" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 ```
