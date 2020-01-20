@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Linq.Expressions;
@@ -8,9 +7,8 @@ namespace BlazorTable
 {
     public partial class DateFilter<TableItem> : IFilter<TableItem>
     {
-        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
-
-        [Inject] public ILogger<NumberFilter<TableItem>> Logger { get; set; }
+        [CascadingParameter(Name = "Column")]
+        public IColumn<TableItem> Column { get; set; }
 
         private NumberCondition Condition { get; set; }
 

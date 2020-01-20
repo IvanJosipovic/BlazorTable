@@ -1,0 +1,40 @@
+﻿@page "/LoadingData"
+@inject HttpClient Http
+@using BlazorTable
+@using System.ComponentModel
+
+<h1>LoadingDataTemplate</h1>
+
+<p>The <code>LoadingDataTemplate</code> can be used to display custom text when the rows are null or loading.</p>
+<br />
+<Table TableItem="SampleData" Items="data" PageSize="15" @ref="Table" ColumnReorder="true">
+    <Column TableItem="SampleData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="SampleData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
+    <LoadingDataTemplate>
+        <Template>
+            <div class="text-center">
+                <h1>Custom Loading Template</h1>
+            </div>
+        </Template>
+    </LoadingDataTemplate>
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    private ITable<SampleData> Table;
+
+    private SampleData[] data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(2000);
+        data = Array.Empty<SampleData>();
+    }
+
+    public class SampleData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+    }
+}

@@ -1,0 +1,39 @@
+﻿@page "/EmptyData"
+@inject HttpClient Http
+@using BlazorTable
+
+<h1>EmptyDataTemplate</h1>
+
+<p>The <code>EmptyDataTemplate</code> can be used to display custom text when there are no rows to display.</p>
+<br />
+<Table TableItem="SampleData" Items="data" PageSize="15" @ref="Table" ColumnReorder="true">
+    <Column TableItem="SampleData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="SampleData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
+    <EmptyDataTemplate>
+        <Template>
+            <div class="text-center">
+                No rows found!
+            </div>
+        </Template>
+    </EmptyDataTemplate>
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    private ITable<SampleData> Table;
+
+    private SampleData[] data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(250);
+        data = Array.Empty<SampleData>();
+    }
+
+    public class SampleData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+    }
+}

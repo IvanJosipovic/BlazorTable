@@ -272,7 +272,7 @@ namespace BlazorTable
         {
             if (TableRowClass == null) return null;
 
-            if(_tableRowClassCompiled == null)
+            if (_tableRowClassCompiled == null)
                 _tableRowClassCompiled = TableRowClass.Compile();
 
             return _tableRowClassCompiled.Invoke(item);
@@ -282,5 +282,27 @@ namespace BlazorTable
         /// Save compiled TableRowClass property to avoid repeated Compile() calls
         /// </summary>
         private Func<TableItem, string> _tableRowClassCompiled;
+
+        /// <summary>
+        /// Set the template to use for empty data
+        /// </summary>
+        /// <param name="emptyDataTemplate"></param>
+        public void SetEmptyDataTemplate(EmptyDataTemplate emptyDataTemplate)
+        {
+            _emptyDataTemplate = emptyDataTemplate?.Template;
+        }
+
+        private RenderFragment _emptyDataTemplate;
+        
+        /// <summary>
+        /// Set the template to use for loading data
+        /// </summary>
+        /// <param name="emptyDataTemplate"></param>
+        public void SetLoadingDataTemplate(LoadingDataTemplate emptyDataTemplate)
+        {
+            _loadingDataTemplate = emptyDataTemplate?.Template;
+        }
+
+        private RenderFragment _loadingDataTemplate;
     }
 }

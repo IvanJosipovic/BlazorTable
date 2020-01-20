@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,9 +8,8 @@ namespace BlazorTable
 {
     public partial class BooleanFilter<TableItem> : IFilter<TableItem>
     {
-        [CascadingParameter(Name = "Column")] public IColumn<TableItem> Column { get; set; }
-
-        [Inject] public ILogger<NumberFilter<TableItem>> Logger { get; set; }
+        [CascadingParameter(Name = "Column")]
+        public IColumn<TableItem> Column { get; set; }
 
         private BooleanCondition Condition { get; set; }
 
