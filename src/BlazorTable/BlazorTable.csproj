@@ -5,6 +5,7 @@
     <RazorLangVersion>3.0</RazorLangVersion>
     <IsPackable>true</IsPackable>
     <Title>BlazorTable</Title>
+    <PackageId>BlazorTable</PackageId>
     <Description>Blazor Table Component with Sorting, Paging and Filtering</Description>
     <Authors>Ivan Josipovic</Authors>
     <PackageProjectUrl>https://BlazorTable.netlify.com</PackageProjectUrl>
