@@ -1,0 +1,49 @@
+﻿@page "/JObject"
+@using BlazorTable
+@using Newtonsoft.Json.Linq
+ 
+<h1>JObject</h1>
+
+<br />
+<Table TableItem="JObject" Items="data" PageSize="15" ColumnReorder="true">
+    <Column TableItem="JObject" Title="Column1" Field="@(x => x.Property("Column1").Value.Value<string>())" Type="@(typeof(string))" Sortable="true" Filterable="true" DefaultSortColumn="true" />
+    <Column TableItem="JObject" Title="Column2" Field="@(x => x.Property("Column2").Value.Value<int>())" Type="@(typeof(int))" Sortable="true" Filterable="true" />
+    <Column TableItem="JObject" Title="Column3" Field="@(x => x.Property("Column3").Value.Value<JObject>().Property("Name").Value.Value<string>())" Type="@(typeof(string))" Sortable="true" Filterable="true" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    private List<JObject> data = new List<JObject>();
+
+    protected override void OnInitialized()
+    {
+        var row1 = new JObject();
+        row1["Column1"] = "B";
+        row1["Column2"] = 2;
+        row1["Column3"] = new JObject();
+        row1["Column3"]["Name"] = "D";
+        data.Add(row1);
+
+        var row2 = new JObject();
+        row2["Column1"] = "B";
+        row2["Column2"] = 1;
+        row2["Column3"] = new JObject();
+        row2["Column3"]["Name"] = "D";
+        data.Add(row2);
+
+        var row3 = new JObject();
+        row3["Column1"] = "A";
+        row3["Column2"] = 2;
+        row3["Column3"] = new JObject();
+        row3["Column3"]["Name"] = "C";
+        data.Add(row3);
+
+        var row4 = new JObject();
+        row4["Column1"] = "A";
+        row4["Column2"] = 1;
+        row4["Column3"] = new JObject();
+        row4["Column3"]["Name"] = "C";
+        data.Add(row4);
+    }
+}
