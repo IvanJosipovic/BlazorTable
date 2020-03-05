@@ -126,7 +126,8 @@ namespace BlazorTable
         /// <summary>
         /// Column Data Type
         /// </summary>
-        public Type Type { get; private set; }
+        [Parameter]
+        public Type Type { get; set; }
 
         /// <summary>
         /// Filter Icon Element
@@ -165,7 +166,10 @@ namespace BlazorTable
                 throw new InvalidOperationException("A Column has both Title and Property parameters null");
             }
 
-            Type = Field?.GetPropertyMemberInfo().GetMemberUnderlyingType();
+            if (Type == null)
+            {
+                Type = Field?.GetPropertyMemberInfo().GetMemberUnderlyingType();
+            }
         }
 
         /// <summary>
