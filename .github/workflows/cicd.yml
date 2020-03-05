@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: 3.1.102
 
     - name: SonarQube Install
       run: dotnet tool install dotnet-sonarscanner --tool-path ./
