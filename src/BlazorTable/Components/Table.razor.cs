@@ -143,11 +143,14 @@ namespace BlazorTable
             return Items;
         }
 
+        private bool[] detailsViewOpen;
+
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
         public void Update()
         {
+            detailsViewOpen = new bool[PageSize];
             TempItems = GetData();
             Refresh();
         }
@@ -240,7 +243,7 @@ namespace BlazorTable
         private IColumn<TableItem> DragSource;
 
         /// <summary>
-        /// Handles the Column Reoder Drag Start and set Dragsource
+        /// Handles the Column Reorder Drag Start and set DragSource
         /// </summary>
         /// <param name="column"></param>
         private void HandleDragStart(IColumn<TableItem> column)
@@ -297,12 +300,24 @@ namespace BlazorTable
         /// <summary>
         /// Set the template to use for loading data
         /// </summary>
-        /// <param name="emptyDataTemplate"></param>
-        public void SetLoadingDataTemplate(LoadingDataTemplate emptyDataTemplate)
+        /// <param name="loadingDataTemplate"></param>
+        public void SetLoadingDataTemplate(LoadingDataTemplate loadingDataTemplate)
         {
-            _loadingDataTemplate = emptyDataTemplate?.Template;
+            _loadingDataTemplate = loadingDataTemplate?.Template;
         }
 
         private RenderFragment _loadingDataTemplate;
+
+        /// <summary>
+        /// Set the template to use for detail
+        /// </summary>
+        /// <param name="detailTemplate"></param>
+        public void SetDetailTemplate(DetailTemplate<TableItem> detailTemplate)
+        {
+            _detailTemplate = detailTemplate?.Template;
+        }
+
+        private RenderFragment<TableItem> _detailTemplate;
+
     }
 }
