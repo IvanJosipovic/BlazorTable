@@ -1,7 +1,6 @@
 ﻿@page "/EditMode"
-@inject HttpClient Http
+
 @using BlazorTable
-@using System.ComponentModel
 
 <h1>Edit Mode</h1>
 
@@ -53,6 +52,9 @@
 
 @code
 {
+    [Inject]
+    private HttpClient Http { get; set; }
+
     private ITable<PersonData> Table;
 
     private PersonData[] data;
