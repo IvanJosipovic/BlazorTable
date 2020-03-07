@@ -28,8 +28,11 @@ namespace BlazorTable
         private void ClearFilter()
         {
             Column.ToggleFilter();
-            Column.Filter = null;
-            Column.Table.Update();
+            if (Column.Filter != null)
+            {
+                Column.Filter = null;
+                Column.Table.Update();
+            }
         }
     }
 }
