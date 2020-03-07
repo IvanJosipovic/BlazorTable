@@ -37,5 +37,11 @@ namespace BlazorTable
         /// Collection to display in the table
         /// </summary>
         IEnumerable<TableItem> Items { get; set; }
+
+        /// <summary>
+        /// Set the SetDetailTemplate for the table
+        /// </summary>
+        /// <param name="template"></param>
+        void SetDetailTemplate(DetailTemplate<TableItem> template);
     }
 }
