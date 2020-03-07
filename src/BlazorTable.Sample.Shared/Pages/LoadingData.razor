@@ -11,11 +11,9 @@
     <Column TableItem="SampleData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="SampleData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <LoadingDataTemplate>
-        <Template>
-            <div class="text-center">
-                <h1>Custom Loading Template</h1>
-            </div>
-        </Template>
+        <div class="text-center">
+            <h1>Custom Loading Template</h1>
+        </div>
     </LoadingDataTemplate>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>

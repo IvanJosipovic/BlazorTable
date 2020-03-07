@@ -31,14 +31,12 @@
         </Template>
     </Column>
     <DetailTemplate TableItem="PersonData">
-        <Template Context="personContext">
-            <strong>Name</strong> @personContext.full_name
-            <br />
-            <strong>Email</strong> @personContext.email
-            <br />
-            <strong>Created Date</strong>@personContext.created_date
-            <br />
-        </Template>
+        <strong>Name</strong> @context.full_name
+        <br />
+        <strong>Email</strong> @context.email
+        <br />
+        <strong>Created Date</strong>@context.created_date
+        <br />
     </DetailTemplate>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>

@@ -292,7 +292,7 @@ namespace BlazorTable
         /// <param name="emptyDataTemplate"></param>
         public void SetEmptyDataTemplate(EmptyDataTemplate emptyDataTemplate)
         {
-            _emptyDataTemplate = emptyDataTemplate?.Template;
+            _emptyDataTemplate = emptyDataTemplate?.ChildContent;
         }
 
         private RenderFragment _emptyDataTemplate;
@@ -303,7 +303,7 @@ namespace BlazorTable
         /// <param name="loadingDataTemplate"></param>
         public void SetLoadingDataTemplate(LoadingDataTemplate loadingDataTemplate)
         {
-            _loadingDataTemplate = loadingDataTemplate?.Template;
+            _loadingDataTemplate = loadingDataTemplate?.ChildContent;
         }
 
         private RenderFragment _loadingDataTemplate;
@@ -314,7 +314,7 @@ namespace BlazorTable
         /// <param name="detailTemplate"></param>
         public void SetDetailTemplate(DetailTemplate<TableItem> detailTemplate)
         {
-            _detailTemplate = detailTemplate?.Template;
+            _detailTemplate = detailTemplate?.ChildContent;
         }
 
         private RenderFragment<TableItem> _detailTemplate;
