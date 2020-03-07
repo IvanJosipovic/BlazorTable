@@ -5,7 +5,6 @@ namespace BlazorTable
     /// <summary>
     /// Child content for null dataset
     /// </summary>
-    /// <typeparam name="TableItem"></typeparam>
     public partial class LoadingDataTemplate
     {
         /// <summary>
