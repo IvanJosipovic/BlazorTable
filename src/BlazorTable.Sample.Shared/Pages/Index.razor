@@ -11,7 +11,7 @@
 <br />
 <br />
 
-<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" TableRowClass="@(x => x.RowClass)">
+<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" TableRowClass="@(x => x.RowClass)" RowClickAction="(async (x) => await RowClickAsync(x))">
     <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
@@ -87,6 +87,7 @@
         public decimal? price { get; set; }
         public CreditCard? cc_type { get; set; }
         public DateTime? created_date { get; set; }
+        public bool is_clicked { get; set; }
 
         /// <summary>
         /// Returns row CSS if price over 800
@@ -101,5 +102,17 @@
         [Description("MasterCard")]
         MasterCard = 1,
         Visa = 2
+    }
+
+    public void RowClick(PersonData personData)
+    {
+        personData.is_clicked = !personData.is_clicked;
+    }
+
+    public async Task RowClickAsync(PersonData personData)
+    {
+        personData.is_clicked = !personData.is_clicked;
+
+        await Task.CompletedTask;
     }
 }
