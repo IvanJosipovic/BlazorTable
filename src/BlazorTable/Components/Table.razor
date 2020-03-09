@@ -45,13 +45,13 @@
             </tr>
         </thead>
         <tbody class="@TableBodyClass">
-            @if (TempItems != null)
+            @if (FilteredItems != null)
             {
-                if (TempItems.Any())
+                if (FilteredItems.Any())
                 {
                     int i = 0;
 
-                    foreach (TableItem item in TempItems)
+                    foreach (TableItem item in FilteredItems)
                     {
                         <tr @key="item" class="@RowClass(item)">
 

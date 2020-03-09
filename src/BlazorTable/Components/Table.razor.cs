@@ -68,7 +68,10 @@ namespace BlazorTable
         [Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
-        private IEnumerable<TableItem> TempItems { get; set; }
+        /// <summary>
+        /// Collection of filtered items
+        /// </summary>
+        public IEnumerable<TableItem> FilteredItems { get; private set; }
 
         /// <summary>
         /// List of All Available Columns
@@ -151,7 +154,7 @@ namespace BlazorTable
         public void Update()
         {
             detailsViewOpen = new bool[PageSize];
-            TempItems = GetData();
+            FilteredItems = GetData();
             Refresh();
         }
 

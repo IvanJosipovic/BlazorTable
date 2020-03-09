@@ -39,6 +39,11 @@ namespace BlazorTable
         IEnumerable<TableItem> Items { get; set; }
 
         /// <summary>
+        /// Collection of filtered items
+        /// </summary>
+        IEnumerable<TableItem> FilteredItems { get; }
+
+        /// <summary>
         /// Set the SetDetailTemplate for the table
         /// </summary>
         /// <param name="template"></param>
