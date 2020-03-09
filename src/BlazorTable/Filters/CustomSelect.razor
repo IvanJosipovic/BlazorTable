@@ -1,0 +1,26 @@
+﻿@namespace BlazorTable
+@typeparam TableItem
+
+@if (Column.FilterControl == this)
+{
+    <select class="form-control form-control-sm" value="@Condition" @onchange="@((x) => Condition = (CustomSelectCondition)Enum.Parse(typeof(CustomSelectCondition), x.Value.ToString()))">
+        @foreach (CustomSelectCondition option in Enum.GetValues(typeof(CustomSelectCondition)))
+        {
+            <option value="@option">@option.GetDescription()</option>
+        }
+    </select>
+
+    @if (Condition != CustomSelectCondition.IsNull && Condition != CustomSelectCondition.IsNotNull)
+    {
+        <select class="form-control form-control-sm" @onchange="@((x) => FilterValue = x.Value)">
+            @foreach (var option in Items)
+            {
+                <option value="@option.Value" selected="@(option.Value.Equals(FilterValue))">@option.Key</option>
+            }
+        </select>
+    }
+}
+
+<CascadingValue Value="(ICustomSelect)this" Name="CustomSelect">
+    @ChildContent
+</CascadingValue>

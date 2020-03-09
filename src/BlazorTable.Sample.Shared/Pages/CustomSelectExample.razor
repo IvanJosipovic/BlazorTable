@@ -1,0 +1,53 @@
+﻿@page "/CustomSelect"
+
+@using BlazorTable
+
+<h1>CustomSelect</h1>
+
+<p>The <code>CustomSelect</code> can be used to display custom filter options.</p>
+<br />
+<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true">
+    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%">
+        <CustomIFilters>
+            <CustomSelect TableItem="PersonData">
+                <CustomSelectOption Key="Astrix Mariette" Value="@("Astrix Mariette")" />
+                <CustomSelectOption Key="Marja Mustill" Value="@("Marja Mustill")" />
+                <CustomSelectOption Key="Creighton Keyzman" Value="@("Creighton Keyzman")" />
+                <CustomSelectOption Key="Jacobo Linton" Value="@("Jacobo Linton")" />
+                <CustomSelectOption Key="Michael O'Dyvoy" Value="@("Michael O'Dyvoy")" />
+            </CustomSelect>
+        </CustomIFilters>
+    </Column>
+</Table>
+
+@code
+{
+    [Inject]
+    private HttpClient Http { get; set; }
+
+    private PersonData[] data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await Http.GetJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+    }
+
+    public class PersonData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+        public string email { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public CreditCard? cc_type { get; set; }
+        public DateTime? created_date { get; set; }
+    }
+
+    public enum CreditCard
+    {
+        none = 0,
+        [Description("MasterCard")]
+        MasterCard = 1,
+        Visa = 2
+    }
+}
