@@ -5,7 +5,6 @@ namespace BlazorTable
     /// <summary>
     /// BlazorTable Pager
     /// </summary>
-    /// <typeparam name="TableItem"></typeparam>
     public partial class Pager
     {
         [CascadingParameter(Name = "Table")]

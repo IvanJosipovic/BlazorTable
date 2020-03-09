@@ -10,11 +10,9 @@
     <Column TableItem="SampleData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="SampleData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <EmptyDataTemplate>
-        <Template>
-            <div class="text-center">
-                No rows found!
-            </div>
-        </Template>
+        <div class="text-center">
+            No rows found!
+        </div>
     </EmptyDataTemplate>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>

@@ -5,7 +5,6 @@ namespace BlazorTable
     /// <summary>
     /// Child content for null dataset
     /// </summary>
-    /// <typeparam name="TableItem"></typeparam>
     public partial class LoadingDataTemplate
     {
         /// <summary>
@@ -18,7 +17,7 @@ namespace BlazorTable
         /// Content to show
         /// </summary>
         [Parameter]
-        public RenderFragment Template { get; set; }
+        public RenderFragment ChildContent { get; set; }
 
         /// <summary>
         /// When initialized, tell table of this item

@@ -1,7 +1,7 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
 
-@if (Column.Type.IsNumeric() && !Column.Type.GetNonNullableType().IsEnum)
+@if (Column.FilterControl == this)
 {
     <select class="form-control form-control-sm" value="@Condition" @onchange="@((x) => Condition = (NumberCondition)Enum.Parse(typeof(NumberCondition), x.Value.ToString()))">
         @foreach (var option in (NumberCondition[])Enum.GetValues(typeof(NumberCondition)))

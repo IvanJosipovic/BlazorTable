@@ -18,7 +18,7 @@ namespace BlazorTable
         /// Content to show
         /// </summary>
         [Parameter]
-        public RenderFragment<TableItem> Template { get; set; }
+        public RenderFragment<TableItem> ChildContent { get; set; }
 
         /// <summary>
         /// When initialized, tell table of this item
