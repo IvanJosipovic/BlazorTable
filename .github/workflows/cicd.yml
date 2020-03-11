@@ -26,6 +26,9 @@ jobs:
     - name: SonarQube Start
       run: ./dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
 
+    - name: Dotnet Build
+      run: dotnet build -c Release
+
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish -c Release
