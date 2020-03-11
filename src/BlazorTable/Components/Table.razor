@@ -6,6 +6,12 @@
     <table class="@TableClass" @attributes="UnknownParameters">
         <thead class="@TableHeadClass">
             <tr style="cursor: pointer;">
+
+                @if (_detailTemplate != null)
+                {
+                    <th style="width: 1%">
+                    </th>
+                }
                 @foreach (IColumn<TableItem> column in Columns)
                 {
                     <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
@@ -39,35 +45,52 @@
             </tr>
         </thead>
         <tbody class="@TableBodyClass">
-            @if (TempItems != null)
+            @if (FilteredItems != null)
             {
-                if (TempItems.Any())
+                if (FilteredItems.Any())
                 {
-                    foreach (TableItem item in TempItems)
+                    int i = 0;
+
+                    foreach (TableItem item in FilteredItems)
                     {
                         <tr @key="item" class="@RowClass(item)">
+
+                            @{int locali = i;}
+                            @if (_detailTemplate != null)
+                            {
+                                <td>
+                                    <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="Details View"><span style="">@(detailsViewOpen[locali] ? "➖" : "➕")</span></a>
+                                </td>
+                            }
+
                             @foreach (IColumn<TableItem> column in Columns)
                             {
-                                <td @key="column" style="@(column.Align == Align.Left ? "text-align: left;" : column.Align == Align.Center ? "text-align: center;" : column.Align == Align.Right ? "text-align: right;" : string.Empty)"
+                                <td @key="column"
+                                    style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
                                     class="@(column.Class)">
-                                    @if (IsEditMode && column.EditTemplate != null)
-                                    {
+
+                                    @if (IsEditMode && column.EditTemplate != null)                                        
                                         @column.EditTemplate(item)
-                                    }
                                     else
-                                    {
                                         if (column.Template == null)
-                                        {
-                                            @column.Render(item);
-                                        }
+                                            @column.Render(item)
                                         else
-                                        {
-                                            @column.Template(item);
-                                        }
-                                    }
+                                            @column.Template(item)
                                 </td>
                             }
                         </tr>
+
+                        if (_detailTemplate != null && detailsViewOpen[locali])
+                        {
+                            <tr>
+                                <td></td>
+                                <td colspan="@(Columns.Count)">
+                                    @_detailTemplate(item)
+                                </td>
+                            </tr>
+                        }
+
+                        { i = locali + 1; }
                     }
                 }
                 else if (_emptyDataTemplate != null)

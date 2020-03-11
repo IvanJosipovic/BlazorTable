@@ -18,10 +18,11 @@
     "BlazorTable.Sample.Server": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:51075/",
+      "launchUrl": "/CustomSelect",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:51075/"
     }
   }
 }

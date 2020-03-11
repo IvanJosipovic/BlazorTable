@@ -5,6 +5,7 @@
     <RazorLangVersion>3.0</RazorLangVersion>
     <IsPackable>true</IsPackable>
     <Title>BlazorTable</Title>
+    <PackageId>BlazorTable</PackageId>
     <Description>Blazor Table Component with Sorting, Paging and Filtering</Description>
     <Authors>Ivan Josipovic</Authors>
     <PackageProjectUrl>https://BlazorTable.netlify.com</PackageProjectUrl>
@@ -21,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

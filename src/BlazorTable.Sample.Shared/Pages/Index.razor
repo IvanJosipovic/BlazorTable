@@ -1,7 +1,6 @@
 ﻿@page "/"
-@inject HttpClient Http
+
 @using BlazorTable
-@using System.ComponentModel
 
 <h1>BlazorTable</h1>
 
@@ -36,11 +35,42 @@
             @context.cc_type
         </Template>
     </Column>
+    <DetailTemplate TableItem="PersonData" Context="context2">
+        <Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" TableRowClass="@(x => x.RowClass)" style="background-color: white;">
+            <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
+            <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
+            <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
+                <Template>
+                    <a href="mailto:@context.email">@context.email</a>
+                </Template>
+            </Column>
+            <Column TableItem="PersonData" Title="Paid" Field="@(x => x.paid)" Sortable="true" Filterable="true" Width="10%">
+                <Template>
+                    @context.paid.ToString()
+                </Template>
+            </Column>
+            <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%" Format="C" Align="Align.Right" />
+            <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Sortable="true" Filterable="true" Width="10%">
+                <Template>
+                    @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
+                </Template>
+            </Column>
+            <Column TableItem="PersonData" Title="Enum" Field="@(x => x.cc_type)" Sortable="true" Filterable="true" Width="10%">
+                <Template>
+                    @context.cc_type
+                </Template>
+            </Column>
+            <Pager ShowPageNumber="true" ShowTotalCount="true" />
+        </Table>
+    </DetailTemplate>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
 @code
 {
+    [Inject]
+    private HttpClient Http { get; set; }
+
     private PersonData[] data;
 
     protected override async Task OnInitializedAsync()

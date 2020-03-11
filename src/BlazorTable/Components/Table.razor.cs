@@ -68,7 +68,10 @@ namespace BlazorTable
         [Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
-        private IEnumerable<TableItem> TempItems { get; set; }
+        /// <summary>
+        /// Collection of filtered items
+        /// </summary>
+        public IEnumerable<TableItem> FilteredItems { get; private set; }
 
         /// <summary>
         /// List of All Available Columns
@@ -143,12 +146,15 @@ namespace BlazorTable
             return Items;
         }
 
+        private bool[] detailsViewOpen;
+
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
         public void Update()
         {
-            TempItems = GetData();
+            detailsViewOpen = new bool[PageSize];
+            FilteredItems = GetData();
             Refresh();
         }
 
@@ -240,7 +246,7 @@ namespace BlazorTable
         private IColumn<TableItem> DragSource;
 
         /// <summary>
-        /// Handles the Column Reoder Drag Start and set Dragsource
+        /// Handles the Column Reorder Drag Start and set DragSource
         /// </summary>
         /// <param name="column"></param>
         private void HandleDragStart(IColumn<TableItem> column)
@@ -289,7 +295,7 @@ namespace BlazorTable
         /// <param name="emptyDataTemplate"></param>
         public void SetEmptyDataTemplate(EmptyDataTemplate emptyDataTemplate)
         {
-            _emptyDataTemplate = emptyDataTemplate?.Template;
+            _emptyDataTemplate = emptyDataTemplate?.ChildContent;
         }
 
         private RenderFragment _emptyDataTemplate;
@@ -297,12 +303,24 @@ namespace BlazorTable
         /// <summary>
         /// Set the template to use for loading data
         /// </summary>
-        /// <param name="emptyDataTemplate"></param>
-        public void SetLoadingDataTemplate(LoadingDataTemplate emptyDataTemplate)
+        /// <param name="loadingDataTemplate"></param>
+        public void SetLoadingDataTemplate(LoadingDataTemplate loadingDataTemplate)
         {
-            _loadingDataTemplate = emptyDataTemplate?.Template;
+            _loadingDataTemplate = loadingDataTemplate?.ChildContent;
         }
 
         private RenderFragment _loadingDataTemplate;
+
+        /// <summary>
+        /// Set the template to use for detail
+        /// </summary>
+        /// <param name="detailTemplate"></param>
+        public void SetDetailTemplate(DetailTemplate<TableItem> detailTemplate)
+        {
+            _detailTemplate = detailTemplate?.ChildContent;
+        }
+
+        private RenderFragment<TableItem> _detailTemplate;
+
     }
 }
