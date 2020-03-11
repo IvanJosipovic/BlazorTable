@@ -36,12 +36,12 @@ jobs:
 
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
-      run: dotnet publish --configuration Release
+      run: dotnet publish -c Release
 
     - name: Deploy to Production
       uses: netlify/actions/cli@master
       with:
-        args: deploy --prod --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/BlazorTable.Sample.Wasm/dist/
+        args: deploy --prod --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/wwwroot
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
