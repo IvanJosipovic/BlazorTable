@@ -18,7 +18,6 @@
     "BlazorTable.Sample.Server": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/CustomSelect",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
