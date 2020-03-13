@@ -322,5 +322,71 @@ namespace BlazorTable
 
         private RenderFragment<TableItem> _detailTemplate;
 
+        private SelectionType _selectionType;
+
+        /// <summary>
+        /// Select Type: None, Single or Multiple
+        /// </summary>
+        [Parameter]
+        public SelectionType SelectionType
+        {
+            get { return _selectionType; }
+            set
+            {
+                _selectionType = value;
+                if (_selectionType == SelectionType.None)
+                {
+                    SelectedItems.Clear();
+                } else if (_selectionType == SelectionType.Single && SelectedItems.Count > 1)
+                {
+                    SelectedItems.RemoveRange(1, SelectedItems.Count - 1);
+                }
+                StateHasChanged();
+            }
+        }
+
+        /// <summary>
+        /// Contains Selected Items
+        /// </summary>
+        [Parameter]
+        public List<TableItem> SelectedItems { get; set; } = new List<TableItem>();
+
+        /// <summary>
+        /// Action performed when the row is clicked.
+        /// </summary>
+        [Parameter]
+        public Action<TableItem> RowClickAction { get; set; }
+
+        /// <summary>
+        /// Handles the onclick action for table rows.
+        /// This allows the RowClickAction to be optional.
+        /// </summary>
+        private void OnRowClickHandler(TableItem tableItem)
+        {
+            try
+            {
+                RowClickAction?.Invoke(tableItem);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "RowClickAction threw an exception: {0}", ex);
+            }
+
+            switch (SelectionType)
+            {
+                case SelectionType.None:
+                    return;
+                case SelectionType.Single:
+                    SelectedItems.Clear();
+                    SelectedItems.Add(tableItem);
+                    break;
+                case SelectionType.Multiple:
+                    if (SelectedItems.Contains(tableItem))
+                        SelectedItems.Remove(tableItem);
+                    else
+                        SelectedItems.Add(tableItem);
+                    break;
+            }
+        }
     }
 }

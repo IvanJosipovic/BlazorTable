@@ -53,7 +53,7 @@
 
                     foreach (TableItem item in FilteredItems)
                     {
-                        <tr @key="item" class="@RowClass(item)">
+                        <tr @key="item" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
 
                             @{int locali = i;}
                             @if (_detailTemplate != null)

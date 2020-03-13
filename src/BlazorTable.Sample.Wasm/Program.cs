@@ -1,6 +1,7 @@
 ﻿using BlazorTable.Sample.Shared;
-using Microsoft.AspNetCore.Blazor.Hosting;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorTable.Sample.Wasm
 {
@@ -10,6 +11,8 @@ namespace BlazorTable.Sample.Wasm
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
+
+            builder.Services.AddBaseAddressHttpClient();
 
             await builder.Build().RunAsync();
         }

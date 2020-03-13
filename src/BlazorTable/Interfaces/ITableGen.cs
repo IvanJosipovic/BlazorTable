@@ -44,6 +44,16 @@ namespace BlazorTable
         IEnumerable<TableItem> FilteredItems { get; }
 
         /// <summary>
+        /// Action performed when the row is clicked
+        /// </summary>
+        Action<TableItem> RowClickAction { get; set; }
+
+        /// <summary>
+        /// Collection of selected items
+        /// </summary>
+        List<TableItem> SelectedItems { get; }
+
+        /// <summary>
         /// Set the SetDetailTemplate for the table
         /// </summary>
         /// <param name="template"></param>

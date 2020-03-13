@@ -29,24 +29,26 @@ jobs:
       working-directory: src/BlazorTable
       run: dotnet pack -c Release -p:Version=${{ steps.version.outputs.new_tag }}
 
-    - name: Dotnet Nuget Push   
+    - name: Dotnet Nuget Push
+      if: "!contains(github.event.head_commit.message, '#skip')"
       working-directory: src/BlazorTable/bin/Release
       run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
       continue-on-error: true
 
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
-      run: dotnet publish --configuration Release
+      run: dotnet publish -c Release
 
     - name: Deploy to Production
       uses: netlify/actions/cli@master
       with:
-        args: deploy --prod --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/BlazorTable.Sample.Wasm/dist/
+        args: deploy --prod --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/wwwroot
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
     - name: Create Release
+      if: "!contains(github.event.head_commit.message, '#skip')"
       uses: actions/create-release@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
