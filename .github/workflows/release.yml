@@ -29,7 +29,8 @@ jobs:
       working-directory: src/BlazorTable
       run: dotnet pack -c Release -p:Version=${{ steps.version.outputs.new_tag }}
 
-    - name: Dotnet Nuget Push   
+    - name: Dotnet Nuget Push
+      if: "!contains(github.event.head_commit.message, '#skip')"
       working-directory: src/BlazorTable/bin/Release
       run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
       continue-on-error: true
@@ -47,6 +48,7 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
     - name: Create Release
+      if: "!contains(github.event.head_commit.message, '#skip')"
       uses: actions/create-release@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
