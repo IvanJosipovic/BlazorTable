@@ -35,6 +35,7 @@
             @context.cc_type
         </Template>
     </Column>
+    <Column TableItem="PersonData" Title="Is Clicked" Field="@(x => x.is_clicked)" Sortable="true" Filterable="true" Width="10%" />
     <DetailTemplate TableItem="PersonData" Context="context2">
         <Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" TableRowClass="@(x => x.RowClass)" style="background-color: white;">
             <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
@@ -60,6 +61,7 @@
                     @context.cc_type
                 </Template>
             </Column>
+            <Column TableItem="PersonData" Title="Is Clicked" Field="@(x => x.is_clicked)" Sortable="true" Filterable="true" Width="10%" />
             <Pager ShowPageNumber="true" ShowTotalCount="true" />
         </Table>
     </DetailTemplate>
