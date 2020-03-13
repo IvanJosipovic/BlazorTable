@@ -69,6 +69,12 @@ namespace BlazorTable
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
         /// <summary>
+        /// Action performed when the row is clicked.
+        /// </summary>
+        [Parameter]
+        public Action<TableItem> RowClickAction { get; set; }
+
+        /// <summary>
         /// Collection of filtered items
         /// </summary>
         public IEnumerable<TableItem> FilteredItems { get; private set; }
@@ -238,6 +244,18 @@ namespace BlazorTable
         public void Refresh()
         {
             StateHasChanged();
+        }
+
+        /// <summary>
+        /// Handles the onclick action for table rows.
+        /// This allows the RowClickAction to be optional.
+        /// </summary>
+        public void OnRowClickHandler(TableItem tableItem)
+        {
+            if (RowClickAction != null)
+            {
+                RowClickAction(tableItem);
+            }
         }
 
         /// <summary>

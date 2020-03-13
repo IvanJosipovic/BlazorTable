@@ -53,7 +53,7 @@
 
                     foreach (TableItem item in FilteredItems)
                     {
-                        <tr @key="item" class="@RowClass(item)">
+                        <tr @key="item" class="@RowClass(item)" @onclick="(() => OnRowClickHandler(item))">
 
                             @{int locali = i;}
                             @if (_detailTemplate != null)
