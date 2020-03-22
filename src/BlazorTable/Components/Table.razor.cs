@@ -165,6 +165,12 @@ namespace BlazorTable
         public void AddColumn(IColumn<TableItem> column)
         {
             column.Table = this;
+
+            if (column.Type == null)
+            {
+                column.Type = column.Field?.GetPropertyMemberInfo().GetMemberUnderlyingType();
+            }
+
             Columns.Add(column);
             Refresh();
         }

@@ -58,7 +58,7 @@ namespace BlazorTable
         /// <summary>
         /// Column Data Type
         /// </summary>
-        Type Type { get; }
+        Type Type { get; set; }
 
         /// <summary>
         /// Field which this column is for<br />
