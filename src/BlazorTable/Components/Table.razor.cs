@@ -164,6 +164,7 @@ namespace BlazorTable
         /// <param name="column"></param>
         public void AddColumn(IColumn<TableItem> column)
         {
+            column.Table = this;
             Columns.Add(column);
             Refresh();
         }
