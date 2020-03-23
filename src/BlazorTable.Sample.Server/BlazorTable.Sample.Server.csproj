@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview1.20073.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BlazorTable.Sample.Shared\BlazorTable.Sample.Shared.csproj" />
   </ItemGroup>
 

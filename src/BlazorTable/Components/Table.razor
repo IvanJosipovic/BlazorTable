@@ -38,6 +38,24 @@
                                 <div class="float-right" @onclick="@((x) => column.ToggleFilter())" @onclick:stopPropagation>
                                     <a href="javascript:;" @ref="column.FilterRef" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
                                 </div>
+                                <CascadingValue Value="column" Name="Column">
+                                    <Popover Reference="@column.FilterRef" IsOpen="@column.FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
+                                        <h3 class="popover-header">Filter</h3>
+                                        <div class="popover-body">
+                                            <FilterManager TableItem="TableItem">
+                                                <StringFilter TableItem="TableItem" />
+                                                <BooleanFilter TableItem="TableItem" />
+                                                <NumberFilter TableItem="TableItem" />
+                                                <DateFilter TableItem="TableItem" />
+                                                <EnumFilter TableItem="TableItem" />
+                                                @if (column.CustomIFilters != null)
+                                                {
+                                                    @column.CustomIFilters(column)
+                                                }
+                                            </FilterManager>
+                                        </div>
+                                    </Popover>
+                                </CascadingValue>
                             }
                         </div>
                     </th>
@@ -53,7 +71,7 @@
 
                     foreach (TableItem item in FilteredItems)
                     {
-                        <tr @key="item" class="@RowClass(item)">
+                        <tr @key="item" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
 
                             @{int locali = i;}
                             @if (_detailTemplate != null)

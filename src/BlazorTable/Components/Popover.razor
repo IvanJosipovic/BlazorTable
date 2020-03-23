@@ -2,7 +2,7 @@
 
 @if (IsOpen ?? false)
 {
-    <div @attributes="@UnknownParameters" class="@Classname" role="tooltip" @onclick="OnClick" @ref="MyRef">
+    <div @attributes="@UnknownParameters" class="@Classname" role="tooltip" @onclick="OnClick" @ref="MyRef" @onclick:stopPropagation>
         <div @ref="Arrow" class="arrow"></div>
         @ChildContent
     </div>

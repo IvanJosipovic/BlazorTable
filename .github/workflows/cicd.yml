@@ -24,16 +24,18 @@ jobs:
       run: dotnet tool install dotnet-sonarscanner --tool-path ./
 
     - name: SonarQube Start
+      continue-on-error: true
       run: ./dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
 
     - name: Dotnet Build
-      run: dotnet build --configuration Release
+      run: dotnet build -c Release
 
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
-      run: dotnet publish --configuration Release
+      run: dotnet publish -c Release
 
     - name: SonarQube End
+      continue-on-error: true
       run: ./dotnet-sonarscanner end /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -42,7 +44,7 @@ jobs:
       id: netlify
       uses: ivanjosipovic/actions/cli@master
       with:
-        args: deploy --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/BlazorTable.Sample.Wasm/dist/
+        args: deploy --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/wwwroot
       env:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

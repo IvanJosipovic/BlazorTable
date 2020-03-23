@@ -101,5 +101,10 @@ namespace BlazorTable
         /// </summary>
         /// <param name="template"></param>
         void SetLoadingDataTemplate(LoadingDataTemplate template);
+
+        /// <summary>
+        /// Select Type: None, Single or Multiple
+        /// </summary>
+        public SelectionType SelectionType { get; set; }
     }
 }

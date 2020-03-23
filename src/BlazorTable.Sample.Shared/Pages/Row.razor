@@ -1,0 +1,80 @@
+﻿@page "/Row"
+
+@using BlazorTable
+
+<h1>Row</h1>
+
+Selection Type:
+<select class="form-control form-control-sm" @onchange="@((x) => selectionType = (SelectionType)Enum.Parse(typeof(SelectionType), x.Value.ToString()))">
+    @foreach (var option in Enum.GetValues(typeof(SelectionType)))
+    {
+        <option value="@option">@option</option>
+    }
+</select>
+
+Last Clicked: @selected?.full_name
+<br />
+Selected: @(selectedItems.Any() ? selectedItems.Select(x => x.full_name).Aggregate((c, n) => $"{c},{n}") : "None")
+
+<Table TableItem="PersonData" Items="data" PageSize="15" SelectionType="selectionType" RowClickAction="RowClick" SelectedItems="selectedItems">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
+    <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
+        <Template>
+            <a href="mailto:@context.email">@context.email</a>
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Paid" Field="@(x => x.paid)" Sortable="true" Filterable="true" Width="10%" />
+    <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%" Format="C" Align="Align.Right" />
+    <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Sortable="true" Filterable="true" Width="10%">
+        <Template>
+            @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Enum" Field="@(x => x.cc_type)" Sortable="true" Filterable="true" Width="10%" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    [Inject]
+    private HttpClient Http { get; set; }
+
+    private PersonData[] data;
+
+    private SelectionType selectionType;
+
+    private PersonData selected;
+
+    private List<PersonData> selectedItems = new List<PersonData>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await Http.GetJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+    }
+
+    public class PersonData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+        public string email { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public CreditCard? cc_type { get; set; }
+        public DateTime? created_date { get; set; }
+    }
+
+    public enum CreditCard
+    {
+        none = 0,
+        [Description("MasterCard")]
+        MasterCard = 1,
+        Visa = 2
+    }
+
+    public void RowClick(PersonData data)
+    {
+        selected = data;
+        StateHasChanged();
+    }
+}
