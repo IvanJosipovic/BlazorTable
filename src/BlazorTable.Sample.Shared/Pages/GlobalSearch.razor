@@ -4,9 +4,7 @@
 
 <h1>Global Search</h1>
 
-Search: <input type="text" class="form-controls" value="@Table?.GlobalSearch" @onchange="@(x => Table.GlobalSearch = x.Value.ToString())" />
-
-<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" @ref="Table">
+<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" ShowSearchBar="true">
     <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
@@ -37,8 +35,6 @@ Search: <input type="text" class="form-controls" value="@Table?.GlobalSearch" @o
 {
     [Inject]
     private HttpClient Http { get; set; }
-
-    private ITable<PersonData> Table;
 
     private PersonData[] data;
 

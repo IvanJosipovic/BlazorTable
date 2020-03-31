@@ -450,5 +450,11 @@ namespace BlazorTable
 
             return expression;
         }
+
+        /// <summary>
+        /// Shows Search Bar above the table
+        /// </summary>
+        [Parameter]
+        public bool ShowSearchBar { get; set; }
     }
 }

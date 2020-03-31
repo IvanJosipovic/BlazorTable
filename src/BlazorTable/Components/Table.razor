@@ -4,6 +4,15 @@
 @if (Columns.Any())
 {
     <table class="@TableClass" @attributes="UnknownParameters">
+        @if (ShowSearchBar)
+        {
+            <thead>
+                <tr>
+                    <th colspan="@Columns.Count"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." /></th>
+                </tr>
+            </thead>
+        }
+
         <thead class="@TableHeadClass">
             <tr style="cursor: pointer;">
 

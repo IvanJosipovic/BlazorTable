@@ -107,5 +107,11 @@ namespace BlazorTable
         /// Search all columns for the specified string, supports spaces as a delimiter
         /// </summary>
         string GlobalSearch { get; set; }
+
+
+        /// <summary>
+        /// Shows Search Bar above the table
+        /// </summary>
+        bool ShowSearchBar { get; set; }
     }
 }
