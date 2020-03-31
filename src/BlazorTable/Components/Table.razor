@@ -3,151 +3,153 @@
 
 @if (Columns.Any())
 {
-    <table class="@TableClass" @attributes="UnknownParameters">
-        @if (ShowSearchBar)
-        {
-            <thead>
-                <tr>
-                    <th colspan="@Columns.Count"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." /></th>
+    <div class="table-responsive">
+        <table class="@TableClass" @attributes="UnknownParameters">
+            @if (ShowSearchBar)
+            {
+                <thead>
+                    <tr>
+                        <th colspan="@Columns.Count"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." /></th>
+                    </tr>
+                </thead>
+            }
+
+            <thead class="@TableHeadClass">
+                <tr style="cursor: pointer;">
+
+                    @if (_detailTemplate != null)
+                    {
+                        <th style="width: 1%">
+                        </th>
+                    }
+                    @foreach (IColumn<TableItem> column in Columns)
+                    {
+                        <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
+                            @ondrop="@(() => HandleDrop(column))"
+                            @ondragstart="@(() => HandleDragStart(column))"
+                            ondragover="event.preventDefault();"
+                            draggable="@(ColumnReorder.ToString())"
+                            @key="column"
+                            class="@(column.Class)">
+
+                            <div @onclick="@(() => column.SortBy())">
+                                <span>@column.Title</span>
+
+                                @if (column.SortColumn)
+                                {
+                                    if (column.SortDescending)
+                                    {<span>&#11014;</span> }
+                                    else
+                                    { <span>&#11015;</span>}
+                                }
+
+                                @if (column.Filterable)
+                                {
+                                    <div class="float-right" @onclick="@((x) => column.ToggleFilter())" @onclick:stopPropagation>
+                                        <a href="javascript:;" @ref="column.FilterRef" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
+                                    </div>
+                                    <CascadingValue Value="column" Name="Column">
+                                        <Popover Reference="@column.FilterRef" IsOpen="@column.FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
+                                            <h3 class="popover-header">Filter</h3>
+                                            <div class="popover-body">
+                                                <FilterManager TableItem="TableItem">
+                                                    <StringFilter TableItem="TableItem" />
+                                                    <BooleanFilter TableItem="TableItem" />
+                                                    <NumberFilter TableItem="TableItem" />
+                                                    <DateFilter TableItem="TableItem" />
+                                                    <EnumFilter TableItem="TableItem" />
+                                                    @if (column.CustomIFilters != null)
+                                                    {
+                                                        @column.CustomIFilters(column)
+                                                    }
+                                                </FilterManager>
+                                            </div>
+                                        </Popover>
+                                    </CascadingValue>
+                                }
+                            </div>
+                        </th>
+                    }
                 </tr>
             </thead>
-        }
-
-        <thead class="@TableHeadClass">
-            <tr style="cursor: pointer;">
-
-                @if (_detailTemplate != null)
+            <tbody class="@TableBodyClass">
+                @if (FilteredItems != null)
                 {
-                    <th style="width: 1%">
-                    </th>
-                }
-                @foreach (IColumn<TableItem> column in Columns)
-                {
-                    <th style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
-                        @ondrop="@(() => HandleDrop(column))"
-                        @ondragstart="@(() => HandleDragStart(column))"
-                        ondragover="event.preventDefault();"
-                        draggable="@(ColumnReorder.ToString())"
-                        @key="column"
-                        class="@(column.Class)">
-
-                        <div @onclick="@(() => column.SortBy())">
-                            <span>@column.Title</span>
-
-                            @if (column.SortColumn)
-                            {
-                                if (column.SortDescending)
-                                {<span>&#11014;</span> }
-                                else
-                                { <span>&#11015;</span>}
-                            }
-
-                            @if (column.Filterable)
-                            {
-                                <div class="float-right" @onclick="@((x) => column.ToggleFilter())" @onclick:stopPropagation>
-                                    <a href="javascript:;" @ref="column.FilterRef" style="text-decoration: none"><span style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">&#128269;</span></a>
-                                </div>
-                                <CascadingValue Value="column" Name="Column">
-                                    <Popover Reference="@column.FilterRef" IsOpen="@column.FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
-                                        <h3 class="popover-header">Filter</h3>
-                                        <div class="popover-body">
-                                            <FilterManager TableItem="TableItem">
-                                                <StringFilter TableItem="TableItem" />
-                                                <BooleanFilter TableItem="TableItem" />
-                                                <NumberFilter TableItem="TableItem" />
-                                                <DateFilter TableItem="TableItem" />
-                                                <EnumFilter TableItem="TableItem" />
-                                                @if (column.CustomIFilters != null)
-                                                {
-                                                    @column.CustomIFilters(column)
-                                                }
-                                            </FilterManager>
-                                        </div>
-                                    </Popover>
-                                </CascadingValue>
-                            }
-                        </div>
-                    </th>
-                }
-            </tr>
-        </thead>
-        <tbody class="@TableBodyClass">
-            @if (FilteredItems != null)
-            {
-                if (FilteredItems.Any())
-                {
-                    int i = 0;
-
-                    foreach (TableItem item in FilteredItems)
+                    if (FilteredItems.Any())
                     {
-                        <tr @key="item" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
+                        int i = 0;
 
-                            @{int locali = i;}
-                            @if (_detailTemplate != null)
-                            {
-                                <td>
-                                    <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="Details View"><span style="">@(detailsViewOpen[locali] ? "➖" : "➕")</span></a>
-                                </td>
-                            }
-
-                            @foreach (IColumn<TableItem> column in Columns)
-                            {
-                                <td @key="column"
-                                    style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
-                                    class="@(column.Class)">
-
-                                    @if (IsEditMode && column.EditTemplate != null)                                        
-                                        @column.EditTemplate(item)
-                                    else
-                                        if (column.Template == null)
-                                            @column.Render(item)
-                                        else
-                                            @column.Template(item)
-                                </td>
-                            }
-                        </tr>
-
-                        if (_detailTemplate != null && detailsViewOpen[locali])
+                        foreach (TableItem item in FilteredItems)
                         {
-                            <tr>
-                                <td></td>
-                                <td colspan="@(Columns.Count)">
-                                    @_detailTemplate(item)
-                                </td>
-                            </tr>
-                        }
+                            <tr @key="item" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
 
-                        { i = locali + 1; }
+                                @{int locali = i;}
+                                @if (_detailTemplate != null)
+                                {
+                                    <td>
+                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="Details View"><span style="">@(detailsViewOpen[locali] ? "➖" : "➕")</span></a>
+                                    </td>
+                                }
+
+                                @foreach (IColumn<TableItem> column in Columns)
+                                {
+                                    <td @key="column"
+                                        style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
+                                        class="@(column.Class)">
+
+                                        @if (IsEditMode && column.EditTemplate != null)
+                                            @column.EditTemplate(item)
+                                            else
+                                               if (column.Template == null)
+                                                @column.Render(item)
+                                                else
+                                                    @column.Template(item)
+                                    </td>
+                                }
+                            </tr>
+
+                            if (_detailTemplate != null && detailsViewOpen[locali])
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td colspan="@(Columns.Count)">
+                                        @_detailTemplate(item)
+                                    </td>
+                                </tr>
+                            }
+
+                            { i = locali + 1; }
+                        }
+                    }
+                    else if (_emptyDataTemplate != null)
+                    {
+                        <tr>
+                            <td colspan="@Columns.Count">
+                                @_emptyDataTemplate
+                            </td>
+                        </tr>
                     }
                 }
-                else if (_emptyDataTemplate != null)
+                else
                 {
                     <tr>
                         <td colspan="@Columns.Count">
-                            @_emptyDataTemplate
+                            @if (_loadingDataTemplate != null)
+                            {
+                                @_loadingDataTemplate
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    Loading...
+                                </div>
+                            }
                         </td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="@Columns.Count">
-                        @if (_loadingDataTemplate != null)
-                        {
-                            @_loadingDataTemplate
-                        }
-                        else
-                        {
-                            <div class="text-center">
-                                Loading...
-                            </div>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 }
 
 <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
