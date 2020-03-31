@@ -106,5 +106,9 @@ namespace BlazorTable
         /// Select Type: None, Single or Multiple
         /// </summary>
         public SelectionType SelectionType { get; set; }
+
+        string GlobalSearch { get; set; }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using LinqKit;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,12 @@ namespace BlazorTable
         [Parameter]
         public IEnumerable<TableItem> Items { get; set; }
 
+        /// <summary>
+        /// Search all columns for the specificed string, supports spaces as 
+        /// </summary>
+        [Parameter]
+        public string GlobalSearch { get; set; }
+
         [Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
@@ -120,6 +127,12 @@ namespace BlazorTable
                     }
                 }
 
+                // Global Search
+                if (!string.IsNullOrEmpty(GlobalSearch))
+                {
+                    ItemsQueryable = ItemsQueryable.Where(GlobalSearchQuery(GlobalSearch));
+                }
+
                 TotalCount = ItemsQueryable.Count();
 
                 var sortColumn = Columns.Find(x => x.SortColumn);
@@ -134,6 +147,12 @@ namespace BlazorTable
                     {
                         ItemsQueryable = ItemsQueryable.OrderBy(sortColumn.Field);
                     }
+                }
+
+                // if the current page is filtered out, we should go back to a page that exists
+                if (PageNumber > TotalPages)
+                {
+                    PageNumber = TotalPages - 1;
                 }
 
                 // if PageSize is zero, we return all rows and no paging
@@ -155,6 +174,7 @@ namespace BlazorTable
         {
             detailsViewOpen = new bool[PageSize];
             FilteredItems = GetData();
+
             Refresh();
         }
 
@@ -394,6 +414,35 @@ namespace BlazorTable
                         SelectedItems.Add(tableItem);
                     break;
             }
+        }
+
+        private Expression<Func<TableItem, bool>> GlobalSearchQuery(string value)
+        {
+            Expression<Func<TableItem, bool>> expression = null;
+
+            foreach (string keyword in value.Split(" "))
+            {
+                foreach (var column in Columns)
+                {
+                    var newQuery = Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.AndAlso(
+                            Expression.NotEqual(column.Field.Body, Expression.Constant(null)),
+                            Expression.GreaterThanOrEqual(
+                                Expression.Call(
+                                    column.Field.Body,
+                                    typeof(string).GetMethod(nameof(string.IndexOf), new[] { typeof(string), typeof(StringComparison) }),
+                                    new[] { Expression.Constant(keyword), Expression.Constant(StringComparison.OrdinalIgnoreCase) }),
+                                Expression.Constant(0))),
+                            column.Field.Parameters[0]);
+
+                    if (expression == null)
+                        expression = newQuery;
+                    else
+                        expression = expression.Or(newQuery);
+                }
+            }
+
+            return expression;
         }
     }
 }
