@@ -21,7 +21,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        data = await Http.GetJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+        data = await Http.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
     }
 
     public class PersonData

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
+﻿
 namespace BlazorTable
 {
     /// <summary>
@@ -26,7 +22,7 @@ namespace BlazorTable
         int PageNumber { get; }
 
         /// <summary>
-        /// Total Count of Item
+        /// Total Count of Items
         /// </summary>
         int TotalCount { get; }
 
@@ -106,5 +102,10 @@ namespace BlazorTable
         /// Select Type: None, Single or Multiple
         /// </summary>
         public SelectionType SelectionType { get; set; }
+
+        /// <summary>
+        /// Search all columns for the specified string, supports spaces as a delimiter
+        /// </summary>
+        string GlobalSearch { get; set; }
     }
 }
