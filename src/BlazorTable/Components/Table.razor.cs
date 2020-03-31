@@ -419,8 +419,10 @@ namespace BlazorTable
         {
             Expression<Func<TableItem, bool>> expression = null;
 
-            foreach (string keyword in value.Split(" "))
+            foreach (string keyword in value.Trim().Split(" "))
             {
+                Expression<Func<TableItem, bool>> tmp = null;
+
                 foreach (var column in Columns)
                 {
                     var newQuery = Expression.Lambda<Func<TableItem, bool>>(
@@ -428,17 +430,22 @@ namespace BlazorTable
                             Expression.NotEqual(column.Field.Body, Expression.Constant(null)),
                             Expression.GreaterThanOrEqual(
                                 Expression.Call(
-                                    column.Field.Body,
+                                    Expression.Call(column.Field.Body, "ToString", Type.EmptyTypes),
                                     typeof(string).GetMethod(nameof(string.IndexOf), new[] { typeof(string), typeof(StringComparison) }),
                                     new[] { Expression.Constant(keyword), Expression.Constant(StringComparison.OrdinalIgnoreCase) }),
-                                Expression.Constant(0))),
+                            Expression.Constant(0))),
                             column.Field.Parameters[0]);
 
-                    if (expression == null)
-                        expression = newQuery;
+                    if (tmp == null)
+                        tmp = newQuery;
                     else
-                        expression = expression.Or(newQuery);
+                        tmp = tmp.Or(newQuery);
                 }
+
+                if (expression == null)
+                    expression = tmp;
+                else
+                    expression = expression.And(tmp);
             }
 
             return expression;
