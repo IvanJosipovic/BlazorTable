@@ -67,7 +67,7 @@ namespace BlazorTable
         public IEnumerable<TableItem> Items { get; set; }
 
         /// <summary>
-        /// Search all columns for the specificed string, supports spaces as 
+        /// Search all columns for the specified string, supports spaces as a delimiter
         /// </summary>
         [Parameter]
         public string GlobalSearch { get; set; }
@@ -91,7 +91,7 @@ namespace BlazorTable
         public int PageNumber { get; private set; }
 
         /// <summary>
-        /// Total Count of Item
+        /// Total Count of Items
         /// </summary>
         public int TotalCount { get; private set; }
 
@@ -174,7 +174,6 @@ namespace BlazorTable
         {
             detailsViewOpen = new bool[PageSize];
             FilteredItems = GetData();
-
             Refresh();
         }
 
