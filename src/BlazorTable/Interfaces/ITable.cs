@@ -108,7 +108,6 @@ namespace BlazorTable
         /// </summary>
         string GlobalSearch { get; set; }
 
-
         /// <summary>
         /// Shows Search Bar above the table
         /// </summary>
