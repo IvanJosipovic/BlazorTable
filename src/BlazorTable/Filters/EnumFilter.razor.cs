@@ -53,6 +53,11 @@ namespace BlazorTable
                         FilterValue = constantExpression.Value;
                     }
                 }
+
+                if (FilterValue == null)
+                {
+                    FilterValue = Enum.GetValues(Column.Type.GetNonNullableType()).GetValue(0);
+                }
             }
         }
 

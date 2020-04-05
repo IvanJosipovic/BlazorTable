@@ -87,6 +87,11 @@ namespace BlazorTable
         {
             FilterText = FilterText?.Trim();
 
+            if (Condition != StringCondition.IsNullOrEmpty && Condition != StringCondition.IsNotNulOrEmpty && string.IsNullOrEmpty(FilterText))
+            {
+                return null;
+            }
+
             return Condition switch
             {
                 StringCondition.Contains =>

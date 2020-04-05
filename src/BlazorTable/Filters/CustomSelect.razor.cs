@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -97,6 +98,12 @@ namespace BlazorTable
         public void AddSelect(string key, object value)
         {
             Items.Add(new KeyValuePair<string, object>(key, value));
+
+            if (FilterValue == null)
+            {
+                FilterValue = Items.FirstOrDefault().Value;
+            }
+
             StateHasChanged();
         }
 
