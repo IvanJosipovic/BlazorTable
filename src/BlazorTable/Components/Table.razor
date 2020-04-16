@@ -3,13 +3,15 @@
 
 @if (Columns.Any())
 {
+    var columnCount = Columns.Count + (_detailTemplate != null ? 1 : 0);
+
     <div class="table-responsive">
         <table class="@TableClass" @attributes="UnknownParameters">
             @if (ShowSearchBar)
             {
                 <thead>
                     <tr>
-                        <th colspan="@Columns.Count"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." /></th>
+                        <th colspan="@columnCount"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." /></th>
                     </tr>
                 </thead>
             }
@@ -124,7 +126,7 @@
                     else if (_emptyDataTemplate != null)
                     {
                         <tr>
-                            <td colspan="@Columns.Count">
+                            <td colspan="@columnCount">
                                 @_emptyDataTemplate
                             </td>
                         </tr>
@@ -133,7 +135,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="@Columns.Count">
+                        <td colspan="@columnCount">
                             @if (_loadingDataTemplate != null)
                             {
                                 @_loadingDataTemplate
