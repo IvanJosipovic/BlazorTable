@@ -16,4 +16,8 @@
     <ProjectReference Include="..\BlazorTable\BlazorTable.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Watch Include="..\**\*.razor" />
+  </ItemGroup>
+  
 </Project>
