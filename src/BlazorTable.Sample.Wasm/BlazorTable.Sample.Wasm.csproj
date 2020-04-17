@@ -15,4 +15,8 @@
     <ProjectReference Include="..\BlazorTable.Sample.Shared\BlazorTable.Sample.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Watch Include="..\**\*.razor" />
+  </ItemGroup>
+
 </Project>
