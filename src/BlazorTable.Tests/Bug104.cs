@@ -1,6 +1,5 @@
 using Shouldly;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using Xunit;
 
@@ -9,34 +8,46 @@ namespace BlazorTable.Tests
     public class Bug104
     {
         [Fact]
-        public void SingleChild()
+        public void AddToExisting()
         {
-            Expression<Func<Parent, bool>> query1 = x => x.Child.Name != null;
+            Expression<Func<Parent, bool>> query = x => ((x.Child.Name != null) && (x.Child.Name == "bob"));
 
-            Expression<Func<Parent, bool>> query1fixed = x => x.Child != null
-                                                        && x.Child.Name != null;
+            Expression<Func<Parent, bool>> queryfixed = x => ((x.Child != null) &&((x.Child.Name != null) && (x.Child.Name == "bob")));
 
-            AddNullChecks(query1).ShouldBeSameAs(query1fixed);
+            query.AddNullChecks().ToString().ShouldBe(queryfixed.ToString());
+        }
+
+
+        [Fact]
+        public void NoParent()
+        {
+            Expression<Func<Parent, bool>> query = x => x.Name != null;
+
+            Expression<Func<Parent, bool>> queryfixed = x => x.Name != null;
+
+            query.AddNullChecks().ToString().ShouldBe(queryfixed.ToString());
         }
 
         [Fact]
-        public void GrandChildChild()
+        public void SingleParent()
+        {
+            Expression<Func<Parent, bool>> query = x => x.Child.Name != null;
+
+            Expression<Func<Parent, bool>> queryfixed = x => x.Child != null
+                                                        && x.Child.Name != null;
+
+            query.AddNullChecks().ToString().ShouldBe(queryfixed.ToString());
+        }
+
+        [Fact]
+        public void MultiParent()
         {
             Expression<Func<Parent, bool>> query1 = x => x.Child.GrandChild.Name != null;
 
-            Expression<Func<Parent, bool>> query1fixed = x => x.Child != null
-                                                            && x.Child.GrandChild != null 
-                                                            && x.Child.GrandChild.Name != null;
+            //"x => (((x.Child != null) AndAlso (x.Child.GrandChild != null)) AndAlso (x.Child.GrandChild.Name != null))
+            Expression<Func<Parent, bool>> query1fixed = x => (((x.Child != null) && (x.Child.GrandChild != null)) && (x.Child.GrandChild.Name != null));
 
-            AddNullChecks(query1).ShouldBeSameAs(query1fixed);
-        }
-
-        private static Expression<Func<Parent, bool>> AddNullChecks(Expression<Func<Parent, bool>> expression)
-        {
-            //Todo logic
-
-
-            return expression;
+            query1.AddNullChecks().ToString().ShouldBe(query1fixed.ToString());
         }
 
         private class Parent
