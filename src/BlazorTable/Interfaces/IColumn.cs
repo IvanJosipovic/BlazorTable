@@ -103,6 +103,11 @@ namespace BlazorTable
         bool SortDescending { get; set; }
 
         /// <summary>
+        /// ARIA sort value, if any
+        /// </summary>
+        string AriaSort => SortColumn ? (SortDescending ? "descending" : "ascending") : null;
+
+        /// <summary>
         /// Horizontal alignment
         /// </summary>
         Align Align { get; set; }

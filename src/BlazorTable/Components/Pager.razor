@@ -18,15 +18,23 @@
             }
             @if ((ShowPageNumber || ShowTotalCount))
             {
-                <li class="page-item disabled">
+                <li aria-hidden="true" class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&nbsp;</a>
                 </li>
             }
 
-            <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.FirstPage())" title="First"><a class="page-link" href="javascript:;">First</a></li>
-            <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.PreviousPage())" title="Previous"><a class="page-link" href="javascript:;">Previous</a></li>
-            <li class="page-item @(Table.PageNumber + 1 < Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.NextPage())" title="Next"><a class="page-link" href="javascript:;">Next</a></li>
-            <li class="page-item @(Table.PageNumber + 1 != Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.LastPage())" title="Last"><a class="page-link" href="javascript:;">Last</a></li>
+            <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.FirstPage())" title="First">
+                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber == 0 ? "true": null)">First</a>
+            </li>
+            <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.PreviousPage())" title="Previous">
+                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber == 0 ? "true": null)">Previous</a>
+            </li>
+            <li class="page-item @(Table.PageNumber + 1 < Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.NextPage())" title="Next">
+                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber + 1 < Table.TotalPages ? null: "true")">Next</a>
+            </li>
+            <li class="page-item @(Table.PageNumber + 1 != Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.LastPage())" title="Last">
+                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber + 1 != Table.TotalPages ? null : "true")">Last</a>
+            </li>
         </ul>
     </div>
 }
