@@ -30,6 +30,9 @@ jobs:
     - name: Dotnet Build
       run: dotnet build -c Release
 
+    - name: Dotnet Test
+      run: dotnet test --configuration Release
+
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish -c Release
