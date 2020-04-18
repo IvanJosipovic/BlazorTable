@@ -44,10 +44,10 @@ namespace BlazorTable.Tests
         {
             Expression<Func<Parent, bool>> query1 = x => x.Child.GrandChild.Name != null;
 
-            //"x => (((x.Child != null) AndAlso (x.Child.GrandChild != null)) AndAlso (x.Child.GrandChild.Name != null))
-            Expression<Func<Parent, bool>> query1fixed = x => (((x.Child != null) && (x.Child.GrandChild != null)) && (x.Child.GrandChild.Name != null));
-
-            query1.AddNullChecks().ToString().ShouldBe(query1fixed.ToString());
+            Expression<Func<Parent, bool>> query1fixed = x => ((x.Child != null)
+                                                            && ((x.Child.GrandChild != null) && (x.Child.GrandChild.Name != null)));
+            
+            query1.AddNullChecks().ToString().ShouldBe("x => ((x.Child != null) AndAlso ((x.Child.GrandChild != null) AndAlso (x.Child.GrandChild.Name != null)))");
         }
 
         private class Parent
