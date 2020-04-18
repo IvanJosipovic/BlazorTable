@@ -124,7 +124,7 @@ namespace BlazorTable
         public static Expression<Func<T, bool>> AddNullChecks<T>(this Expression<Func<T, bool>> expression)
         {
             var parents = new Queue<MemberExpression>();
-            Expression<Func<T, bool>> tempExpression = null;
+            Expression<Func<T, bool>> tempExpression = expression;
 
             if (expression?.Body is BinaryExpression binary)
             {
@@ -135,15 +135,11 @@ namespace BlazorTable
                 }
                 else if (expression?.Body is BinaryExpression binary2)
                 {
-                    if (binary2.Left is BinaryExpression binary3)
+                    if (binary2.Left is BinaryExpression binary3 && binary3.Left is MemberExpression member2)
                     {
-                        if (binary3.Left is MemberExpression member2)
-                        {
-                            // From here we're looking at parents
-                            Recurse(member2.Expression);
-                        }
+                        // From here we're looking at parents
+                        Recurse(member2.Expression);
                     }
-
                 }
             }
 
@@ -153,13 +149,10 @@ namespace BlazorTable
 
                 var newQuery = Expression.Lambda<Func<T, bool>>(nullCheck, expression.Parameters);
 
-                if (tempExpression == null)
-                    tempExpression = newQuery.And(expression);
-                else
-                    tempExpression = newQuery.And(tempExpression);
+                tempExpression = newQuery.And(tempExpression);
             }
 
-            return tempExpression ?? expression;
+            return tempExpression;
 
             void Recurse(object expression)
             {
