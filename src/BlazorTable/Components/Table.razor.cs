@@ -123,7 +123,7 @@ namespace BlazorTable
                 {
                     if (item.Filter != null)
                     {
-                        ItemsQueryable = ItemsQueryable.Where(item.Filter);
+                        ItemsQueryable = ItemsQueryable.Where(item.Filter.AddNullChecks());
                     }
                 }
 

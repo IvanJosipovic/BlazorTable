@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinqKit;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -8,7 +9,7 @@ using System.Reflection;
 
 namespace BlazorTable
 {
-    internal static class Utillities
+    public static class Utillities
     {
         public static IEnumerable<T> OrEmptyIfNull<T>(this IEnumerable<T> source)
         {
@@ -113,6 +114,54 @@ namespace BlazorTable
         {
             var attributes = (DescriptionAttribute[])val.GetType().GetField(val.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+        }
+
+        /// <summary>
+        /// Recursively walks up the tree and adds null checks
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> AddNullChecks<T>(this Expression<Func<T, bool>> expression)
+        {
+            var parents = new Queue<MemberExpression>();
+            Expression<Func<T, bool>> tempExpression = expression;
+
+            if (expression?.Body is BinaryExpression binary)
+            {
+                if (binary.Left is MemberExpression member)
+                {
+                    // From here we're looking at parents
+                    Recurse(member.Expression);
+                }
+                else if (expression?.Body is BinaryExpression binary2)
+                {
+                    if (binary2.Left is BinaryExpression binary3 && binary3.Left is MemberExpression member2)
+                    {
+                        // From here we're looking at parents
+                        Recurse(member2.Expression);
+                    }
+                }
+            }
+
+            while (parents.Count > 0)
+            {
+                var nullCheck = Expression.NotEqual(parents.Dequeue(), Expression.Constant(null));
+
+                var newQuery = Expression.Lambda<Func<T, bool>>(nullCheck, expression.Parameters);
+
+                tempExpression = newQuery.And(tempExpression);
+            }
+
+            return tempExpression;
+
+            void Recurse(object expression)
+            {
+                if (expression is MemberExpression member)
+                {
+                    parents.Enqueue(member);
+                    Recurse(member.Expression);
+                }
+            }
         }
     }
 }

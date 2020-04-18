@@ -19,4 +19,7 @@ jobs:
         dotnet-version: 3.1.201
 
     - name: Dotnet Build
-      run: dotnet build --configuration Release
+      run: dotnet build -c Release
+
+    - name: Dotnet Test
+      run: dotnet test -c Release

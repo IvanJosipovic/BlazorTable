@@ -30,6 +30,9 @@ jobs:
     - name: Dotnet Build
       run: dotnet build -c Release
 
+    - name: Dotnet Test
+      run: dotnet test -c Release
+
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish -c Release
@@ -42,7 +45,7 @@ jobs:
 
     - name: Deploy to Test
       id: netlify
-      uses: ivanjosipovic/actions/cli@master
+      uses: netlify/actions/cli@master
       with:
         args: deploy --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/wwwroot
       env:
@@ -51,6 +54,6 @@ jobs:
 
     - name: Get Test Address
       run: |
-        $url = $(ConvertFrom-Json '${{ steps.netlify.outputs.output }}').deploy_url;
+        $url = '${{ steps.netlify.outputs.NETLIFY_URL }}';
         Write-Output $url;
       shell: pwsh
