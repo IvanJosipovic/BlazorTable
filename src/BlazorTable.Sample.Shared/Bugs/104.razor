@@ -7,7 +7,7 @@
 <Table TableItem="Parent" Items="items">
     <Column TableItem="Parent" Title="Inner value" Field="@(x => x.Child.Name)" Sortable="true" Filterable="true">
         <Template>
-            @if (@context.Name == null)
+            @if (@context?.Child?.Name == null)
             {
                 <text>N/A</text>
             }
@@ -23,11 +23,11 @@
 {
     private List<Parent> items = new List<Parent>();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         for (int i = 0; i < 5; i++)
         {
-            //items.Add(new Outer() { Name = i.ToString(), Child = new Child() { Name = i.ToString() } });
+            items.Add(new Parent() { Name = i.ToString(), Child = new Child() { Name = i.ToString() } });
             items.Add(new Parent() { Name = i.ToString() });
         }
     }
