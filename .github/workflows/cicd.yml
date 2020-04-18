@@ -20,13 +20,6 @@ jobs:
       with:
         dotnet-version: 3.1.201
 
-    - name: SonarQube Install
-      run: dotnet tool install dotnet-sonarscanner --tool-path ./
-
-    - name: SonarQube Start
-      continue-on-error: true
-      run: ./dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
-
     - name: Dotnet Build
       run: dotnet build -c Release
 
@@ -36,12 +29,6 @@ jobs:
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish -c Release
-
-    - name: SonarQube End
-      continue-on-error: true
-      run: ./dotnet-sonarscanner end /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy to Test
       id: netlify
