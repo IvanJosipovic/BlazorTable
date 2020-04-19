@@ -23,9 +23,6 @@ jobs:
     - name: Dotnet Build
       run: dotnet build -c Release
 
-    - name: Dotnet Test
-      run: dotnet test -c Release
-
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish -c Release
@@ -43,4 +40,8 @@ jobs:
       run: |
         $url = '${{ steps.netlify.outputs.NETLIFY_URL }}';
         Write-Output $url;
+        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value $url;
       shell: pwsh
+
+    - name: Dotnet Test
+      run: dotnet test -c Release
