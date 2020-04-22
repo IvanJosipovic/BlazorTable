@@ -34,5 +34,13 @@
   <ItemGroup>
     <Watch Include="..\**\*.razor" />
   </ItemGroup>
+
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+      <!-- We use the value of AssemblyName to declare the value of the attribute -->
+    </AssemblyAttribute>
+  </ItemGroup>
   
 </Project>

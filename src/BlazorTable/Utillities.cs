@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace BlazorTable
 {
-    public static class Utillities
+    internal static class Utilities 
     {
         public static IEnumerable<T> OrEmptyIfNull<T>(this IEnumerable<T> source)
         {
