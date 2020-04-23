@@ -20,6 +20,3 @@ jobs:
 
     - name: Dotnet Build
       run: dotnet build -c Release
-
-    - name: Dotnet Test
-      run: dotnet test -c Release

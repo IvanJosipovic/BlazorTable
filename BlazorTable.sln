@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\build.yml = .github\workflows\build.yml
 		.github\workflows\cicd.yml = .github\workflows\cicd.yml
-		lgtm.yml = lgtm.yml
 		README.md = README.md
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
@@ -20,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTable.Sample.Server",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTable.Sample.Shared", "src\BlazorTable.Sample.Shared\BlazorTable.Sample.Shared.csproj", "{25E8AB75-2F08-463E-8499-0C5BBB20BC50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTable.Tests", "src\BlazorTable.Tests\BlazorTable.Tests.csproj", "{64B71D26-A307-4541-9B17-BD6709211F21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorTable.Tests", "src\BlazorTable.Tests\BlazorTable.Tests.csproj", "{64B71D26-A307-4541-9B17-BD6709211F21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
