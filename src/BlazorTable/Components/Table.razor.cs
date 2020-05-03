@@ -34,6 +34,12 @@ namespace BlazorTable
         public string TableBodyClass { get; set; } = "";
 
         /// <summary>
+        /// Table Footer Class
+        /// </summary>
+        [Parameter]
+        public string TableFooterClass { get; set; } = "text-white bg-secondary";
+
+        /// <summary>
         /// Expression to set Row Class
         /// </summary>
         [Parameter]
@@ -53,6 +59,7 @@ namespace BlazorTable
 
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+
 
         /// <summary>
         /// IQueryable data source to display in the table
@@ -325,7 +332,8 @@ namespace BlazorTable
         }
 
         private RenderFragment _emptyDataTemplate;
-        
+
+
         /// <summary>
         /// Set the template to use for loading data
         /// </summary>
@@ -363,7 +371,8 @@ namespace BlazorTable
                 if (_selectionType == SelectionType.None)
                 {
                     SelectedItems.Clear();
-                } else if (_selectionType == SelectionType.Single && SelectedItems.Count > 1)
+                }
+                else if (_selectionType == SelectionType.Single && SelectedItems.Count > 1)
                 {
                     SelectedItems.RemoveRange(1, SelectedItems.Count - 1);
                 }
@@ -456,5 +465,11 @@ namespace BlazorTable
         /// </summary>
         [Parameter]
         public bool ShowSearchBar { get; set; }
+
+        /// <summary>
+        /// Show or hide table footer. Hide by default.
+        /// </summary>
+        [Parameter]
+        public bool ShowFooter { get; set; }
     }
 }
