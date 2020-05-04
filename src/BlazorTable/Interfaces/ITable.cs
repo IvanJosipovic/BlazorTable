@@ -112,5 +112,11 @@ namespace BlazorTable
         /// Shows Search Bar above the table
         /// </summary>
         bool ShowSearchBar { get; set; }
+
+        /// <summary>
+        /// Set Table Page Size
+        /// </summary>
+        /// <param name="pageSize"></param>
+        void SetPageSize(int pageSize);
     }
 }
