@@ -467,7 +467,7 @@ namespace BlazorTable
         public void SetPageSize(int pageSize)
         {
             PageSize = pageSize;
-            Refresh();
+            Update();
         }
     }
 }
