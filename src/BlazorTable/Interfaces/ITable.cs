@@ -114,10 +114,16 @@
         /// </summary>
         bool ShowSearchBar { get; set; }
 
-
         /// <summary>
         /// Show or hide table footer. Hide by default.
         /// </summary>
         bool ShowFooter { get; set; }
+      
+        /// <summary>
+        /// Set Table Page Size
+        /// </summary>
+        /// <param name="pageSize"></param>
+        void SetPageSize(int pageSize);
+
     }
 }

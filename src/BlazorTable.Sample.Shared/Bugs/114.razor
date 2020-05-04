@@ -1,0 +1,56 @@
+﻿@page "/114"
+
+@using BlazorTable
+
+<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="95%" DefaultSortColumn="true" />
+    <DetailTemplate TableItem="PersonData" Context="context2">
+        <Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" style="background-color: white;">
+            <Column TableItem="PersonData" Title="Actions">
+                <Template>
+                    <button type="button" class="btn btn-outline-primary" @onclick="@(() => HandleClick())">Edit</button>
+                    <button type="button" class="btn btn-outline-danger" @onclick="@(() => HandleClick())">Delete</button>
+                </Template>
+            </Column>
+            <Pager ShowPageNumber="true" ShowTotalCount="true" />
+        </Table>
+    </DetailTemplate>
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    [Inject]
+    private HttpClient Http { get; set; }
+
+    private PersonData[] data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await Http.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+    }
+
+    public class PersonData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+        public string email { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public CreditCard? cc_type { get; set; }
+        public DateTime? created_date { get; set; }
+    }
+
+    public enum CreditCard
+    {
+        none = 0,
+        [Description("MasterCard")]
+        MasterCard = 1,
+        Visa = 2
+    }
+
+    private void HandleClick()
+    {
+
+    }
+}

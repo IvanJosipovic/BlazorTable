@@ -172,14 +172,13 @@ namespace BlazorTable
             return Items;
         }
 
-        private bool[] detailsViewOpen;
+        private Dictionary<int, bool> detailsViewOpen = new Dictionary<int, bool>();
 
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
         public void Update()
         {
-            detailsViewOpen = new bool[PageSize];
             FilteredItems = GetData();
             Refresh();
         }
@@ -219,6 +218,7 @@ namespace BlazorTable
             if (PageNumber != 0)
             {
                 PageNumber = 0;
+                detailsViewOpen.Clear();
                 Update();
             }
         }
@@ -231,6 +231,7 @@ namespace BlazorTable
             if (PageNumber + 1 < TotalPages)
             {
                 PageNumber++;
+                detailsViewOpen.Clear();
                 Update();
             }
         }
@@ -243,6 +244,7 @@ namespace BlazorTable
             if (PageNumber > 0)
             {
                 PageNumber--;
+                detailsViewOpen.Clear();
                 Update();
             }
         }
@@ -253,6 +255,7 @@ namespace BlazorTable
         public void LastPage()
         {
             PageNumber = TotalPages - 1;
+            detailsViewOpen.Clear();
             Update();
         }
 
@@ -332,7 +335,6 @@ namespace BlazorTable
         }
 
         private RenderFragment _emptyDataTemplate;
-
 
         /// <summary>
         /// Set the template to use for loading data
@@ -471,5 +473,15 @@ namespace BlazorTable
         /// </summary>
         [Parameter]
         public bool ShowFooter { get; set; }
+
+        /// Set Table Page Size
+        /// </summary>
+        /// <param name="pageSize"></param>
+        public void SetPageSize(int pageSize)
+        {
+            PageSize = pageSize;
+            Update();
+        }
+
     }
 }

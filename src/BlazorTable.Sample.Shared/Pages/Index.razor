@@ -63,7 +63,7 @@
             <Pager ShowPageNumber="true" ShowTotalCount="true" />
         </Table>
     </DetailTemplate>
-    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" ShowPageSizes="true" />
 </Table>
 
 @code
@@ -92,7 +92,6 @@
         /// Returns row CSS if price over 800
         /// </summary>
         public string RowClass => price.GetValueOrDefault(0) > 800 ? "table-danger" : null;
-
     }
 
     public enum CreditCard
