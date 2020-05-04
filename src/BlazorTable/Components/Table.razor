@@ -39,9 +39,9 @@
                                 @if (column.SortColumn)
                                 {
                                     if (column.SortDescending)
-                                    {<span aria-hidden="true">&#11014;</span> }
+                                    { <span aria-hidden="true">&#11014;</span> }
                                     else
-                                    { <span aria-hidden="true">&#11015;</span>}
+                                    { <span aria-hidden="true">&#11015;</span> }
                                 }
 
                                 @if (column.Filterable)
@@ -86,12 +86,15 @@
                         {
                             <tr @key="item" aria-selected="@(SelectedItems.Contains(item) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
 
-                                @{int locali = i;}
+                                @{
+                                    int locali = i;
+                                    bool isOpen = detailsViewOpen.ContainsKey(locali) && detailsViewOpen[locali];
+                                }
                                 @if (_detailTemplate != null)
                                 {
                                     <td>
-                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="Details View" aria-expanded="@(detailsViewOpen[locali] ? "true" : "false")">
-                                            <span style="">@(detailsViewOpen[locali] ? "➖" : "➕")</span>
+                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !isOpen; StateHasChanged(); })" title="Details View" aria-expanded="@(isOpen ? "true" : "false")">
+                                            <span style="">@(isOpen ? "➖" : "➕")</span>
                                         </a>
                                     </td>
                                 }
@@ -113,7 +116,7 @@
                                 }
                             </tr>
 
-                            if (_detailTemplate != null && detailsViewOpen[locali])
+                            if (_detailTemplate != null && isOpen)
                             {
                                 <tr>
                                     <td></td>
