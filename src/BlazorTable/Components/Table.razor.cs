@@ -325,7 +325,7 @@ namespace BlazorTable
         }
 
         private RenderFragment _emptyDataTemplate;
-        
+
         /// <summary>
         /// Set the template to use for loading data
         /// </summary>
@@ -456,5 +456,15 @@ namespace BlazorTable
         /// </summary>
         [Parameter]
         public bool ShowSearchBar { get; set; }
+
+        /// <summary>
+        /// Set Table Page Size
+        /// </summary>
+        /// <param name="pageSize"></param>
+        public void SetPageSize(int pageSize)
+        {
+            PageSize = pageSize;
+            Update();
+        }
     }
 }
