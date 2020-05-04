@@ -8,7 +8,7 @@
     <PackageId>BlazorTable</PackageId>
     <Description>Blazor Table Component with Sorting, Paging and Filtering</Description>
     <Authors>Ivan Josipovic</Authors>
-    <PackageProjectUrl>https://BlazorTable.netlify.com</PackageProjectUrl>
+    <PackageProjectUrl>https://BlazorTable.netlify.app</PackageProjectUrl>
     <PackageTags>Blazor;Table;Component;Grid;DataTable;Data;Sort;Filter;AspNetCore;AspNet</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/IvanJosipovic/BlazorTable</RepositoryUrl>
