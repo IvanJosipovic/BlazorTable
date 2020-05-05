@@ -1,5 +1,4 @@
-﻿
-namespace BlazorTable
+﻿namespace BlazorTable
 {
     /// <summary>
     /// BlazorTable Interface
@@ -35,6 +34,7 @@ namespace BlazorTable
         /// Is Table in Edit mode
         /// </summary>
         bool IsEditMode { get; }
+
 
         /// <summary>
         /// Go to First Page
@@ -98,6 +98,7 @@ namespace BlazorTable
         /// <param name="template"></param>
         void SetLoadingDataTemplate(LoadingDataTemplate template);
 
+
         /// <summary>
         /// Select Type: None, Single or Multiple
         /// </summary>
@@ -114,9 +115,15 @@ namespace BlazorTable
         bool ShowSearchBar { get; set; }
 
         /// <summary>
+        /// Show or hide table footer. Hide by default.
+        /// </summary>
+        bool ShowFooter { get; set; }
+      
+        /// <summary>
         /// Set Table Page Size
         /// </summary>
         /// <param name="pageSize"></param>
         void SetPageSize(int pageSize);
+
     }
 }
