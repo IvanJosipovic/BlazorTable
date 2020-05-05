@@ -19,9 +19,5 @@
   <ItemGroup>
     <Watch Include="..\**\*.razor" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Watch Remove="Pages\TableFooter.razor" />
-  </ItemGroup>
   
 </Project>

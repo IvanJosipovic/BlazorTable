@@ -239,7 +239,6 @@ namespace BlazorTable
             return string.Empty;
         }
 
-
         /// <summary>
         /// Render a default value if no template
         /// </summary>
@@ -261,8 +260,6 @@ namespace BlazorTable
 
             return string.Format(CultureInfo.CurrentCulture, $"{{0:{Format}}}", value);
         }
-
-
 
         /// <summary>
         /// Save compiled renderCompiled property to avoid repeated Compile() calls

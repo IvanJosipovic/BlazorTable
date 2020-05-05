@@ -60,7 +60,6 @@ namespace BlazorTable
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
-
         /// <summary>
         /// IQueryable data source to display in the table
         /// </summary>
@@ -474,6 +473,7 @@ namespace BlazorTable
         [Parameter]
         public bool ShowFooter { get; set; }
 
+        /// <summary>
         /// Set Table Page Size
         /// </summary>
         /// <param name="pageSize"></param>
@@ -482,6 +482,5 @@ namespace BlazorTable
             PageSize = pageSize;
             Update();
         }
-
     }
 }
