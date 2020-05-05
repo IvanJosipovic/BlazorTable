@@ -41,9 +41,6 @@
     protected override async Task OnInitializedAsync()
     {
         data = await Http.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
-
-
-        Console.WriteLine($"{"Astrix Mariette".IndexOf("Astrix")}");
     }
 
     public class PersonData
