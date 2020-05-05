@@ -1,6 +1,8 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
 
+
+
 @if (Columns.Any())
 {
     var columnCount = Columns.Count + (_detailTemplate != null ? 1 : 0);
@@ -112,8 +114,7 @@
 
                                         @if (IsEditMode && column.EditTemplate != null)
                                             @column.EditTemplate(item)
-                                        else
-                                            if (column.Template == null)
+                                            else if (column.Template == null)
                                                 @column.Render(item)
                                             else
                                                 @column.Template(item)
@@ -161,6 +162,26 @@
                     </tr>
                 }
             </tbody>
+
+            @if (ShowFooter)
+            {
+                <tfoot class="@TableFooterClass">
+                    <tr>
+                        @foreach (IColumn<TableItem> column in Columns)
+                        {
+                            <td @key="column" style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")" class="@(column.ColumnFooterClass)">
+
+                                @if (!string.IsNullOrEmpty(column.SetFooterValue))
+                                    @column.SetFooterValue
+                                  else
+                                     @column.GetFooterValue()
+
+                            </td>
+                        }
+
+                    </tr>
+                </tfoot>
+            }
         </table>
     </div>
 }
