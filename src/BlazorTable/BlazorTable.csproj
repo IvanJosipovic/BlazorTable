@@ -19,6 +19,11 @@
 
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="" />
+    <Watch Include="..\**\*.razor" />
+    <BlazorLinkerDescriptor Include="LinkerConfig.xml" />
+    <EmbeddedResource Include="LinkerConfig.xml">
+      <LogicalName>$(MSBuildProjectName).xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -29,18 +34,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Watch Include="..\**\*.razor" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
-      <!-- We use the value of AssemblyName to declare the value of the attribute -->
-    </AssemblyAttribute>
   </ItemGroup>
   
 </Project>

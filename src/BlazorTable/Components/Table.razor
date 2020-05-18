@@ -170,10 +170,11 @@
                         @foreach (IColumn<TableItem> column in Columns)
                         {
                             <td @key="column" style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")" class="@(column.ColumnFooterClass)">
-                                @if (!string.IsNullOrEmpty(column.SetFooterValue))
+                                @if (!string.IsNullOrEmpty(column.SetFooterValue)){
                                     @column.SetFooterValue
-                                  else
+                                } else if(FilteredItems != null && FilteredItems.Any()) {
                                     @column.GetFooterValue()
+                                }
                             </td>
                         }
                     </tr>
