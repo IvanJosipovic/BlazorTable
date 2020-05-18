@@ -20,10 +20,10 @@
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="" />
     <Watch Include="..\**\*.razor" />
-    <!--<BlazorLinkerDescriptor Include="LinkerConfig.xml" />
+    <BlazorLinkerDescriptor Include="LinkerConfig.xml" />
     <EmbeddedResource Include="LinkerConfig.xml">
       <LogicalName>$(MSBuildProjectName).xml</LogicalName>
-    </EmbeddedResource>-->
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
