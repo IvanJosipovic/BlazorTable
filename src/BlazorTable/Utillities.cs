@@ -9,10 +9,10 @@ using System.Reflection;
 
 namespace BlazorTable
 {
-    internal static class Utilities 
+    internal static class Utilities
     {
         /// <summary>
-        /// Calculates Sum or Avergage of a column base on given field name.
+        /// Calculates Sum or Average of a column base on given field name.
         /// </summary>
         /// <param name="source"></param>
         /// <param name="member"></param>
