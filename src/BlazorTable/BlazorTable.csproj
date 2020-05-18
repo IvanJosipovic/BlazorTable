@@ -20,10 +20,10 @@
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="" />
     <Watch Include="..\**\*.razor" />
-    <BlazorLinkerDescriptor Include="LinkerConfig.xml" />
+    <!--<BlazorLinkerDescriptor Include="LinkerConfig.xml" />
     <EmbeddedResource Include="LinkerConfig.xml">
       <LogicalName>$(MSBuildProjectName).xml</LogicalName>
-    </EmbeddedResource>
+    </EmbeddedResource>-->
   </ItemGroup>
 
   <ItemGroup>
@@ -36,4 +36,11 @@
     </PackageReference>
   </ItemGroup>
   
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+      <!-- We use the value of AssemblyName to declare the value of the attribute -->
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>
