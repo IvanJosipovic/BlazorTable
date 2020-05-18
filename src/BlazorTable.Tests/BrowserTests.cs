@@ -60,7 +60,9 @@ namespace BlazorTable.Tests
 
             await page.GoToAsync(BaseAddress);
 
-            (await page.WaitForSelectorAsync("div.table-responsive > table > tbody > tr:nth-child(1) > td:nth-child(3)")).InnerText().ShouldBe("Astrix Mariette");
+            var selector = await page.WaitForSelectorAsync("div.table-responsive > table > tbody > tr:nth-child(1) > td:nth-child(3)");
+
+            (await selector.InnerTextAsync()).ShouldBe("Astrix Mariette");
 
             hasError.ShouldBeFalse();
 
