@@ -1,0 +1,33 @@
+﻿@page "/135"
+
+@using BlazorTable
+
+<Table TableItem="PersonData" Items="data" ShowSearchBar="true">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.ShortId)" Sortable="false" Filterable="true" />
+    <Column TableItem="PersonData" Title="Request" Sortable="false" Filterable="false">
+        <Template>
+            <button>RQ</button>
+        </Template>
+    </Column>
+</Table>
+
+@code
+{
+    private PersonData[] data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = new PersonData[]
+        {
+            new PersonData()
+            {
+                ShortId = 5
+            }
+        };
+    }
+
+    public class PersonData
+    {
+        public int ShortId { get; set; }
+    }
+}
