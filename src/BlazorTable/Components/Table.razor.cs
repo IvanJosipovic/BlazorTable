@@ -423,7 +423,7 @@ namespace BlazorTable
             {
                 Expression<Func<TableItem, bool>> tmp = null;
 
-                foreach (var column in Columns)
+                foreach (var column in Columns.Where(x => x.Field != null))
                 {
                     var newQuery = Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
