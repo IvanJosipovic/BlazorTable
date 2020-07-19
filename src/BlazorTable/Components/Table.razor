@@ -167,6 +167,10 @@
             {
                 <tfoot class="@TableFooterClass">
                     <tr>
+                        @if (_detailTemplate != null)
+                        {
+                            <td style="width: 1%"></td>
+                        }
                         @foreach (IColumn<TableItem> column in Columns)
                         {
                             <td @key="column" style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")" class="@(column.ColumnFooterClass)">
