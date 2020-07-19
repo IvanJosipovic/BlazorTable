@@ -18,14 +18,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.102
-
-    - name: SonarQube Install
-      run: dotnet tool install dotnet-sonarscanner --tool-path ./
-
-    - name: SonarQube Start
-      continue-on-error: true
-      run: ./dotnet-sonarscanner begin /o:ivanjosipovic /k:IvanJosipovic_BlazorTable /d:sonar.host.url=https://sonarcloud.io /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
+        dotnet-version: 3.1.202
 
     - name: Dotnet Build
       run: dotnet build -c Release
@@ -34,15 +27,9 @@ jobs:
       working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish -c Release
 
-    - name: SonarQube End
-      continue-on-error: true
-      run: ./dotnet-sonarscanner end /d:sonar.login=${{ secrets.SONARQUBE_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Deploy to Test
       id: netlify
-      uses: ivanjosipovic/actions/cli@master
+      uses: netlify/actions/cli@master
       with:
         args: deploy --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/wwwroot
       env:
@@ -51,6 +38,10 @@ jobs:
 
     - name: Get Test Address
       run: |
-        $url = $(ConvertFrom-Json '${{ steps.netlify.outputs.output }}').deploy_url;
+        $url = '${{ steps.netlify.outputs.NETLIFY_URL }}';
         Write-Output $url;
+        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value $url;
       shell: pwsh
+
+    - name: Dotnet Test
+      run: dotnet test -c Release

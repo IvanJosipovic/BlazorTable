@@ -15,7 +15,7 @@ jobs:
 
     - name: Bump version
       id: version
-      uses: anothrNick/github-tag-action@master
+      uses: anothrNick/github-tag-action@1.19.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         DRY_RUN: true
@@ -23,11 +23,19 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.102
+        dotnet-version: 3.1.202
 
     - name: Dotnet Pack 
       working-directory: src/BlazorTable
       run: dotnet pack -c Release -p:Version=${{ steps.version.outputs.new_tag }}
+
+    - name: Set Test Address
+      run: |
+        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value "https://blazortable.netlify.app";
+      shell: pwsh
+
+    - name: Dotnet Test
+      run: dotnet test --configuration Release
 
     - name: Dotnet Nuget Push
       if: "!contains(github.event.head_commit.message, '#skip')"

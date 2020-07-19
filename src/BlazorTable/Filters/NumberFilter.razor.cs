@@ -71,6 +71,11 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
+            if (Condition != NumberCondition.IsNull && Condition != NumberCondition.IsNotNull && string.IsNullOrEmpty(FilterValue))
+            {
+                return null;
+            }
+
             return Condition switch
             {
                 NumberCondition.IsEqualTo =>

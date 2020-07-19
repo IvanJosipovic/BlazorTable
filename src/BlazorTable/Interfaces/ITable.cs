@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-
-namespace BlazorTable
+﻿namespace BlazorTable
 {
     /// <summary>
     /// BlazorTable Interface
@@ -26,7 +21,7 @@ namespace BlazorTable
         int PageNumber { get; }
 
         /// <summary>
-        /// Total Count of Item
+        /// Total Count of Items
         /// </summary>
         int TotalCount { get; }
 
@@ -39,6 +34,7 @@ namespace BlazorTable
         /// Is Table in Edit mode
         /// </summary>
         bool IsEditMode { get; }
+
 
         /// <summary>
         /// Go to First Page
@@ -102,9 +98,32 @@ namespace BlazorTable
         /// <param name="template"></param>
         void SetLoadingDataTemplate(LoadingDataTemplate template);
 
+
         /// <summary>
         /// Select Type: None, Single or Multiple
         /// </summary>
         public SelectionType SelectionType { get; set; }
+
+        /// <summary>
+        /// Search all columns for the specified string, supports spaces as a delimiter
+        /// </summary>
+        string GlobalSearch { get; set; }
+
+        /// <summary>
+        /// Shows Search Bar above the table
+        /// </summary>
+        bool ShowSearchBar { get; set; }
+
+        /// <summary>
+        /// Show or hide table footer. Hide by default.
+        /// </summary>
+        bool ShowFooter { get; set; }
+      
+        /// <summary>
+        /// Set Table Page Size
+        /// </summary>
+        /// <param name="pageSize"></param>
+        void SetPageSize(int pageSize);
+
     }
 }

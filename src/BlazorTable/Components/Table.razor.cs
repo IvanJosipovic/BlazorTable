@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using LinqKit;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -33,10 +34,16 @@ namespace BlazorTable
         public string TableBodyClass { get; set; } = "";
 
         /// <summary>
+        /// Table Footer Class
+        /// </summary>
+        [Parameter]
+        public string TableFooterClass { get; set; } = "text-white bg-secondary";
+
+        /// <summary>
         /// Expression to set Row Class
         /// </summary>
         [Parameter]
-        public Expression<Func<TableItem, string>> TableRowClass { get; set; }
+        public Func<TableItem, string> TableRowClass { get; set; }
 
         /// <summary>
         /// Page Size, defaults to 15
@@ -65,6 +72,12 @@ namespace BlazorTable
         [Parameter]
         public IEnumerable<TableItem> Items { get; set; }
 
+        /// <summary>
+        /// Search all columns for the specified string, supports spaces as a delimiter
+        /// </summary>
+        [Parameter]
+        public string GlobalSearch { get; set; }
+
         [Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
@@ -84,7 +97,7 @@ namespace BlazorTable
         public int PageNumber { get; private set; }
 
         /// <summary>
-        /// Total Count of Item
+        /// Total Count of Items
         /// </summary>
         public int TotalCount { get; private set; }
 
@@ -116,8 +129,14 @@ namespace BlazorTable
                 {
                     if (item.Filter != null)
                     {
-                        ItemsQueryable = ItemsQueryable.Where(item.Filter);
+                        ItemsQueryable = ItemsQueryable.Where(item.Filter.AddNullChecks());
                     }
+                }
+
+                // Global Search
+                if (!string.IsNullOrEmpty(GlobalSearch))
+                {
+                    ItemsQueryable = ItemsQueryable.Where(GlobalSearchQuery(GlobalSearch));
                 }
 
                 TotalCount = ItemsQueryable.Count();
@@ -136,6 +155,12 @@ namespace BlazorTable
                     }
                 }
 
+                // if the current page is filtered out, we should go back to a page that exists
+                if (PageNumber > TotalPages)
+                {
+                    PageNumber = TotalPages - 1;
+                }
+
                 // if PageSize is zero, we return all rows and no paging
                 if (PageSize <= 0)
                     return ItemsQueryable.ToList();
@@ -146,14 +171,13 @@ namespace BlazorTable
             return Items;
         }
 
-        private bool[] detailsViewOpen;
+        private Dictionary<int, bool> detailsViewOpen = new Dictionary<int, bool>();
 
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
         public void Update()
         {
-            detailsViewOpen = new bool[PageSize];
             FilteredItems = GetData();
             Refresh();
         }
@@ -193,6 +217,7 @@ namespace BlazorTable
             if (PageNumber != 0)
             {
                 PageNumber = 0;
+                detailsViewOpen.Clear();
                 Update();
             }
         }
@@ -205,6 +230,7 @@ namespace BlazorTable
             if (PageNumber + 1 < TotalPages)
             {
                 PageNumber++;
+                detailsViewOpen.Clear();
                 Update();
             }
         }
@@ -217,6 +243,7 @@ namespace BlazorTable
             if (PageNumber > 0)
             {
                 PageNumber--;
+                detailsViewOpen.Clear();
                 Update();
             }
         }
@@ -227,6 +254,7 @@ namespace BlazorTable
         public void LastPage()
         {
             PageNumber = TotalPages - 1;
+            detailsViewOpen.Clear();
             Update();
         }
 
@@ -283,18 +311,8 @@ namespace BlazorTable
         /// <returns></returns>
         private string RowClass(TableItem item)
         {
-            if (TableRowClass == null) return null;
-
-            if (_tableRowClassCompiled == null)
-                _tableRowClassCompiled = TableRowClass.Compile();
-
-            return _tableRowClassCompiled.Invoke(item);
+            return TableRowClass?.Invoke(item);
         }
-
-        /// <summary>
-        /// Save compiled TableRowClass property to avoid repeated Compile() calls
-        /// </summary>
-        private Func<TableItem, string> _tableRowClassCompiled;
 
         /// <summary>
         /// Set the template to use for empty data
@@ -306,7 +324,7 @@ namespace BlazorTable
         }
 
         private RenderFragment _emptyDataTemplate;
-        
+
         /// <summary>
         /// Set the template to use for loading data
         /// </summary>
@@ -344,7 +362,8 @@ namespace BlazorTable
                 if (_selectionType == SelectionType.None)
                 {
                     SelectedItems.Clear();
-                } else if (_selectionType == SelectionType.Single && SelectedItems.Count > 1)
+                }
+                else if (_selectionType == SelectionType.Single && SelectedItems.Count > 1)
                 {
                     SelectedItems.RemoveRange(1, SelectedItems.Count - 1);
                 }
@@ -394,6 +413,64 @@ namespace BlazorTable
                         SelectedItems.Add(tableItem);
                     break;
             }
+        }
+
+        private Expression<Func<TableItem, bool>> GlobalSearchQuery(string value)
+        {
+            Expression<Func<TableItem, bool>> expression = null;
+
+            foreach (string keyword in value.Trim().Split(" "))
+            {
+                Expression<Func<TableItem, bool>> tmp = null;
+
+                foreach (var column in Columns.Where(x => x.Field != null))
+                {
+                    var newQuery = Expression.Lambda<Func<TableItem, bool>>(
+                        Expression.AndAlso(
+                            Expression.NotEqual(column.Field.Body, Expression.Constant(null)),
+                            Expression.GreaterThanOrEqual(
+                                Expression.Call(
+                                    Expression.Call(column.Field.Body, "ToString", Type.EmptyTypes),
+                                    typeof(string).GetMethod(nameof(string.IndexOf), new[] { typeof(string), typeof(StringComparison) }),
+                                    new[] { Expression.Constant(keyword), Expression.Constant(StringComparison.OrdinalIgnoreCase) }),
+                            Expression.Constant(0))),
+                            column.Field.Parameters[0]);
+
+                    if (tmp == null)
+                        tmp = newQuery;
+                    else
+                        tmp = tmp.Or(newQuery);
+                }
+
+                if (expression == null)
+                    expression = tmp;
+                else
+                    expression = expression.And(tmp);
+            }
+
+            return expression;
+        }
+
+        /// <summary>
+        /// Shows Search Bar above the table
+        /// </summary>
+        [Parameter]
+        public bool ShowSearchBar { get; set; }
+
+        /// <summary>
+        /// Show or hide table footer. Hide by default.
+        /// </summary>
+        [Parameter]
+        public bool ShowFooter { get; set; }
+
+        /// <summary>
+        /// Set Table Page Size
+        /// </summary>
+        /// <param name="pageSize"></param>
+        public void SetPageSize(int pageSize)
+        {
+            PageSize = pageSize;
+            Update();
         }
     }
 }

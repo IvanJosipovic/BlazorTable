@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -60,6 +61,12 @@ namespace BlazorTable
         public RenderFragment<TableItem> EditTemplate { get; set; }
 
         /// <summary>
+        /// Set custom Footer column value 
+        /// </summary>
+        [Parameter]
+        public string SetFooterValue { get; set; }
+
+        /// <summary>
         /// Place custom controls which implement IFilter
         /// </summary>
         [Parameter]
@@ -80,6 +87,12 @@ namespace BlazorTable
         public Align Align { get; set; }
 
         /// <summary>
+        /// Aggregates table column for the footer. It can only be applied to numerical fields (e.g. int, long decimal, double, etc.).
+        /// </summary>
+        [Parameter]
+        public AggregateType? Aggregate { get; set; }
+
+        /// <summary>
         /// Set the format for values if no template
         /// </summary>
         [Parameter]
@@ -90,6 +103,12 @@ namespace BlazorTable
         /// </summary>
         [Parameter]
         public string Class { get; set; }
+
+        /// <summary>
+        /// Column Footer CSS Class
+        /// </summary>
+        [Parameter]
+        public string ColumnFooterClass { get; set; }
 
         /// <summary>
         /// Filter expression
@@ -199,6 +218,25 @@ namespace BlazorTable
 
                 Table.Update();
             }
+        }
+
+        /// <summary>
+        /// Returns aggregation of this column for the table footer based on given type: Sum, Average, Count, Min, or Max.
+        /// </summary>
+        /// <returns>string results</returns>
+        public string GetFooterValue()
+        {
+            if (Table.ItemsQueryable != null &&  Aggregate.HasValue && Table.ShowFooter && !string.IsNullOrEmpty(Field.GetPropertyMemberInfo()?.Name))
+            {
+                return this.Aggregate.Value switch
+                {
+                    AggregateType.Count => string.Format(CultureInfo.CurrentCulture, $"{{0:{Format}}}", Table.ItemsQueryable.Count()),
+                    AggregateType.Min => string.Format(CultureInfo.CurrentCulture, $"{{0:{Format}}}", Table.ItemsQueryable.AsEnumerable().Min(c => c.GetType().GetProperty(Field.GetPropertyMemberInfo()?.Name).GetValue(c, null))),
+                    AggregateType.Max => string.Format(CultureInfo.CurrentCulture, $"{{0:{Format}}}", Table.ItemsQueryable.AsEnumerable().Max(c => c.GetType().GetProperty(Field.GetPropertyMemberInfo()?.Name).GetValue(c, null))),
+                    _ => string.Format(CultureInfo.CurrentCulture, $"{{0:{Format}}}", Table.ItemsQueryable.Aggregate(Field.GetPropertyMemberInfo()?.Name, this.Aggregate.Value)),
+                };
+            }
+            return string.Empty;
         }
 
         /// <summary>

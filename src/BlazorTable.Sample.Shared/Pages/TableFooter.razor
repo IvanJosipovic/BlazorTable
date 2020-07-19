@@ -1,0 +1,66 @@
+﻿@page "/TableFooter"
+
+@using BlazorTable
+
+<h1>Table Footer</h1>
+
+<p>This example is to demonstrate the table footer feature. There are 5 aggregation types built in: <code>Sum</code>,  <code>Average</code>,  <code>Count</code>,  <code>Min</code>,  and <code>Max</code>. You have ability to set any string value into the footer by using <code>SetFooterValue</code> attribute for the <code>Column</code> tag if necessary.</p>
+
+<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" ShowSearchBar="true" ShowFooter="true">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Aggregate="AggregateType.Count" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
+    <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="10%">
+        <Template>
+            <a href="mailto:@context.email">@context.email</a>
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Paid" Field="@(x => x.paid)" Sortable="true" SetFooterValue="@TotalFooterText" ColumnFooterClass="bg-info" Filterable="true" Width="10%">
+        <Template>
+            @context.paid.ToString()
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Price (Sum)" Field="@(x => x.price)" Aggregate="AggregateType.Sum" Format="C" Sortable="true" Filterable="true" Width="10%" Align="Align.Right" />
+    <Column TableItem="PersonData" Title="Price (Avg)" Field="@(x => x.price)" Aggregate="AggregateType.Average" Format="C" Sortable="true" Filterable="true" Width="10%"  Align="Align.Right" />
+    <Column TableItem="PersonData" Title="Price (Min)" Field="@(x => x.price)" Aggregate="AggregateType.Min" Format="C" Sortable="true" Filterable="true" Width="10%"  Align="Align.Right" />
+    <Column TableItem="PersonData" Title="Price (Max)" Field="@(x => x.price)" Aggregate="AggregateType.Max" Format="C" Sortable="true" Filterable="true" Width="10%" Align="Align.Right" />
+    <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Aggregate="AggregateType.Max" Format="MM-dd-yyyy" Sortable="true" Filterable="true" Width="10%">
+        <Template>
+            @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
+        </Template>
+    </Column>
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    [Inject]
+    private HttpClient Http { get; set; }
+
+    private PersonData[] data;
+
+    public string TotalFooterText = "Totals";
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await Http.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+    }
+
+    public class PersonData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+        public string email { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public CreditCard? cc_type { get; set; }
+        public DateTime? created_date { get; set; }
+    }
+
+    public enum CreditCard
+    {
+        none = 0,
+        [Description("MasterCard")]
+        MasterCard = 1,
+        Visa = 2
+    }
+}
