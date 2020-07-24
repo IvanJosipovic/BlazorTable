@@ -136,7 +136,7 @@ namespace BlazorTable
                 // Global Search
                 if (!string.IsNullOrEmpty(GlobalSearch))
                 {
-                    ItemsQueryable = ItemsQueryable.Where(GlobalSearchQuery(GlobalSearch));
+                    ItemsQueryable = ItemsQueryable.Where(GlobalSearchQuery(GlobalSearch).AddNullChecks());
                 }
 
                 TotalCount = ItemsQueryable.Count();
