@@ -81,7 +81,7 @@ namespace BlazorTable
                 NumberCondition.IsEqualTo =>
                     Expression.Lambda<Func<TableItem, bool>>(
                             Expression.AndAlso(
-                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Column.Field.Body.CreateNullChecks(),
                                 Expression.Equal(
                                     Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                     Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -90,7 +90,7 @@ namespace BlazorTable
                 NumberCondition.IsNotEqualTo =>
                     Expression.Lambda<Func<TableItem, bool>>(
                             Expression.AndAlso(
-                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Column.Field.Body.CreateNullChecks(),
                                 Expression.NotEqual(
                                     Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                     Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -99,7 +99,7 @@ namespace BlazorTable
                 NumberCondition.IsGreaterThanOrEqualTo =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.GreaterThanOrEqual(
                                 Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -108,7 +108,7 @@ namespace BlazorTable
                 NumberCondition.IsGreaterThan =>
                     Expression.Lambda<Func<TableItem, bool>>(
                             Expression.AndAlso(
-                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Column.Field.Body.CreateNullChecks(),
                                 Expression.GreaterThan(
                                     Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                     Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -117,7 +117,7 @@ namespace BlazorTable
                 NumberCondition.IsLessThanOrEqualTo =>
                     Expression.Lambda<Func<TableItem, bool>>(
                             Expression.AndAlso(
-                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Column.Field.Body.CreateNullChecks(),
                                 Expression.LessThanOrEqual(
                                     Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                     Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -126,7 +126,7 @@ namespace BlazorTable
                 NumberCondition.IsLessThan =>
                     Expression.Lambda<Func<TableItem, bool>>(
                             Expression.AndAlso(
-                                Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                                Column.Field.Body.CreateNullChecks(),
                                 Expression.LessThan(
                                     Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                     Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -134,13 +134,17 @@ namespace BlazorTable
 
                 NumberCondition.IsNull =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.Equal(Column.Field.Body, Expression.Constant(null)),
-                    Column.Field.Parameters),
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.Equal(Column.Field.Body, Expression.Constant(null))),
+                        Column.Field.Parameters),
 
                 NumberCondition.IsNotNull =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                    Column.Field.Parameters),
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null))),
+                        Column.Field.Parameters),
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),
             };

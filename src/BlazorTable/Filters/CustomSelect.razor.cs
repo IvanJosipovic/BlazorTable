@@ -67,7 +67,7 @@ namespace BlazorTable
                 CustomSelectCondition.IsEqualTo =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.Equal(
                                 Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                                 Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -75,7 +75,7 @@ namespace BlazorTable
 
                 CustomSelectCondition.IsNotEqualTo => Expression.Lambda<Func<TableItem, bool>>(
                     Expression.AndAlso(
-                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                        Column.Field.Body.CreateNullChecks(),
                         Expression.NotEqual(
                             Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()),
                             Expression.Constant(Convert.ChangeType(FilterValue, Column.Type.GetNonNullableType(), CultureInfo.InvariantCulture)))),
@@ -83,13 +83,17 @@ namespace BlazorTable
 
                 CustomSelectCondition.IsNull =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.Equal(Column.Field.Body, Expression.Constant(null)),
-                    Column.Field.Parameters),
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.Equal(Column.Field.Body, Expression.Constant(null))),
+                        Column.Field.Parameters),
 
                 CustomSelectCondition.IsNotNull =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
-                    Column.Field.Parameters),
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null))),
+                        Column.Field.Parameters),
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),
             };

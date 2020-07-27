@@ -60,25 +60,29 @@ namespace BlazorTable
                 BooleanCondition.True =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.IsTrue(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
                         Column.Field.Parameters),
 
                 BooleanCondition.False =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.IsFalse(Expression.Convert(Column.Field.Body, Column.Type.GetNonNullableType()))),
                             Column.Field.Parameters),
 
                 BooleanCondition.IsNull =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.Equal(Column.Field.Body, Expression.Constant(null)),
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.Equal(Column.Field.Body, Expression.Constant(null))),
                         Column.Field.Parameters),
 
                 BooleanCondition.IsNotNull =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null))),
                         Column.Field.Parameters),
 
                 _ => null,

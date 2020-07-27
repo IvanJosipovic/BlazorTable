@@ -97,7 +97,7 @@ namespace BlazorTable
                 StringCondition.Contains =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.GreaterThanOrEqual(
                                 Expression.Call(
                                     Column.Field.Body,
@@ -109,7 +109,7 @@ namespace BlazorTable
                 StringCondition.DoesNotContain =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.LessThanOrEqual(
                                 Expression.Call(
                                     Column.Field.Body,
@@ -121,7 +121,7 @@ namespace BlazorTable
                 StringCondition.StartsWith =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.Call(
                                 Column.Field.Body,
                                 typeof(string).GetMethod(nameof(string.StartsWith), new[] { typeof(string), typeof(StringComparison) }),
@@ -131,7 +131,7 @@ namespace BlazorTable
                 StringCondition.EndsWith =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.Call(
                                 Column.Field.Body,
                                 typeof(string).GetMethod(nameof(string.EndsWith), new[] { typeof(string), typeof(StringComparison) }),
@@ -141,7 +141,7 @@ namespace BlazorTable
                 StringCondition.IsEqualTo =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.Call(
                                 Column.Field.Body,
                                 typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string), typeof(StringComparison) }),
@@ -151,7 +151,7 @@ namespace BlazorTable
                 StringCondition.IsNotEqualTo =>
                     Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(Column.Field.Body, Expression.Constant(null)),
+                            Column.Field.Body.CreateNullChecks(),
                             Expression.Not(
                                 Expression.Call(
                                     Column.Field.Body,
@@ -161,17 +161,21 @@ namespace BlazorTable
 
                 StringCondition.IsNullOrEmpty =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.Call(
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.Call(
                                 typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string) }),
-                            Column.Field.Body),
+                            Column.Field.Body)),
                         Column.Field.Parameters),
 
                 StringCondition.IsNotNulOrEmpty =>
                     Expression.Lambda<Func<TableItem, bool>>(
-                        Expression.Not(
-                            Expression.Call(
+                        Expression.AndAlso(
+                            Column.Field.Body.CreateNullChecks(true),
+                            Expression.Not(
+                                Expression.Call(
                                     typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string) }),
-                            Column.Field.Body)),
+                            Column.Field.Body))),
                         Column.Field.Parameters),
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),
