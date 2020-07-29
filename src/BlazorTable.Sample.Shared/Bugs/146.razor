@@ -1,0 +1,59 @@
+﻿@page "/146"
+
+@using BlazorTable
+
+<Table TableItem="Root" Items="data" ShowSearchBar="true">
+    <Column TableItem="Root" Title="Data" Field="@(x => x.Child.Data)" Sortable="true" Filterable="true">
+    	<Template>
+		    @(context.Child != null ? context.Child.Data : string.Empty)
+	    </Template>
+    </Column>
+    <Column TableItem="Root" Title="Data" Field="@(x => x.Child.Data)" Sortable="true" Filterable="true">
+    	<Template>
+		    @(context.Child != null ? context.Child.Data : string.Empty)
+	    </Template>
+    </Column>
+    <Column TableItem="Root" Title="Data2" Field="@(x => x.Child.Data)" Sortable="true" Filterable="true" />
+</Table>
+
+@code
+{
+    private Root[] data;
+
+    protected override void OnInitialized()
+    {
+        data = new Root[]
+        {
+            new Root()
+            {
+                Child = new Child(){ Data = "test1" }
+            },
+             new Root()
+            {
+                Child = new Child(){ Data = "test2" }
+            },
+            new Root()
+            {
+                Child = new Child(){ Data = "test3" }
+            },
+            new Root()
+            {
+                Child = new Child()
+            },
+            new Root()
+            {
+                Child = null
+            }
+        };
+    }
+
+    public class Root
+    {
+        public Child Child { get; set; }
+    }
+
+    public class Child
+    {
+        public string Data { get; set; }
+    }
+}

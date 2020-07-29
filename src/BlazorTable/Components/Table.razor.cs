@@ -129,7 +129,7 @@ namespace BlazorTable
                 {
                     if (item.Filter != null)
                     {
-                        ItemsQueryable = ItemsQueryable.Where(item.Filter.AddNullChecks());
+                        ItemsQueryable = ItemsQueryable.Where(item.Filter);
                     }
                 }
 
@@ -427,7 +427,7 @@ namespace BlazorTable
                 {
                     var newQuery = Expression.Lambda<Func<TableItem, bool>>(
                         Expression.AndAlso(
-                            Expression.NotEqual(column.Field.Body, Expression.Constant(null)),
+                            column.Field.Body.CreateNullChecks(),
                             Expression.GreaterThanOrEqual(
                                 Expression.Call(
                                     Expression.Call(column.Field.Body, "ToString", Type.EmptyTypes),

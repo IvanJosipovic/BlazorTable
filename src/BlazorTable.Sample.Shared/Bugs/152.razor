@@ -1,0 +1,31 @@
+﻿@page "/152"
+
+@using BlazorTable
+
+<Table TableItem="PersonData" Items="data" ShowSearchBar="true" ShowFooter="true">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.ShortId)" Sortable="false" Filterable="true" SetFooterValue="Count" />
+    <DetailTemplate TableItem="PersonData">
+        @context.ShortId
+    </DetailTemplate>
+</Table>
+
+@code
+{
+    private PersonData[] data;
+
+    protected override void OnInitialized()
+    {
+        data = new PersonData[]
+        {
+            new PersonData()
+            {
+                ShortId = 5
+            }
+        };
+    }
+
+    public class PersonData
+    {
+        public int ShortId { get; set; }
+    }
+}

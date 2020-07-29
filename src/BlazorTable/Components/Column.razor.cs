@@ -251,7 +251,13 @@ namespace BlazorTable
             if (renderCompiled == null)
                 renderCompiled = Field.Compile();
 
-            var value = renderCompiled.Invoke(data);
+            object value = null;
+
+            try
+            {
+                value = renderCompiled.Invoke(data);
+            }
+            catch (NullReferenceException){}
 
             if (value == null) return string.Empty;
 
