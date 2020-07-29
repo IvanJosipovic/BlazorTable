@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
-using System.Globalization;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -20,48 +19,35 @@ namespace BlazorTable
             {
                 Column.FilterControl = this;
 
-                if (Column.Filter?.Body is BinaryExpression binaryExpression)
+                if (Column.Filter?.Body is BinaryExpression binaryExpression
+                    && binaryExpression.Right is BinaryExpression logicalBinary
+                    && logicalBinary.Right is ConstantExpression constant)
                 {
-                    if (binaryExpression.NodeType == ExpressionType.AndAlso)
+                    switch (binaryExpression.Right.NodeType)
                     {
-                        switch (binaryExpression.Right.NodeType)
-                        {
-                            case ExpressionType.Equal:
-                                Condition = NumberCondition.IsEqualTo;
-                                break;
-                            case ExpressionType.NotEqual:
-                                Condition = NumberCondition.IsNotEqualTo;
-                                break;
-                            case ExpressionType.GreaterThanOrEqual:
-                                Condition = NumberCondition.IsGreaterThanOrEqualTo;
-                                break;
-                            case ExpressionType.GreaterThan:
-                                Condition = NumberCondition.IsGreaterThan;
-                                break;
-                            case ExpressionType.LessThanOrEqual:
-                                Condition = NumberCondition.IsLessThanOrEqualTo;
-                                break;
-                            case ExpressionType.LessThan:
-                                Condition = NumberCondition.IsLessThan;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        if (binaryExpression.NodeType == ExpressionType.Equal)
-                        {
-                            Condition = NumberCondition.IsNull;
-                        }
-                        else if (binaryExpression.NodeType == ExpressionType.NotEqual)
-                        {
-                            Condition = NumberCondition.IsNotNull;
-                        }
+                        case ExpressionType.Equal:
+                            Condition = constant.Value == null ? NumberCondition.IsNull : NumberCondition.IsEqualTo;
+                            break;
+                        case ExpressionType.NotEqual:
+                            Condition = constant.Value == null ? NumberCondition.IsNotNull : NumberCondition.IsNotEqualTo;
+                            break;
+                        case ExpressionType.GreaterThanOrEqual:
+                            Condition = NumberCondition.IsGreaterThanOrEqualTo;
+                            break;
+                        case ExpressionType.GreaterThan:
+                            Condition = NumberCondition.IsGreaterThan;
+                            break;
+                        case ExpressionType.LessThanOrEqual:
+                            Condition = NumberCondition.IsLessThanOrEqualTo;
+                            break;
+                        case ExpressionType.LessThan:
+                            Condition = NumberCondition.IsLessThan;
+                            break;
                     }
 
-                    if (binaryExpression.Right is BinaryExpression binaryExpression2
-                        && binaryExpression2.Right is ConstantExpression constantExpression)
+                    if (constant.Value != null && DateTime.TryParse(constant.Value.ToString(), out DateTime result))
                     {
-                        FilterValue = DateTime.Parse(constantExpression.Value.ToString(), CultureInfo.InvariantCulture);
+                        FilterValue = result;
                     }
                 }
             }

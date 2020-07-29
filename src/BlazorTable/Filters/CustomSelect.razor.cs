@@ -26,37 +26,21 @@ namespace BlazorTable
         {
             Column.FilterControl = this;
 
-            if (Column.Filter?.Body is BinaryExpression binaryExpression)
+            if (Column.Filter?.Body is BinaryExpression binaryExpression
+                && binaryExpression.Right is BinaryExpression logicalBinary
+                && logicalBinary.Right is ConstantExpression constant)
             {
-                if (binaryExpression.NodeType == ExpressionType.AndAlso)
+                switch (logicalBinary.NodeType)
                 {
-                    switch (binaryExpression.Right.NodeType)
-                    {
-                        case ExpressionType.Equal:
-                            Condition = CustomSelectCondition.IsEqualTo;
+                    case ExpressionType.Equal:
+                            Condition = constant.Value == null ? CustomSelectCondition.IsNull : CustomSelectCondition.IsEqualTo;
                             break;
-                        case ExpressionType.NotEqual:
-                            Condition = CustomSelectCondition.IsNotEqualTo;
+                    case ExpressionType.NotEqual:
+                            Condition = constant.Value == null ? CustomSelectCondition.IsNotNull : CustomSelectCondition.IsNotEqualTo;
                             break;
-                    }
-                }
-                else
-                {
-                    if (binaryExpression.NodeType == ExpressionType.Equal)
-                    {
-                        Condition = CustomSelectCondition.IsNull;
-                    }
-                    else if (binaryExpression.NodeType == ExpressionType.NotEqual)
-                    {
-                        Condition = CustomSelectCondition.IsNotNull;
-                    }
                 }
 
-                if (binaryExpression.Right is BinaryExpression binaryExpression2
-                    && binaryExpression2.Right is ConstantExpression constantExpression)
-                {
-                    FilterValue = constantExpression.Value;
-                }
+                FilterValue = constant.Value;
             }
         }
 
@@ -113,10 +97,10 @@ namespace BlazorTable
 
         public enum CustomSelectCondition
         {
-            [Description("Is Equal To")]
+            [Description("Is equal to")]
             IsEqualTo,
 
-            [Description("Is Not Equal To")]
+            [Description("Is not equal to")]
             IsNotEqualTo,
 
             [Description("Is null")]

@@ -192,6 +192,12 @@ namespace BlazorTable
             var parents = new Stack<BinaryExpression>();
 
             BinaryExpression newExpression = null;
+
+            if (expression is UnaryExpression unary)
+            {
+                expression = unary.Operand;
+            }
+
             MemberExpression temp = expression as MemberExpression;
 
             while (temp is MemberExpression member)
