@@ -1,0 +1,56 @@
+﻿@page "/157"
+
+@using BlazorTable
+
+<Table TableItem="MyData"
+       Items="data">
+    <Column TableItem="MyData" Title="MyString" Field="@(d => d.MyString)" Sortable="true" Filterable="true" />
+    <Column TableItem="MyData" Title="MyInt" Field="@(d => d.MyInt)" Sortable="true" Filterable="true" />
+    <Column TableItem="MyData" Title="MyEnum" Field="@(d => d.MyEnum)" Sortable="true" Filterable="true" />
+</Table>
+
+
+@code {
+    private List<MyData> data;
+
+    protected override void OnInitialized()
+    {
+        data = new List<MyData>()
+    {
+            new MyData()
+            {
+                MyString = "One",
+                MyInt = 1,
+                MyEnum = MyEnum.One
+            },
+            new MyData()
+            {
+                MyString = "Two",
+                MyInt = 2,
+                MyEnum = MyEnum.Two
+            },
+            new MyData()
+            {
+                MyString = "Three",
+                MyInt = 3,
+                MyEnum = MyEnum.Three
+            }
+        };
+
+
+        base.OnInitialized();
+    }
+    public enum MyEnum
+    {
+        One,
+        Two,
+        Three
+    }
+
+    public class MyData
+    {
+        public string MyString { get; set; }
+        public int MyInt { get; set; }
+        public MyEnum MyEnum { get; set; }
+    }
+}
