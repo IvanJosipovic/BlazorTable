@@ -57,9 +57,27 @@ namespace BlazorTable.Tests
             exp.ToString().ShouldBe("((x.Child != null) AndAlso (x.Child.GrandChild != null))");
         }
 
+        [Fact]
+        public void NonNullable()
+        {
+            Expression<Func<Parent, object>> Field = x => x.Enum;
+            var exp = Field.Body.CreateNullChecks();
+            exp.ToString().ShouldBe("(True == True)");
+        }
+
+        [Fact]
+        public void NonNullable2()
+        {
+            Expression<Func<Parent, object>> Field = x => x.Child.Enum;
+            var exp = Field.Body.CreateNullChecks();
+            exp.ToString().ShouldBe("(x.Child != null)");
+        }
+
         private class Parent
         {
             public Child Child { get; set; }
+
+            public MyEnum Enum { get; set; }
         }
 
         private class Child
@@ -67,11 +85,20 @@ namespace BlazorTable.Tests
             public string Name { get; set; }
 
             public GrandChild GrandChild { get; set; }
+
+            public MyEnum Enum { get; set; }
         }
 
         private class GrandChild
         {
             public string Name { get; set; }
+        }
+
+        private enum MyEnum
+        {
+            One,
+            Two,
+            Three
         }
     }
 }
