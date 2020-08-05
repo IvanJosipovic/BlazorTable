@@ -1,0 +1,11 @@
+﻿@namespace BlazorTable
+@typeparam TableItem
+
+@foreach (var propertyInfo in typeof(TableItem).GetProperties())
+{
+    <Column TableItem="TableItem" Title="@propertyInfo.Name" Type="Utilities.GetNonNullableType(propertyInfo.PropertyType)" Field="GenerateMemberExpression<TableItem, object>(propertyInfo)" Sortable="Sortable" Filterable="Filterable" Class="Class">
+        <Template>
+            @RenderProperty(context, propertyInfo)
+        </Template>
+    </Column>
+}
