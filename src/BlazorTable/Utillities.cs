@@ -202,11 +202,14 @@ namespace BlazorTable
 
             while (temp is MemberExpression member)
             {
-                var nullCheck = Expression.NotEqual(temp, Expression.Constant(null));
+                try
+                {
+                    var nullCheck = Expression.NotEqual(temp, Expression.Constant(null));
+                    parents.Push(nullCheck);
+                }
+                catch (InvalidOperationException){}
 
                 temp = member.Expression as MemberExpression;
-
-                parents.Push(nullCheck);
             }
 
             while (parents.Count > 0)
@@ -217,6 +220,11 @@ namespace BlazorTable
                     newExpression = parents.Pop();
                 else
                     newExpression = Expression.AndAlso(newExpression, parents.Pop());
+            }
+
+            if (newExpression == null)
+            {
+                return Expression.Equal(Expression.Constant(true), Expression.Constant(true));
             }
 
             return newExpression;
