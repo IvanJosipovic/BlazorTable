@@ -5,10 +5,15 @@
 <h1>JObject</h1>
 
 <br />
-<Table TableItem="JObject" Items="data" PageSize="15" ColumnReorder="true">
+@*<Table TableItem="JObject" Items="data" PageSize="15" ColumnReorder="true">
     <Column TableItem="JObject" Title="Column1" Field="@(x => x.Property("Column1").Value.Value<string>())" Type="@(typeof(string))" Sortable="true" Filterable="true" DefaultSortColumn="true" />
     <Column TableItem="JObject" Title="Column2" Field="@(x => x.Property("Column2").Value.Value<int>())" Type="@(typeof(int))" Sortable="true" Filterable="true" />
     <Column TableItem="JObject" Title="Column3" Field="@(x => x.Property("Column3").Value.Value<JObject>().Property("Name").Value.Value<string>())" Type="@(typeof(string))" Sortable="true" Filterable="true" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>*@
+
+<Table TableItem="JObject" Items="data" PageSize="15" ColumnReorder="true">
+    <DynamicColumns TableItem="JObject" Sortable="true" Filterable="true" />
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 

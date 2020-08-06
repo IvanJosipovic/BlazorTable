@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -49,16 +51,39 @@ namespace BlazorTable
         {
             var entityParam = Expression.Parameter(typeof(TModel), "x");
 
-            Expression columnExpr = Expression.Property(entityParam, propertyInfo);
+            Expression columnExpr = null;
+            
+            if (propertyInfo.ReflectedType.Name == "JObject")
+            {
+                var assembly = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.ManifestModule.Name == "Newtonsoft.Json.dll").First();
 
-            if (propertyInfo.PropertyType != typeof(T))
-                columnExpr = Expression.Convert(columnExpr, typeof(T));
+                var type = assembly.GetType("Newtonsoft.Json.Linq.JToken");
+                var exttype = assembly.GetType("Newtonsoft.Json.Linq.Extensions");
+
+                columnExpr = Expression.Call(exttype.GetMethod("Value", new[] { typeof(IEnumerable<>).MakeGenericType(type) }).MakeGenericMethod(new[] {type}),
+                                 Expression.Property(
+                                    Expression.Call(entityParam, "Property", null, Expression.Constant(propertyInfo.Name)),
+                                    "Value")
+                            );
+            }
+            else
+            {
+                columnExpr = Expression.Property(entityParam, propertyInfo);
+
+                if (propertyInfo.PropertyType != typeof(T))
+                    columnExpr = Expression.Convert(columnExpr, typeof(T));
+            }
 
             return Expression.Lambda<Func<TModel, T>>(columnExpr, entityParam);
         }
 
-        private string RenderProperty(TableItem data, PropertyInfo property)
+        private string RenderProperty(TableItem data, PropertyInfo property, Func<TableItem, object> func = null)
         {
+            if (property.ReflectedType.Name == "JObject")
+            {
+                return "";// func.Invoke(data)?.ToString();
+            }
+
             object rawData = property.GetValue(data);
 
             if (rawData == null)
