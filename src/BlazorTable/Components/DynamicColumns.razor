@@ -1,11 +1,16 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
 
-@foreach (var propertyInfo in typeof(TableItem).GetProperties())
+@foreach (var propertyInfo in (Type == null ? typeof(TableItem).GetProperties() : Type.GetProperties() ))
 {
-    <Column TableItem="TableItem" Title="@propertyInfo.Name" Type="Utilities.GetNonNullableType(propertyInfo.PropertyType)" Field="GenerateMemberExpression<TableItem, object>(propertyInfo)" Sortable="Sortable" Filterable="Filterable" Class="Class">
-        <Template>
-            @RenderProperty(context, propertyInfo)
-        </Template>
-    </Column>
+    if(propertyInfo.PropertyType.MemberType == System.Reflection.MemberTypes.NestedType)
+    {
+        <DynamicColumns TableItem="TableItem" Type="@propertyInfo.PropertyType" Sortable="Sortable" Filterable="Sortable" />
+    } else {
+        <Column TableItem="TableItem" Title="@propertyInfo.Name" Type="Utilities.GetNonNullableType(propertyInfo.PropertyType)" Field="GenerateMemberExpression<TableItem, object>(propertyInfo)" Sortable="Sortable" Filterable="Filterable" Class="Class">
+            <Template>
+                @RenderProperty(context, propertyInfo)
+            </Template>
+        </Column>
+    }
 }

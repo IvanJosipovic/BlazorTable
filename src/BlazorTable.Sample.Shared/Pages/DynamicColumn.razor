@@ -1,7 +1,5 @@
 ﻿@page "/DynamicColumns"
 
-@using BlazorTable
-
 <h1>Dynamic Columns</h1>
 
 <Table TableItem="PersonData" Items="data" PageSize="15" ShowSearchBar="true">
@@ -11,14 +9,14 @@
 
 @code
 {
-    [Inject]
-    private HttpClient Http { get; set; }
+    [Inject] private HttpClient Http { get; set; }
 
     private PersonData[] data;
 
     protected override async Task OnInitializedAsync()
     {
         data = await Http.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+
     }
 
     public class PersonData
@@ -30,6 +28,12 @@
         public decimal? price { get; set; }
         public CreditCard? cc_type { get; set; }
         public DateTime? created_date { get; set; }
+        //public SubData SubData {get;set;}
+    }
+
+    public class SubData
+    {
+        public string test { get; set; }
     }
 
     public enum CreditCard

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -43,6 +41,9 @@ namespace BlazorTable
         /// </summary>
         [Parameter]
         public string Class { get; set; }
+
+        [Parameter]
+        public Type Type { get; set; }
 
         private static Expression<Func<TModel, T>> GenerateMemberExpression<TModel, T>(PropertyInfo propertyInfo)
         {
