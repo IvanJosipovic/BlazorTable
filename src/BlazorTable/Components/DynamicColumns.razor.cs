@@ -57,7 +57,7 @@ namespace BlazorTable
             {
                 var assembly = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.ManifestModule.Name == "Newtonsoft.Json.dll").First();
 
-                var type = assembly.GetType("Newtonsoft.Json.Linq.JToken");
+                var type = propertyInfo.ReflectedType;// assembly.GetType("Newtonsoft.Json.Linq.JToken");
                 var exttype = assembly.GetType("Newtonsoft.Json.Linq.Extensions");
 
                 columnExpr = Expression.Call(exttype.GetMethod("Value", new[] { typeof(IEnumerable<>).MakeGenericType(type) }).MakeGenericMethod(new[] {type}),
