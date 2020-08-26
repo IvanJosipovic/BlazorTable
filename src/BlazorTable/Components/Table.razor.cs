@@ -81,6 +81,9 @@ namespace BlazorTable
         [Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
         /// <summary>
         /// Collection of filtered items
         /// </summary>
