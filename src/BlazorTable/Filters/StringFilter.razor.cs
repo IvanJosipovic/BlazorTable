@@ -100,7 +100,7 @@ namespace BlazorTable
                             Column.Field.Body.CreateNullChecks(),
                             Expression.GreaterThanOrEqual(
                                 Expression.Call(
-                                    Column.Field.Body,
+                                    Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes),
                                     typeof(string).GetMethod(nameof(string.IndexOf), new[] { typeof(string), typeof(StringComparison) }),
                                     new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) }),
                                 Expression.Constant(0))),
@@ -112,7 +112,7 @@ namespace BlazorTable
                             Column.Field.Body.CreateNullChecks(),
                             Expression.LessThanOrEqual(
                                 Expression.Call(
-                                    Column.Field.Body,
+                                    Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes),
                                     typeof(string).GetMethod(nameof(string.IndexOf), new[] { typeof(string), typeof(StringComparison) }),
                                     new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) }),
                                 Expression.Constant(-1))),
@@ -123,7 +123,7 @@ namespace BlazorTable
                         Expression.AndAlso(
                             Column.Field.Body.CreateNullChecks(),
                             Expression.Call(
-                                Column.Field.Body,
+                                Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes),
                                 typeof(string).GetMethod(nameof(string.StartsWith), new[] { typeof(string), typeof(StringComparison) }),
                                 new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) })),
                         Column.Field.Parameters),
@@ -133,7 +133,7 @@ namespace BlazorTable
                         Expression.AndAlso(
                             Column.Field.Body.CreateNullChecks(),
                             Expression.Call(
-                                Column.Field.Body,
+                                Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes),
                                 typeof(string).GetMethod(nameof(string.EndsWith), new[] { typeof(string), typeof(StringComparison) }),
                                 new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) })),
                         Column.Field.Parameters),
@@ -143,7 +143,7 @@ namespace BlazorTable
                         Expression.AndAlso(
                             Column.Field.Body.CreateNullChecks(),
                             Expression.Call(
-                                Column.Field.Body,
+                                Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes),
                                 typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string), typeof(StringComparison) }),
                                 new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) })),
                         Column.Field.Parameters),
@@ -154,7 +154,7 @@ namespace BlazorTable
                             Column.Field.Body.CreateNullChecks(),
                             Expression.Not(
                                 Expression.Call(
-                                    Column.Field.Body,
+                                    Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes),
                                     typeof(string).GetMethod(nameof(string.Equals), new[] { typeof(string), typeof(StringComparison) }),
                                     new[] { Expression.Constant(FilterText), Expression.Constant(StringComparison.OrdinalIgnoreCase) }))),
                         Column.Field.Parameters),
@@ -165,7 +165,7 @@ namespace BlazorTable
                             Column.Field.Body.CreateNullChecks(true),
                             Expression.Call(
                                 typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string) }),
-                            Column.Field.Body)),
+                            Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes))),
                         Column.Field.Parameters),
 
                 StringCondition.IsNotNulOrEmpty =>
@@ -175,7 +175,7 @@ namespace BlazorTable
                             Expression.Not(
                                 Expression.Call(
                                     typeof(string).GetMethod(nameof(string.IsNullOrEmpty), new[] { typeof(string) }),
-                            Column.Field.Body))),
+                            Expression.Call(Column.Field.Body, "ToString", Type.EmptyTypes)))),
                         Column.Field.Parameters),
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),

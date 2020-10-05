@@ -1,0 +1,45 @@
+﻿@page "/DynamicColumns"
+
+<h1>Dynamic Columns</h1>
+
+<Table TableItem="PersonData" Items="data" PageSize="15" ShowSearchBar="true">
+    <DynamicColumns TableItem="PersonData" Sortable="true" Filterable="true" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" ShowPageSizes="true" />
+</Table>
+
+@code
+{
+    [Inject] private HttpClient Http { get; set; }
+
+    private PersonData[] data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await Http.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+    }
+
+    public class PersonData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+        public string email { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public CreditCard? cc_type { get; set; }
+        public DateTime? created_date { get; set; }
+        //public SubData SubData {get;set;}
+    }
+
+    public class SubData
+    {
+        public string test { get; set; }
+    }
+
+    public enum CreditCard
+    {
+        none = 0,
+        [Description("MasterCard")]
+        MasterCard = 1,
+        Visa = 2
+    }
+}
