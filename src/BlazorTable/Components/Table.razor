@@ -41,9 +41,9 @@
                                 @if (column.SortColumn)
                                 {
                                     if (column.SortDescending)
-                                    { <span aria-hidden="true"><img src="/_content/BlazorTable/images/sort-desc.png" /></span> }
+                                    { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-desc.png" /></span> }
                                     else
-                                    { <span aria-hidden="true"><img src="/_content/BlazorTable/images/sort-asc.png" /></span> }
+                                    { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-asc.png" /></span> }
                                 }
 
                                 @if (column.Filterable)
@@ -51,7 +51,7 @@
                                     <div class="float-right" @onclick="@((x) => column.ToggleFilter())" @onclick:stopPropagation>
                                         <a href="javascript:;" @ref="column.FilterRef" aria-expanded="@(column.FilterOpen ? "true" : "false")" style="text-decoration: none" aria-label="@(column.Filter == null ? "unfiltered" : "filtered")">
                                             <span aria-hidden="true" style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">
-                                                <img src="/_content/BlazorTable/images/filter.png" />
+                                                <img src="_content/BlazorTable/images/filter.png" />
                                             </span>
                                         </a>
                                     </div>
@@ -99,9 +99,9 @@
                                     <td>
                                         <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !isOpen; StateHasChanged(); })" title="Details View" aria-expanded="@(isOpen ? "true" : "false")">
                                             @if (isOpen)
-                                            {<span aria-hidden="true"><img src="/_content/BlazorTable/images/minus.png" /></span>}
+                                            {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
                                             else
-                                            {<span aria-hidden="true"><img src="/_content/BlazorTable/images/plus.png" /></span>}
+                                            {<span aria-hidden="true"><img src="_content/BlazorTable/images/plus.png" /></span>}
                                         </a>
                                     </td>
                                 }
