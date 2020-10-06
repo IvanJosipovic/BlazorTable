@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+﻿using BlazorTable.Components;
+using Microsoft.AspNetCore.Components;
 using System;
-using System.ComponentModel;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -10,6 +9,9 @@ namespace BlazorTable
     {
         [CascadingParameter(Name = "Column")]
         public IColumn<TableItem> Column { get; set; }
+
+        [Inject]
+        Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization { get; set; }
 
         private StringCondition Condition { get; set; }
 
@@ -185,28 +187,28 @@ namespace BlazorTable
 
     public enum StringCondition
     {
-        [Description("Contains")]
+        [LocalizedDescription("StringConditionContains", typeof(Localization))]
         Contains,
 
-        [Description("Does not contain")]
+        [LocalizedDescription("StringConditionDoesNotContain", typeof(Localization))]
         DoesNotContain,
 
-        [Description("Starts with")]
+        [LocalizedDescription("StringConditionStartsWith", typeof(Localization))]
         StartsWith,
 
-        [Description("Ends with")]
+        [LocalizedDescription("StringConditionEndsWith", typeof(Localization))]
         EndsWith,
 
-        [Description("Is equal to")]
+        [LocalizedDescription("StringConditionIsEqualTo", typeof(Localization))]
         IsEqualTo,
 
-        [Description("Is not equal to")]
+        [LocalizedDescription("StringConditionIsNotEqualTo", typeof(Localization))]
         IsNotEqualTo,
 
-        [Description("Is null or empty")]
+        [LocalizedDescription("StringConditionIsNullOrEmpty", typeof(Localization))]
         IsNullOrEmpty,
 
-        [Description("Is not null or empty")]
+        [LocalizedDescription("StringConditionIsNotNullOrEmpty", typeof(Localization))]
         IsNotNulOrEmpty
     }
 }
