@@ -1,0 +1,69 @@
+﻿@page "/ToggleColumnVisibility"
+@inject HttpClient Http
+@using BlazorTable
+@using System.ComponentModel
+
+<h1>Toggle Column Visibility</h1>
+
+<button class="btn btn-primary mb-2" @onclick="@(_ => showSearchBar = !showSearchBar)">Toggle Search Bar</button>
+
+<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" ShowSearchBar="showSearchBar">
+    <Column Hideable="true" TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
+    <Column Hideable="true" TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
+    <Column Hideable="true" TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
+        <Template>
+            <a href="mailto:@context.email">@context.email</a>
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Paid" Field="@(x => x.paid)" Sortable="true" Filterable="true" Width="10%">
+        <Template>
+            @context.paid.ToString()
+        </Template>
+    </Column>
+    <Column Hideable="true" TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Filterable="true" Width="10%" Format="C" Align="Align.Right" />
+    <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Sortable="true" Filterable="true" Width="10%">
+        <Template>
+            @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
+        </Template>
+    </Column>
+    <Column Hideable="true" TableItem="PersonData" Title="Enum" Field="@(x => x.cc_type)" Sortable="true" Filterable="true" Width="10%">
+        <Template>
+            @context.cc_type
+        </Template>
+    </Column>
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{ 
+    [Inject]
+    private HttpClient httpClient { get; set; }
+
+    private PersonData[] data;
+
+    private bool showSearchBar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        data = await httpClient.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+    }
+
+    public class PersonData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+        public string email { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public CreditCard? cc_type { get; set; }
+        public DateTime? created_date { get; set; }
+    }
+
+    public enum CreditCard
+    {
+        none = 0,
+        [Description("MasterCard")]
+        MasterCard = 1,
+        Visa = 2
+    }
+}

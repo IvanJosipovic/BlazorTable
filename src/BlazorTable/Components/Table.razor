@@ -9,11 +9,51 @@
 
     <div class="table-responsive">
         <table aria-readonly="@(IsEditMode ? "false" : "true")" role="grid" class="@TableClass" @attributes="UnknownParameters">
-            @if (ShowSearchBar)
+            @if (ShowSearchBar || Columns.Exists(column => !column.Visible))
             {
                 <thead role="search">
                     <tr>
-                        <th colspan="@columnCount"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." /></th>
+                        <th colspan="@columnCount">
+                            @if (ShowSearchBar)
+                            {
+                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." />
+                            }
+                            @if (Columns.Exists(column => !column.Visible))
+                            {
+                                <div class="float-right" @onclick="@(_ => VisibilityMenuOpen = !VisibilityMenuOpen)">
+                                    <a href="javascript:;" @ref="VisibilityMenuIconRef">
+                                        <span aria-hidden="true">
+                                            <img src="_content/BlazorTable/images/plus.png" />
+                                        </span>
+                                    </a>                                   
+                                </div>
+                                <Popover IsOpen="@VisibilityMenuOpen" Placement="Placement.Bottom" DismissOnNextClick="false" Reference="VisibilityMenuIconRef">
+                                    <h3 class="popover-header">Column Visibility</h3>
+                                    <div class="popover-body">
+                                        <table class="table table-sm table-borderless">
+                                            @foreach (IColumn<TableItem> column in Columns.Where(column => !column.Visible))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @(column.Title)
+                                                    </td>
+                                                    <td>
+                                                        <div class="float-right" @onclick="@(_ => { column.Visible = true; if (!Columns.Exists(column => !column.Visible)) VisibilityMenuOpen = false;})">
+                                                            <span aria-hidden="true">
+                                                                <img src="_content/BlazorTable/images/plus.png" />
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>                                                                     
+                                            }
+                                        </table>
+                                        <button class="btn btn-sm btn-danger" @onclick="@(_ => VisibilityMenuOpen = false)">
+                                            Close
+                                        </button>
+                                    </div>
+                                </Popover>
+                            }
+                        </th>
                     </tr>
                 </thead>
             }
@@ -26,56 +66,68 @@
                     }
                     @foreach (IColumn<TableItem> column in Columns)
                     {
-                        <th scope="col" style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
-                            @ondrop="@(() => HandleDrop(column))"
-                            @ondragstart="@(() => HandleDragStart(column))"
-                            ondragover="event.preventDefault();"
-                            draggable="@(ColumnReorder.ToString())"
-                            @key="column"
-                            aria-sort="@column.AriaSort"
-                            class="@(column.Class)">
+                        @if (column.Visible)
+                        {
+                            <th scope="col" style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
+                                @ondrop="@(() => HandleDrop(column))"
+                                @ondragstart="@(() => HandleDragStart(column))"
+                                ondragover="event.preventDefault();"
+                                draggable="@(ColumnReorder.ToString())"
+                                @key="column"
+                                aria-sort="@column.AriaSort"
+                                class="@(column.Class)">
 
-                            <div @onclick="@(() => column.SortBy())">
-                                <span>@column.Title</span>
+                                <div @onclick="@(() => column.SortBy())">
+                                    <span>@column.Title</span>
 
-                                @if (column.SortColumn)
-                                {
-                                    if (column.SortDescending)
-                                    { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-desc.png" /></span> }
-                                    else
-                                    { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-asc.png" /></span> }
-                                }
+                                    @if (column.SortColumn)
+                                    {
+                                        if (column.SortDescending)
+                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-desc.png" /></span> }
+                                        else
+                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-asc.png" /></span> }
+                                    }
 
-                                @if (column.Filterable)
-                                {
-                                    <div class="float-right" @onclick="@((x) => column.ToggleFilter())" @onclick:stopPropagation>
-                                        <a href="javascript:;" @ref="column.FilterRef" aria-expanded="@(column.FilterOpen ? "true" : "false")" style="text-decoration: none" aria-label="@(column.Filter == null ? "unfiltered" : "filtered")">
-                                            <span aria-hidden="true" style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">
-                                                <img src="_content/BlazorTable/images/filter.png" />
+                                    @if (column.Filterable)
+                                    {
+                                        <div class="float-right" @onclick="@(_ => column.ToggleFilter())" @onclick:stopPropagation>
+                                            <a href="javascript:;" @ref="column.FilterRef" aria-expanded="@(column.FilterOpen ? "true" : "false")" style="text-decoration: none" aria-label="@(column.Filter == null ? "unfiltered" : "filtered")">
+                                                <span aria-hidden="true" style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">
+                                                    <img src="_content/BlazorTable/images/filter.png" />
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <CascadingValue Value="column" Name="Column">
+                                            <Popover Reference="@column.FilterRef" IsOpen="@column.FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
+                                                <h3 class="popover-header">Filter</h3>
+                                                <div class="popover-body">
+                                                    <FilterManager TableItem="TableItem">
+                                                        <StringFilter TableItem="TableItem" />
+                                                        <BooleanFilter TableItem="TableItem" />
+                                                        <NumberFilter TableItem="TableItem" />
+                                                        <DateFilter TableItem="TableItem" />
+                                                        <EnumFilter TableItem="TableItem" />
+                                                        @if (column.CustomIFilters != null)
+                                                        {
+                                                            @column.CustomIFilters(column)
+                                                        }
+                                                    </FilterManager>
+                                                </div>
+                                            </Popover>
+                                        </CascadingValue>
+                                    }
+
+                                    @if (column.Hideable)
+                                    {
+                                        <div class="float-right mr-1" @onclick="@(_ => column.Visible = false)" @onclick:stopPropagation>  
+                                            <span aria-hidden="true">
+                                                <img src="_content/BlazorTable/images/minus.png" />
                                             </span>
-                                        </a>
-                                    </div>
-                                    <CascadingValue Value="column" Name="Column">
-                                        <Popover Reference="@column.FilterRef" IsOpen="@column.FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
-                                            <h3 class="popover-header">Filter</h3>
-                                            <div class="popover-body">
-                                                <FilterManager TableItem="TableItem">
-                                                    <StringFilter TableItem="TableItem" />
-                                                    <BooleanFilter TableItem="TableItem" />
-                                                    <NumberFilter TableItem="TableItem" />
-                                                    <DateFilter TableItem="TableItem" />
-                                                    <EnumFilter TableItem="TableItem" />
-                                                    @if (column.CustomIFilters != null)
-                                                    {
-                                                        @column.CustomIFilters(column)
-                                                    }
-                                                </FilterManager>
-                                            </div>
-                                        </Popover>
-                                    </CascadingValue>
-                                }
-                            </div>
-                        </th>
+                                        </div> 
+                                    }
+                                </div>
+                            </th>
+                        }
                     }
                 </tr>
             </thead>
@@ -108,17 +160,20 @@
 
                                 @foreach (IColumn<TableItem> column in Columns)
                                 {
-                                    <td @key="column"
-                                        style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
-                                        class="@(column.Class)">
+                                    @if (column.Visible)
+                                    {
+                                        <td @key="column"
+                                            style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
+                                            class="@(column.Class)">
 
-                                        @if (IsEditMode && column.EditTemplate != null)
-                                            @column.EditTemplate(item)
-                                        else if (column.Template == null)
-                                            @column.Render(item)
-                                        else
-                                            @column.Template(item)
-                                    </td>
+                                            @if (IsEditMode && column.EditTemplate != null)
+                                                @column.EditTemplate(item)
+                                            else if (column.Template == null)
+                                                @column.Render(item)
+                                            else
+                                                @column.Template(item)
+                                        </td>
+                                    }
                                 }
                             </tr>
 

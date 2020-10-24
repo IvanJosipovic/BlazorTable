@@ -19,5 +19,9 @@
   <ItemGroup>
     <Watch Include="..\**\*.razor" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Watch Remove="Pages\ToggleColumnVisibility.razor" />
+  </ItemGroup>
   
 </Project>
