@@ -82,6 +82,16 @@ namespace BlazorTable
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
         /// <summary>
+        /// Ref to visibility menu icon for popover display
+        /// </summary>
+        private ElementReference VisibilityMenuIconRef { get; set; }
+
+        /// <summary>
+        /// True if visibility menu is open otherwise false
+        /// </summary>
+        private bool VisibilityMenuOpen { get; set; }
+
+        /// <summary>
         /// Collection of filtered items
         /// </summary>
         public IEnumerable<TableItem> FilteredItems { get; private set; }
