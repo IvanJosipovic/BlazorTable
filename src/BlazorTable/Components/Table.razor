@@ -1,7 +1,6 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
-
-
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization
 
 @if (Columns.Any())
 {
@@ -13,7 +12,7 @@
             {
                 <thead role="search">
                     <tr>
-                        <th colspan="@columnCount"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="Global Search..." /></th>
+                        <th colspan="@columnCount"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="@Localization["GlobalSearch"]" /></th>
                     </tr>
                 </thead>
             }
@@ -97,7 +96,7 @@
                                 @if (_detailTemplate != null)
                                 {
                                     <td>
-                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !isOpen; StateHasChanged(); })" title="Details View" aria-expanded="@(isOpen ? "true" : "false")">
+                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !isOpen; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(isOpen ? "true" : "false")">
                                             @if (isOpen)
                                             {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
                                             else
@@ -155,7 +154,7 @@
                             else
                             {
                                 <div class="text-center">
-                                    Loading...
+                                    @Localization["TableLoading"]
                                 </div>
                             }
                         </td>
