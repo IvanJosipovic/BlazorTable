@@ -15,6 +15,8 @@ Blazor Table Component with Sorting, Paging and Filtering
   - dotnet add package BlazorTable
 - Add to the index.html or _Hosts.cshtml
   - `<script src="_content/BlazorTable/BlazorTable.min.js"></script>`
+- Add call to Program.cs or Startup.cs
+  - Services.AddBlazorTable();
 
 ## Features
 - Column Reordering
