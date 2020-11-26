@@ -15,7 +15,7 @@
                         <th colspan="@columnCount">
                             @if (ShowSearchBar)
                             {
-                                <th colspan="@columnCount"><input type="text" class="form-control form-control-sm float-right" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="@Localization["GlobalSearch"]" /></th>
+                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="@Localization["GlobalSearch"]" />
                             }
                             @if (Columns.Exists(column => !column.Visible))
                             {
@@ -38,9 +38,11 @@
                                                     </td>
                                                     <td>
                                                         <div class="float-right" @onclick="@(_ => { column.Visible = true; if (!Columns.Exists(column => !column.Visible)) VisibilityMenuOpen = false;})">
-                                                            <span aria-hidden="true">
-                                                                <img src="_content/BlazorTable/images/plus.png" />
-                                                            </span>
+                                                            <a href="javascript:;">
+                                                                <span aria-hidden="true">
+                                                                    <img src="_content/BlazorTable/images/plus.png" />
+                                                                </span>
+                                                            </a>     
                                                         </div>
                                                     </td>
                                                 </tr>                                                                     
