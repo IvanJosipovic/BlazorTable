@@ -1,5 +1,6 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
+@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization
 
 <CascadingValue Value="(IColumn<TableItem>)this.Column" Name="Column">
     @ChildContent
@@ -7,7 +8,7 @@
 <br />
 
 <div class="justify-content-md-center">
-    <button type="button" class="btn btn-danger btn-xs" role="button" @onclick="@((x) => Column.ToggleFilter())">Close</button>
-    <button type="button" class="btn btn-secondary btn-xs" role="button" @onclick="@((x) => ClearFilter())">Clear</button>
-    <button type="button" class="btn btn-primary btn-xs" role="button" @onclick="@((x) => ApplyFilter())">Apply</button>
+    <button type="button" class="btn btn-danger btn-xs" role="button" @onclick="@((x) => Column.ToggleFilter())">@Localization["FilterManagerClose"]</button>
+    <button type="button" class="btn btn-secondary btn-xs" role="button" @onclick="@((x) => ClearFilter())">@Localization["FilterManagerClear"]</button>
+    <button type="button" class="btn btn-primary btn-xs" role="button" @onclick="@((x) => ApplyFilter())">@Localization["FilterManagerApply"]</button>
 </div>

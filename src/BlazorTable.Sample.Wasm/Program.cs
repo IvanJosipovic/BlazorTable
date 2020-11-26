@@ -16,6 +16,7 @@ namespace BlazorTable.Sample.Wasm
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddBlazorTable();
 
             await builder.Build().RunAsync();
         }
