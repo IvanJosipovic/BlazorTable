@@ -2,6 +2,13 @@
 @typeparam TableItem
 @inject Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization
 
+@if (ShowChildContentAtTop)
+{
+    <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+        @ChildContent
+    </CascadingValue>
+}
+
 @if (Columns.Any())
 {
     var columnCount = Columns.Count + (_detailTemplate != null ? 1 : 0);
@@ -24,7 +31,7 @@
                                         <span aria-hidden="true">
                                             <img src="_content/BlazorTable/images/plus.png" />
                                         </span>
-                                    </a>                                   
+                                    </a>
                                 </div>
                                 <Popover IsOpen="@VisibilityMenuOpen" Placement="Placement.Bottom" DismissOnNextClick="false" Reference="VisibilityMenuIconRef">
                                     <h3 class="popover-header">Column Visibility</h3>
@@ -42,10 +49,11 @@
                                                                 <span aria-hidden="true">
                                                                     <img src="_content/BlazorTable/images/plus.png" />
                                                                 </span>
-                                                            </a>     
+                                                            </a>
                                                         </div>
                                                     </td>
-                                                </tr>                                                                     
+                                                </tr>
+
                                             }
                                         </table>
                                         <button class="btn btn-sm btn-danger" @onclick="@(_ => VisibilityMenuOpen = false)">
@@ -84,9 +92,9 @@
                                     @if (column.SortColumn)
                                     {
                                         if (column.SortDescending)
-                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-desc.png" /></span> }
+                                        {<span aria-hidden="true"><img src="_content/BlazorTable/images/sort-desc.png" /></span> }
                                         else
-                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-asc.png" /></span> }
+                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-asc.png" /></span>}
                                     }
 
                                     @if (column.Filterable)
@@ -120,11 +128,11 @@
 
                                     @if (column.Hideable)
                                     {
-                                        <div class="float-right mr-1" @onclick="@(_ => column.Visible = false)" @onclick:stopPropagation>  
+                                        <div class="float-right mr-1" @onclick="@(_ => column.Visible = false)" @onclick:stopPropagation>
                                             <span aria-hidden="true">
                                                 <img src="_content/BlazorTable/images/minus.png" />
                                             </span>
-                                        </div> 
+                                        </div>
                                     }
                                 </div>
                             </th>
@@ -169,10 +177,10 @@
 
                                             @if (IsEditMode && column.EditTemplate != null)
                                                 @column.EditTemplate(item)
-                                            else if (column.Template == null)
-                                                @column.Render(item)
-                                            else
-                                                @column.Template(item)
+                                                else if (column.Template == null)
+                                                    @column.Render(item)
+                                                    else
+                                                        @column.Template(item)
                                         </td>
                                     }
                                 }
@@ -230,9 +238,12 @@
                         @foreach (IColumn<TableItem> column in Columns)
                         {
                             <td @key="column" style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")" class="@(column.ColumnFooterClass)">
-                                @if (!string.IsNullOrEmpty(column.SetFooterValue)){
+                                @if (!string.IsNullOrEmpty(column.SetFooterValue))
+                                {
                                     @column.SetFooterValue
-                                } else if(FilteredItems != null && FilteredItems.Any()) {
+                                }
+                                else if (FilteredItems != null && FilteredItems.Any())
+                                {
                                     @column.GetFooterValue()
                                 }
                             </td>
@@ -244,6 +255,10 @@
     </div>
 }
 
-<CascadingValue Value="(ITable<TableItem>)this" Name="Table">
-    @ChildContent
-</CascadingValue>
+@if (!ShowChildContentAtTop)
+{
+    <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+        @ChildContent
+    </CascadingValue>
+}
+
