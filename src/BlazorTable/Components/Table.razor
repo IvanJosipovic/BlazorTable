@@ -15,7 +15,7 @@
                         <th colspan="@columnCount">
                             @if (ShowSearchBar)
                             {
-                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="@Localization["GlobalSearch"]" />
+                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="@Localization["TableGlobalSearch"]" />
                             }
                             @if (Columns.Exists(column => !column.Visible))
                             {
