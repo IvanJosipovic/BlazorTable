@@ -9,6 +9,6 @@
 
 <div class="justify-content-md-center">
     <button type="button" class="btn btn-danger btn-xs" role="button" @onclick="@((x) => Column.ToggleFilter())">@Localization["FilterManagerClose"]</button>
-    <button type="button" class="btn btn-secondary btn-xs" role="button" @onclick="@((x) => ClearFilter())">@Localization["FilterManagerClear"]</button>
-    <button type="button" class="btn btn-primary btn-xs" role="button" @onclick="@((x) => ApplyFilter())">@Localization["FilterManagerApply"]</button>
+    <button type="button" class="btn btn-secondary btn-xs" role="button" @onclick="@(async (x) => await ClearFilterAsync())">@Localization["FilterManagerClear"]</button>
+    <button type="button" class="btn btn-primary btn-xs" role="button" @onclick="@(async (x) => await ApplyFilterAsync())">@Localization["FilterManagerApply"]</button>
 </div>

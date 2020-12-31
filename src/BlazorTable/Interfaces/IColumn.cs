@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -64,7 +65,7 @@ namespace BlazorTable
         /// <summary>
         /// Sort by this column
         /// </summary>
-        void SortBy();
+        Task SortByAsync();
 
         /// <summary>
         /// Column Data Type
