@@ -8,8 +8,8 @@
 <br />
 <div class="btn-toolbar mb-3">
     <div class="btn-group mr-2">
-        <button class="btn btn-primary" @onclick="() => Try(() => table.ToggleAllDetailsView(open: true))">Open All</button>
-        <button class="btn btn-danger" @onclick="() => Try(() => table.ToggleAllDetailsView(open: false))">Close All</button>
+        <button class="btn btn-primary" @onclick="_ => Try(() => table.ToggleAllDetailsView(open: true))">Open All</button>
+        <button class="btn btn-danger" @onclick="_ => Try(() => table.ToggleAllDetailsView(open: false))">Close All</button>
     </div>
     <div class="input-group mr-1">
         <div class="input-group-prepend">
@@ -18,8 +18,8 @@
         <input type="number" @bind="rowNumber" class="form-control">
     </div>
     <div class="btn-group">
-        <button class="btn btn-primary" @onclick="() => Try(() => table.ToggleDetailView(rowNumber, open: true))">Open</button>
-        <button class="btn btn-danger" @onclick="() => Try(() => table.ToggleDetailView(rowNumber, open: false))">Close</button>
+        <button class="btn btn-primary" @onclick="_ => Try(() => table.ToggleDetailView(rowNumber, open: true))">Open</button>
+        <button class="btn btn-danger" @onclick="_ => Try(() => table.ToggleDetailView(rowNumber, open: false))">Close</button>
     </div>
 </div>
 <br />

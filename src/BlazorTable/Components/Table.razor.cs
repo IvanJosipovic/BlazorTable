@@ -332,13 +332,16 @@ namespace BlazorTable
         /// <param name="column"></param>
         private void HandleDrop(IColumn<TableItem> column)
         {
-            int index = Columns.FindIndex(a => a == column);
+            if (DragSource != null)
+            {
+                int index = Columns.FindIndex(a => a == column);
 
-            Columns.Remove(DragSource);
+                Columns.Remove(DragSource);
+                Columns.Insert(index, DragSource);
+                DragSource = null;
 
-            Columns.Insert(index, DragSource);
-
-            StateHasChanged();
+                StateHasChanged();
+            }
         }
 
         /// <summary>

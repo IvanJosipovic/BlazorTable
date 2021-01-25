@@ -70,8 +70,8 @@
                         @if (column.Visible)
                         {
                             <th scope="col" style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
-                                @ondrop="@(() => HandleDrop(column))"
-                                @ondragstart="@(() => HandleDragStart(column))"
+                                @ondrop="@(_ => HandleDrop(column))"
+                                @ondragstart="@(_ => HandleDragStart(column))"
                                 ondragover="event.preventDefault();"
                                 draggable="@(ColumnReorder.ToString())"
                                 @key="column"
