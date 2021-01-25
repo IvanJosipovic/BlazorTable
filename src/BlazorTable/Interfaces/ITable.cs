@@ -87,6 +87,19 @@
         void Update();
 
         /// <summary>
+        /// Open/Close detail view in specified row.
+        /// </summary>
+        /// <param name="row">number of row to toggle detail view</param>
+        /// <param name="open">true for openening detail view, false for closing detail view</param>
+        void ToggleDetailView(int row, bool open);
+
+        /// <summary>
+        /// Open/Close all detail views.
+        /// </summary>
+        /// <param name="open">true for openening detail view, false for closing detail view</param>
+        void ToggleAllDetailsView(bool open);
+
+        /// <summary>
         /// Set the EmptyDataTemplate for the table
         /// </summary>
         /// <param name="template"></param>

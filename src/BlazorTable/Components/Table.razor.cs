@@ -184,6 +184,33 @@ namespace BlazorTable
         private Dictionary<int, bool> detailsViewOpen = new Dictionary<int, bool>();
 
         /// <summary>
+        /// Open/Close detail view in specified row.
+        /// </summary>
+        /// <param name="row">number of row to toggle detail view</param>
+        /// <param name="open">true for openening detail view, false for closing detail view</param>
+        public void ToggleDetailView(int row, bool open)
+        {
+            if (!detailsViewOpen.ContainsKey(row))
+                throw new KeyNotFoundException("Specified row could not be found in the currently rendered part of the table.");
+
+            detailsViewOpen[row] = open;
+        }
+
+        /// <summary>
+        /// Open/Close all detail views.
+        /// </summary>
+        /// <param name="open">true for openening detail view, false for closing detail view</param>
+        public void ToggleAllDetailsView(bool open)
+        {
+            int[] rows = new int[detailsViewOpen.Keys.Count];
+            detailsViewOpen.Keys.CopyTo(rows, 0);
+            foreach (int row in rows)
+            {
+                detailsViewOpen[row] = open;
+            }
+        }
+
+        /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
         public void Update()

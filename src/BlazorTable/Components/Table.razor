@@ -145,13 +145,16 @@
 
                                 @{
                                     int locali = i;
-                                    bool isOpen = detailsViewOpen.ContainsKey(locali) && detailsViewOpen[locali];
+                                    if (!detailsViewOpen.ContainsKey(locali))
+                                    {
+                                        detailsViewOpen[locali] = false;
+                                    }
                                 }
                                 @if (_detailTemplate != null)
                                 {
                                     <td>
-                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !isOpen; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(isOpen ? "true" : "false")">
-                                            @if (isOpen)
+                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(detailsViewOpen[locali] ? "true" : "false")">
+                                            @if (detailsViewOpen[locali])
                                             {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
                                             else
                                             {<span aria-hidden="true"><img src="_content/BlazorTable/images/plus.png" /></span>}
@@ -178,7 +181,7 @@
                                 }
                             </tr>
 
-                            if (_detailTemplate != null && isOpen)
+                            if (_detailTemplate != null && detailsViewOpen[locali])
                             {
                                 <tr>
                                     <td></td>
