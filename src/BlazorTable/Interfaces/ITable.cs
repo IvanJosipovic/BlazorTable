@@ -137,6 +137,5 @@
         /// </summary>
         /// <param name="pageSize"></param>
         void SetPageSize(int pageSize);
-
     }
 }

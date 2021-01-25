@@ -121,6 +121,11 @@ namespace BlazorTable
         /// </summary>
         public int TotalPages => PageSize <= 0 ? 1 : (TotalCount + PageSize - 1) / PageSize;
 
+        /// <summary>
+        /// Custom Rows
+        /// </summary>
+        private List<CustomRow<TableItem>> CustomRows { get; set; } = new List<CustomRow<TableItem>>();
+
         protected override void OnParametersSet()
         {
             Update();
@@ -453,6 +458,15 @@ namespace BlazorTable
                         SelectedItems.Add(tableItem);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Add custom row to current table
+        /// </summary>
+        /// <param name="customRow">custom row to add</param>
+        public void AddCustomRow(CustomRow<TableItem> customRow)
+        {
+            CustomRows.Add(customRow);
         }
 
         private Expression<Func<TableItem, bool>> GlobalSearchQuery(string value)

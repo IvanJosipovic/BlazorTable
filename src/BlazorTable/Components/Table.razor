@@ -138,60 +138,76 @@
                     if (FilteredItems.Any())
                     {
                         int i = 0;
+                        bool detailViewActive = _detailTemplate != null;
 
                         foreach (TableItem item in FilteredItems)
                         {
-                            <tr @key="item" aria-selected="@(SelectedItems.Contains(item) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
+                            bool rowDisplayed = false;
 
-                                @{
-                                    int locali = i;
-                                    if (!detailsViewOpen.ContainsKey(locali))
-                                    {
-                                        detailsViewOpen[locali] = false;
-                                    }
-                                }
-                                @if (_detailTemplate != null)
-                                {
-                                    <td>
-                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(detailsViewOpen[locali] ? "true" : "false")">
-                                            @if (detailsViewOpen[locali])
-                                            {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
-                                            else
-                                            {<span aria-hidden="true"><img src="_content/BlazorTable/images/plus.png" /></span>}
-                                        </a>
-                                    </td>
-                                }
-
-                                @foreach (IColumn<TableItem> column in Columns)
-                                {
-                                    @if (column.Visible)
-                                    {
-                                        <td @key="column"
-                                            style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
-                                            class="@(column.Class)">
-
-                                            @if (IsEditMode && column.EditTemplate != null)
-                                                @column.EditTemplate(item)
-                                            else if (column.Template == null)
-                                                @column.Render(item)
-                                            else
-                                                @column.Template(item)
-                                        </td>
-                                    }
-                                }
-                            </tr>
-
-                            if (_detailTemplate != null && detailsViewOpen[locali])
+                            foreach (CustomRow<TableItem> customRow in CustomRows)
                             {
-                                <tr>
-                                    <td></td>
-                                    <td colspan="@(Columns.Count)">
-                                        @_detailTemplate(item)
-                                    </td>
-                                </tr>
+                                if (customRow.IsActiveForItem != null && customRow.IsActiveForItem(item))
+                                {
+                                    @customRow.ChildContent(item)
+                                    rowDisplayed = true;
+                                    break;
+                                }
                             }
 
-                            { i = locali + 1; }
+                            if (!rowDisplayed)
+                            {
+                                <tr @key="item" aria-selected="@(SelectedItems.Contains(item) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
+
+                                    @{
+                                        int locali = i;
+                                        if (!detailsViewOpen.ContainsKey(locali))
+                                        {
+                                            detailsViewOpen[locali] = false;
+                                        }
+                                    }
+                                    @if (detailViewActive)
+                                    {
+                                        <td>
+                                            <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(detailsViewOpen[locali] ? "true" : "false")">
+                                                @if (detailsViewOpen[locali])
+                                                {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
+                                                else
+                                                {<span aria-hidden="true"><img src="_content/BlazorTable/images/plus.png" /></span>}
+                                            </a>
+                                        </td>
+                                    }
+
+                                    @foreach (IColumn<TableItem> column in Columns)
+                                    {
+                                        @if (column.Visible)
+                                        {
+                                            <td @key="column"
+                                                style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
+                                                class="@(column.Class)">
+
+                                                @if (IsEditMode && column.EditTemplate != null)
+                                                    @column.EditTemplate(item)
+                                                    else if (column.Template == null)
+                                                        @column.Render(item)
+                                                        else
+                                                            @column.Template(item)
+                                            </td>
+                                        }
+                                    }
+                                </tr>
+
+                                if (detailViewActive && detailsViewOpen[i])
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="@(Columns.Count)">
+                                            @_detailTemplate(item)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                            { i++; }
                         }
                     }
                     else if (_emptyDataTemplate != null)

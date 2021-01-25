@@ -58,5 +58,11 @@ namespace BlazorTable
         /// </summary>
         /// <param name="template"></param>
         void SetDetailTemplate(DetailTemplate<TableItem> template);
+
+        /// <summary>
+        /// Add custom row to table
+        /// </summary>
+        /// <param name="customRow">Custom row to add</param>
+        void AddCustomRow(CustomRow<TableItem> customRow);
     }
 }

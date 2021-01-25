@@ -48,6 +48,7 @@ app {
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    overflow: auto;
 }
 
     .sidebar .top-row {
