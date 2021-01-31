@@ -1,6 +1,5 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
-@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization
 
 <CascadingValue Value="(IColumn<TableItem>)this.Column" Name="Column">
     @ChildContent

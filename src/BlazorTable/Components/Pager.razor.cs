@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -41,6 +42,9 @@ namespace BlazorTable
         /// </summary>
         [Parameter]
         public bool ShowPageSizes { get; set; }
+
+        [Inject]
+        IStringLocalizer<Localization.Localization> Localization { get; set; }
 
         private void SetPageSize(ChangeEventArgs args)
         {

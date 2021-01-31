@@ -1,5 +1,6 @@
 ﻿using LinqKit;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,9 @@ namespace BlazorTable
 
         [Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
+
+        [Inject]
+        IStringLocalizer<Localization.Localization> Localization { get; set; }
 
         /// <summary>
         /// Ref to visibility menu icon for popover display

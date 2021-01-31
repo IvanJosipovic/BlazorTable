@@ -1,4 +1,4 @@
-﻿using BlazorTable.Components;
+﻿using BlazorTable.Localization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Globalization;
@@ -12,7 +12,7 @@ namespace BlazorTable
         public IColumn<TableItem> Column { get; set; }
 
         [Inject]
-        Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization { get; set; }
+        Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Localization.Localization> Localization { get; set; }
 
         private NumberCondition Condition { get; set; }
 
@@ -142,28 +142,28 @@ namespace BlazorTable
 
     public enum NumberCondition
     {
-        [LocalizedDescription("NumberConditionIsEqualTo", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsEqualTo", typeof(Localization.Localization))]
         IsEqualTo,
 
-        [LocalizedDescription("NumberConditionIsnotEqualTo", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsnotEqualTo", typeof(Localization.Localization))]
         IsNotEqualTo,
 
-        [LocalizedDescription("NumberConditionIsGreaterThanOrEqualTo", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsGreaterThanOrEqualTo", typeof(Localization.Localization))]
         IsGreaterThanOrEqualTo,
 
-        [LocalizedDescription("NumberConditionIsGreaterThan", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsGreaterThan", typeof(Localization.Localization))]
         IsGreaterThan,
 
-        [LocalizedDescription("NumberConditionIsLessThanOrEqualTo", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsLessThanOrEqualTo", typeof(Localization.Localization))]
         IsLessThanOrEqualTo,
 
-        [LocalizedDescription("NumberConditionIsLessThan", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsLessThan", typeof(Localization.Localization))]
         IsLessThan,
 
-        [LocalizedDescription("NumberConditionIsNull", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsNull", typeof(Localization.Localization))]
         IsNull,
 
-        [LocalizedDescription("NumberConditionIsNotNull", typeof(Localization))]
+        [LocalizedDescription("NumberConditionIsNotNull", typeof(Localization.Localization))]
         IsNotNull
     }
 }
