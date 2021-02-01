@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -18,15 +18,16 @@ namespace BlazorTable
         [Inject]
         IStringLocalizer<Localization.Localization> Localization { get; set; }
 
-        private void ApplyFilter()
+        private async Task ApplyFilterAsync()
+
         {
             Column.ToggleFilter();
 
             if (Column.FilterControl != null)
             {
                 Column.Filter = Column.FilterControl.GetFilter();
-                Column.Table.Update();
-                Column.Table.FirstPage();
+                await Column.Table.UpdateAsync().ConfigureAwait(false);
+                await Column.Table.FirstPageAsync().ConfigureAwait(false);
             }
             else
             {
@@ -34,14 +35,14 @@ namespace BlazorTable
             }
         }
 
-        private void ClearFilter()
+        private async Task ClearFilterAsync()
         {
             Column.ToggleFilter();
 
             if (Column.Filter != null)
             {
                 Column.Filter = null;
-                Column.Table.Update();
+                await Column.Table.UpdateAsync().ConfigureAwait(false);
             }
         }
     }

@@ -6,6 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using BlazorTable.Components.ServerSide;
+using BlazorTable.Interfaces;
 
 namespace BlazorTable
 {
@@ -74,6 +78,12 @@ namespace BlazorTable
         public IEnumerable<TableItem> Items { get; set; }
 
         /// <summary>
+        /// Service to use to query data server side
+        /// </summary>
+        [Parameter]
+        public IDataLoader<TableItem> DataLoader { get; set; }
+
+        /// <summary>
         /// Search all columns for the specified string, supports spaces as a delimiter
         /// </summary>
         [Parameter]
@@ -125,64 +135,59 @@ namespace BlazorTable
         /// </summary>
         public int TotalPages => PageSize <= 0 ? 1 : (TotalCount + PageSize - 1) / PageSize;
 
-        protected override void OnParametersSet()
+        protected override async Task OnParametersSetAsync()
         {
-            Update();
+            await UpdateAsync();
         }
 
         private IEnumerable<TableItem> GetData()
         {
-            if (Items != null || ItemsQueryable != null)
+            if (Items == null && ItemsQueryable == null)
             {
-                if (Items != null)
-                {
-                    ItemsQueryable = Items.AsQueryable();
-                }
-
-                foreach (var item in Columns)
-                {
-                    if (item.Filter != null)
-                    {
-                        ItemsQueryable = ItemsQueryable.Where(item.Filter);
-                    }
-                }
-
-                // Global Search
-                if (!string.IsNullOrEmpty(GlobalSearch))
-                {
-                    ItemsQueryable = ItemsQueryable.Where(GlobalSearchQuery(GlobalSearch));
-                }
-
-                TotalCount = ItemsQueryable.Count();
-
-                var sortColumn = Columns.Find(x => x.SortColumn);
-
-                if (sortColumn != null)
-                {
-                    if (sortColumn.SortDescending)
-                    {
-                        ItemsQueryable = ItemsQueryable.OrderByDescending(sortColumn.Field);
-                    }
-                    else
-                    {
-                        ItemsQueryable = ItemsQueryable.OrderBy(sortColumn.Field);
-                    }
-                }
-
-                // if the current page is filtered out, we should go back to a page that exists
-                if (PageNumber > TotalPages)
-                {
-                    PageNumber = TotalPages - 1;
-                }
-
-                // if PageSize is zero, we return all rows and no paging
-                if (PageSize <= 0)
-                    return ItemsQueryable.ToList();
-                else
-                    return ItemsQueryable.Skip(PageNumber * PageSize).Take(PageSize).ToList();
+                return Items;
+            }
+            if (Items != null)
+            {
+                ItemsQueryable = Items.AsQueryable();
             }
 
-            return Items;
+            foreach (var item in Columns)
+            {
+                if (item.Filter != null)
+                {
+                    ItemsQueryable = ItemsQueryable.Where(item.Filter);
+                }
+            }
+
+            if (DataLoader != null)
+            {
+                return ItemsQueryable.ToList();
+            }
+            // Global Search
+            if (!string.IsNullOrEmpty(GlobalSearch))
+            {
+                ItemsQueryable = ItemsQueryable.Where(GlobalSearchQuery(GlobalSearch));
+            }
+
+            TotalCount = ItemsQueryable.Count();
+
+            var sortColumn = Columns.Find(x => x.SortColumn);
+
+            if (sortColumn != null)
+            {
+                ItemsQueryable = sortColumn.SortDescending ?
+                    ItemsQueryable.OrderByDescending(sortColumn.Field) :
+                    ItemsQueryable.OrderBy(sortColumn.Field);
+            }
+
+            // if the current page is filtered out, we should go back to a page that exists
+            if (PageNumber > TotalPages)
+            {
+                PageNumber = TotalPages - 1;
+            }
+
+            // if PageSize is zero, we return all rows and no paging
+            return PageSize <= 0 ? ItemsQueryable.ToList() : ItemsQueryable.Skip(PageNumber * PageSize).Take(PageSize).ToList();
         }
 
         private Dictionary<int, bool> detailsViewOpen = new Dictionary<int, bool>();
@@ -190,10 +195,37 @@ namespace BlazorTable
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
-        public void Update()
+        public async Task UpdateAsync()
         {
+            await LoadServerSideDataAsync().ConfigureAwait(false);
             FilteredItems = GetData();
             Refresh();
+        }
+
+        private async Task LoadServerSideDataAsync()
+        {
+            if (DataLoader != null)
+            {
+                var sortColumn = Columns.Find(x => x.SortColumn);
+                var sortExpression = new StringBuilder();
+                if (sortColumn != null)
+                {
+                    sortExpression
+                        .Append(sortColumn.Field.GetPropertyMemberInfo()?.Name)
+                        .Append(' ')
+                        .Append(sortColumn.SortDescending ? "desc" : "asc");
+                }
+
+                var result = await DataLoader.LoadDataAsync(new FilterData
+                {
+                    Top = PageSize,
+                    Skip = PageNumber * PageSize,
+                    Query = GlobalSearch,
+                    OrderBy = sortExpression.ToString()
+                }).ConfigureAwait(false);
+                Items = result.Records;
+                TotalCount = result.Total.GetValueOrDefault(1);
+            }
         }
 
         /// <summary>
@@ -226,50 +258,50 @@ namespace BlazorTable
         /// <summary>
         /// Go to First Page
         /// </summary>
-        public void FirstPage()
+        public async Task FirstPageAsync()
         {
             if (PageNumber != 0)
             {
                 PageNumber = 0;
                 detailsViewOpen.Clear();
-                Update();
+                await UpdateAsync().ConfigureAwait(false);
             }
         }
 
         /// <summary>
         /// Go to Next Page
         /// </summary>
-        public void NextPage()
+        public async Task NextPageAsync()
         {
             if (PageNumber + 1 < TotalPages)
             {
                 PageNumber++;
                 detailsViewOpen.Clear();
-                Update();
+                await UpdateAsync().ConfigureAwait(false);
             }
         }
 
         /// <summary>
         /// Go to Previous Page
         /// </summary>
-        public void PreviousPage()
+        public async Task PreviousPageAsync()
         {
             if (PageNumber > 0)
             {
                 PageNumber--;
                 detailsViewOpen.Clear();
-                Update();
+                await UpdateAsync().ConfigureAwait(false);
             }
         }
 
         /// <summary>
         /// Go to Last Page
         /// </summary>
-        public void LastPage()
+        public async Task LastPageAsync()
         {
             PageNumber = TotalPages - 1;
             detailsViewOpen.Clear();
-            Update();
+            await UpdateAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -481,10 +513,10 @@ namespace BlazorTable
         /// Set Table Page Size
         /// </summary>
         /// <param name="pageSize"></param>
-        public void SetPageSize(int pageSize)
+        public async Task SetPageSizeAsync(int pageSize)
         {
             PageSize = pageSize;
-            Update();
+            await UpdateAsync().ConfigureAwait(false);
         }
 
         /// <summary>
