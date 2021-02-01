@@ -486,5 +486,12 @@ namespace BlazorTable
             PageSize = pageSize;
             Update();
         }
+
+        /// <summary>
+        /// Show table child content at the top of the table.
+        /// </summary>
+        [Parameter]
+        public bool ShowChildContentAtTop { get; set; }
+
     }
 }
