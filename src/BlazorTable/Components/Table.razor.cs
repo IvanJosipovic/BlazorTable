@@ -137,7 +137,7 @@ namespace BlazorTable
 
         protected override async Task OnParametersSetAsync()
         {
-            await UpdateAsync();
+            await UpdateAsync().ConfigureAwait(false);
         }
 
         private IEnumerable<TableItem> GetData()
@@ -318,7 +318,7 @@ namespace BlazorTable
         /// </summary>
         public void Refresh()
         {
-            StateHasChanged();
+            InvokeAsync(StateHasChanged);
         }
 
         /// <summary>

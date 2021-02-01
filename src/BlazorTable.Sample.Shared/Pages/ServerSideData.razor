@@ -90,9 +90,9 @@
             return new PaginationResult<PersonData>
             {
                 Records = results,
-                Skip = parameters.Skip ?? 0,
+                Skip = parameters?.Skip ?? 0,
                 Total = query.ToList().Count,
-                Top = parameters.Top ?? 0
+                Top = parameters?.Top ?? 0
             };
         }
     }
