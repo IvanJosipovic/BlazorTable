@@ -135,6 +135,11 @@ namespace BlazorTable
         /// </summary>
         public int TotalPages => PageSize <= 0 ? 1 : (TotalCount + PageSize - 1) / PageSize;
 
+        /// <summary>
+        /// Custom Rows
+        /// </summary>
+        private List<CustomRow<TableItem>> CustomRows { get; set; } = new List<CustomRow<TableItem>>();
+
         protected override async Task OnParametersSetAsync()
         {
             await UpdateAsync().ConfigureAwait(false);
@@ -191,6 +196,33 @@ namespace BlazorTable
         }
 
         private Dictionary<int, bool> detailsViewOpen = new Dictionary<int, bool>();
+
+        /// <summary>
+        /// Open/Close detail view in specified row.
+        /// </summary>
+        /// <param name="row">number of row to toggle detail view</param>
+        /// <param name="open">true for openening detail view, false for closing detail view</param>
+        public void ToggleDetailView(int row, bool open)
+        {
+            if (!detailsViewOpen.ContainsKey(row))
+                throw new KeyNotFoundException("Specified row could not be found in the currently rendered part of the table.");
+
+            detailsViewOpen[row] = open;
+        }
+
+        /// <summary>
+        /// Open/Close all detail views.
+        /// </summary>
+        /// <param name="open">true for openening detail view, false for closing detail view</param>
+        public void ToggleAllDetailsView(bool open)
+        {
+            int[] rows = new int[detailsViewOpen.Keys.Count];
+            detailsViewOpen.Keys.CopyTo(rows, 0);
+            foreach (int row in rows)
+            {
+                detailsViewOpen[row] = open;
+            }
+        }
 
         /// <summary>
         /// Gets Data and redraws the Table
@@ -341,13 +373,16 @@ namespace BlazorTable
         /// <param name="column"></param>
         private void HandleDrop(IColumn<TableItem> column)
         {
-            int index = Columns.FindIndex(a => a == column);
+            if (DragSource != null)
+            {
+                int index = Columns.FindIndex(a => a == column);
 
-            Columns.Remove(DragSource);
+                Columns.Remove(DragSource);
+                Columns.Insert(index, DragSource);
+                DragSource = null;
 
-            Columns.Insert(index, DragSource);
-
-            StateHasChanged();
+                StateHasChanged();
+            }
         }
 
         /// <summary>
@@ -459,6 +494,15 @@ namespace BlazorTable
                         SelectedItems.Add(tableItem);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Add custom row to current table
+        /// </summary>
+        /// <param name="customRow">custom row to add</param>
+        public void AddCustomRow(CustomRow<TableItem> customRow)
+        {
+            CustomRows.Add(customRow);
         }
 
         private Expression<Func<TableItem, bool>> GlobalSearchQuery(string value)
