@@ -3,7 +3,7 @@
 
 @if (ShowChildContentAtTop)
 {
-    <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+    <CascadingValue Value="(ITable<TableItem>)this" Name="Table" IsFixed="true">
         @ChildContent
     </CascadingValue>
 }
@@ -105,7 +105,7 @@
                                                 </span>
                                             </a>
                                         </div>
-                                        <CascadingValue Value="column" Name="Column">
+                                        <CascadingValue Value="column" Name="Column" IsFixed="true">
                                             <Popover Reference="@column.FilterRef" IsOpen="@column.FilterOpen" Placement="Placement.Bottom" DismissOnNextClick="false">
                                                 <h3 class="popover-header">Filter</h3>
                                                 <div class="popover-body">
@@ -256,7 +256,7 @@
 
 @if (!ShowChildContentAtTop)
 {
-    <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+    <CascadingValue Value="(ITable<TableItem>)this" Name="Table" IsFixed="true">
         @ChildContent
     </CascadingValue>
 }
