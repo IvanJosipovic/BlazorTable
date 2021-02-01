@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -225,7 +226,7 @@ namespace BlazorTable
         /// <summary>
         /// Sort by this column
         /// </summary>
-        public void SortBy()
+        public async Task SortByAsync()
         {
             if (Sortable)
             {
@@ -238,7 +239,7 @@ namespace BlazorTable
 
                 SortColumn = true;
 
-                Table.Update();
+                await Table.UpdateAsync().ConfigureAwait(false);
             }
         }
 

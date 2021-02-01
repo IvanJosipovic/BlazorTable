@@ -1,4 +1,6 @@
-﻿namespace BlazorTable
+﻿using System.Threading.Tasks;
+
+namespace BlazorTable
 {
     /// <summary>
     /// BlazorTable Interface
@@ -37,24 +39,24 @@
 
 
         /// <summary>
-        /// Go to First Page
+        /// Go to First Page Async
         /// </summary>
-        void FirstPage();
+        Task FirstPageAsync();
 
         /// <summary>
         /// Go to Next Page
         /// </summary>
-        void NextPage();
+        Task NextPageAsync();
 
         /// <summary>
         /// Go to Previous Page
         /// </summary>
-        void PreviousPage();
+        Task PreviousPageAsync();
 
         /// <summary>
         /// Go to Last Page
         /// </summary>
-        void LastPage();
+        Task LastPageAsync();
 
         /// <summary>
         /// Redraws the Table using EditTemplate instead of Template
@@ -84,8 +86,7 @@
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
-        void Update();
-
+        Task UpdateAsync();
         /// <summary>
         /// Open/Close detail view in specified row.
         /// </summary>
@@ -136,6 +137,6 @@
         /// Set Table Page Size
         /// </summary>
         /// <param name="pageSize"></param>
-        void SetPageSize(int pageSize);
+        Task SetPageSizeAsync(int pageSize);
     }
 }
