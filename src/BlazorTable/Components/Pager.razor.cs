@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -42,11 +43,14 @@ namespace BlazorTable
         [Parameter]
         public bool ShowPageSizes { get; set; }
 
-        private void SetPageSize(ChangeEventArgs args)
+        [Inject]
+        IStringLocalizer<Localization.Localization> Localization { get; set; }
+
+        private async Task SetPageSizeAsync(ChangeEventArgs args)
         {
             if (int.TryParse(args.Value.ToString(), out int result))
             {
-                Table.SetPageSize(result);
+                await Table.SetPageSizeAsync(result).ConfigureAwait(false);
             }
         }
     }

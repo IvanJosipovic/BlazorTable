@@ -1,4 +1,4 @@
-﻿using BlazorTable.Components;
+﻿using BlazorTable.Localization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -97,16 +97,16 @@ namespace BlazorTable
 
         public enum CustomSelectCondition
         {
-            [LocalizedDescription("CustomSelectConditionIsEqualTo", typeof(Localization))]
+            [LocalizedDescription("CustomSelectConditionIsEqualTo", typeof(Localization.Localization))]
             IsEqualTo,
 
-            [LocalizedDescription("CustomSelectConditionIsNotEqualTo", typeof(Localization))]
+            [LocalizedDescription("CustomSelectConditionIsNotEqualTo", typeof(Localization.Localization))]
             IsNotEqualTo,
 
-            [LocalizedDescription("CustomSelectConditionIsNull", typeof(Localization))]
+            [LocalizedDescription("CustomSelectConditionIsNull", typeof(Localization.Localization))]
             IsNull,
 
-            [LocalizedDescription("CustomSelectConditionIsNotNull", typeof(Localization))]
+            [LocalizedDescription("CustomSelectConditionIsNotNull", typeof(Localization.Localization))]
             IsNotNull
         }
     }

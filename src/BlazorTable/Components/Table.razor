@@ -1,6 +1,12 @@
 ﻿@namespace BlazorTable
 @typeparam TableItem
-@inject Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization
+
+@if (ShowChildContentAtTop)
+{
+    <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+        @ChildContent
+    </CascadingValue>
+}
 
 @if (Columns.Any())
 {
@@ -15,7 +21,7 @@
                         <th colspan="@columnCount">
                             @if (ShowSearchBar)
                             {
-                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); Update(); })" placeholder="@Localization["GlobalSearch"]" />
+                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); UpdateAsync(); })" placeholder="@Localization["TableGlobalSearch"]" />
                             }
                             @if (Columns.Exists(column => !column.Visible))
                             {
@@ -24,7 +30,7 @@
                                         <span aria-hidden="true">
                                             <img src="_content/BlazorTable/images/plus.png" />
                                         </span>
-                                    </a>                                   
+                                    </a>
                                 </div>
                                 <Popover IsOpen="@VisibilityMenuOpen" Placement="Placement.Bottom" DismissOnNextClick="false" Reference="VisibilityMenuIconRef">
                                     <h3 class="popover-header">Column Visibility</h3>
@@ -42,10 +48,11 @@
                                                                 <span aria-hidden="true">
                                                                     <img src="_content/BlazorTable/images/plus.png" />
                                                                 </span>
-                                                            </a>     
+                                                            </a>
                                                         </div>
                                                     </td>
-                                                </tr>                                                                     
+                                                </tr>
+
                                             }
                                         </table>
                                         <button class="btn btn-sm btn-danger" @onclick="@(_ => VisibilityMenuOpen = false)">
@@ -70,23 +77,23 @@
                         @if (column.Visible)
                         {
                             <th scope="col" style="@(!string.IsNullOrEmpty(column.Width) ? $"width:{column.Width};" : "") user-select: none"
-                                @ondrop="@(() => HandleDrop(column))"
-                                @ondragstart="@(() => HandleDragStart(column))"
+                                @ondrop="@(_ => HandleDrop(column))"
+                                @ondragstart="@(_ => HandleDragStart(column))"
                                 ondragover="event.preventDefault();"
                                 draggable="@(ColumnReorder.ToString())"
                                 @key="column"
                                 aria-sort="@column.AriaSort"
                                 class="@(column.Class)">
 
-                                <div @onclick="@(() => column.SortBy())">
+                                <div @onclick="@(async () => await column.SortByAsync())">
                                     <span>@column.Title</span>
 
                                     @if (column.SortColumn)
                                     {
                                         if (column.SortDescending)
-                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-desc.png" /></span> }
+                                        {<span aria-hidden="true"><img src="_content/BlazorTable/images/sort-desc.png" /></span> }
                                         else
-                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-asc.png" /></span> }
+                                        { <span aria-hidden="true"><img src="_content/BlazorTable/images/sort-asc.png" /></span>}
                                     }
 
                                     @if (column.Filterable)
@@ -120,11 +127,11 @@
 
                                     @if (column.Hideable)
                                     {
-                                        <div class="float-right mr-1" @onclick="@(_ => column.Visible = false)" @onclick:stopPropagation>  
+                                        <div class="float-right mr-1" @onclick="@(_ => column.Visible = false)" @onclick:stopPropagation>
                                             <span aria-hidden="true">
                                                 <img src="_content/BlazorTable/images/minus.png" />
                                             </span>
-                                        </div> 
+                                        </div>
                                     }
                                 </div>
                             </th>
@@ -138,57 +145,76 @@
                     if (FilteredItems.Any())
                     {
                         int i = 0;
+                        bool detailViewActive = _detailTemplate != null;
 
                         foreach (TableItem item in FilteredItems)
                         {
-                            <tr @key="item" aria-selected="@(SelectedItems.Contains(item) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
+                            bool rowDisplayed = false;
 
-                                @{
-                                    int locali = i;
-                                    bool isOpen = detailsViewOpen.ContainsKey(locali) && detailsViewOpen[locali];
-                                }
-                                @if (_detailTemplate != null)
-                                {
-                                    <td>
-                                        <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !isOpen; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(isOpen ? "true" : "false")">
-                                            @if (isOpen)
-                                            {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
-                                            else
-                                            {<span aria-hidden="true"><img src="_content/BlazorTable/images/plus.png" /></span>}
-                                        </a>
-                                    </td>
-                                }
-
-                                @foreach (IColumn<TableItem> column in Columns)
-                                {
-                                    @if (column.Visible)
-                                    {
-                                        <td @key="column"
-                                            style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
-                                            class="@(column.Class)">
-
-                                            @if (IsEditMode && column.EditTemplate != null)
-                                                @column.EditTemplate(item)
-                                            else if (column.Template == null)
-                                                @column.Render(item)
-                                            else
-                                                @column.Template(item)
-                                        </td>
-                                    }
-                                }
-                            </tr>
-
-                            if (_detailTemplate != null && isOpen)
+                            foreach (CustomRow<TableItem> customRow in CustomRows)
                             {
-                                <tr>
-                                    <td></td>
-                                    <td colspan="@(Columns.Count)">
-                                        @_detailTemplate(item)
-                                    </td>
-                                </tr>
+                                if (customRow.IsActiveForItem != null && customRow.IsActiveForItem(item))
+                                {
+                                    @customRow.ChildContent(item)
+                                    rowDisplayed = true;
+                                    break;
+                                }
                             }
 
-                            { i = locali + 1; }
+                            if (!rowDisplayed)
+                            {
+                                <tr @key="item" aria-selected="@(SelectedItems.Contains(item) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
+
+                                    @{
+                                        int locali = i;
+                                        if (!detailsViewOpen.ContainsKey(locali))
+                                        {
+                                            detailsViewOpen[locali] = false;
+                                        }
+                                    }
+                                    @if (detailViewActive)
+                                    {
+                                        <td>
+                                            <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(detailsViewOpen[locali] ? "true" : "false")">
+                                                @if (detailsViewOpen[locali])
+                                                {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
+                                                else
+                                                {<span aria-hidden="true"><img src="_content/BlazorTable/images/plus.png" /></span>}
+                                            </a>
+                                        </td>
+                                    }
+
+                                    @foreach (IColumn<TableItem> column in Columns)
+                                    {
+                                        @if (column.Visible)
+                                        {
+                                            <td @key="column"
+                                                style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
+                                                class="@(column.Class)">
+
+                                                @if (IsEditMode && column.EditTemplate != null)
+                                                    @column.EditTemplate(item)
+                                                    else if (column.Template == null)
+                                                        @column.Render(item)
+                                                        else
+                                                            @column.Template(item)
+                                            </td>
+                                        }
+                                    }
+                                </tr>
+
+                                if (detailViewActive && detailsViewOpen[i])
+                                {
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="@(Columns.Count)">
+                                            @_detailTemplate(item)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                            { i++; }
                         }
                     }
                     else if (_emptyDataTemplate != null)
@@ -230,9 +256,12 @@
                         @foreach (IColumn<TableItem> column in Columns)
                         {
                             <td @key="column" style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")" class="@(column.ColumnFooterClass)">
-                                @if (!string.IsNullOrEmpty(column.SetFooterValue)){
+                                @if (!string.IsNullOrEmpty(column.SetFooterValue))
+                                {
                                     @column.SetFooterValue
-                                } else if(FilteredItems != null && FilteredItems.Any()) {
+                                }
+                                else if (FilteredItems != null && FilteredItems.Any())
+                                {
                                     @column.GetFooterValue()
                                 }
                             </td>
@@ -244,6 +273,10 @@
     </div>
 }
 
-<CascadingValue Value="(ITable<TableItem>)this" Name="Table">
-    @ChildContent
-</CascadingValue>
+@if (!ShowChildContentAtTop)
+{
+    <CascadingValue Value="(ITable<TableItem>)this" Name="Table">
+        @ChildContent
+    </CascadingValue>
+}
+

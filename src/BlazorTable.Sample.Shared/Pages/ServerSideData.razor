@@ -1,0 +1,100 @@
+﻿@page "/ServerSideData"
+@inject HttpClient Http
+@using BlazorTable
+@using BlazorTable.Interfaces
+@using BlazorTable.Components.ServerSide
+
+<h1>Server side data</h1>
+
+<Table TableItem="PersonData" DataLoader="_loader" Items="data" PageSize="15" ShowSearchBar="true">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Width="10%" DefaultSortColumn="true" />
+    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Width="20%" />
+    <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Width="20%">
+        <Template>
+            <a href="mailto:@context.email">@context.email</a>
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Paid" Field="@(x => x.paid)" Sortable="true" Width="10%">
+        <Template>
+            @context.paid.ToString()
+        </Template>
+    </Column>
+    <Column TableItem="PersonData" Title="Price" Field="@(x => x.price)" Sortable="true" Width="10%" Format="C" Align="Align.Right" />
+    <Column TableItem="PersonData" Title="Created Date" Field="@(x => x.created_date)" Sortable="true" Width="10%">
+        <Template>
+            @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
+        </Template>
+    </Column>
+    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+</Table>
+
+@code
+{
+    [Inject]
+    private HttpClient httpClient { get; set; }
+
+    public class PersonData
+    {
+        public int? id { get; set; }
+        public string full_name { get; set; }
+        public string email { get; set; }
+        public bool? paid { get; set; }
+        public decimal? price { get; set; }
+        public DateTime? created_date { get; set; }
+    }
+
+    private IDataLoader<PersonData> _loader;
+
+    private IEnumerable<PersonData> data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loader = new PersonDataLoader(httpClient);
+        data = (await _loader.LoadDataAsync(null)).Records;
+    }
+
+    public class PersonDataLoader : IDataLoader<PersonData>
+    {
+        private readonly HttpClient _client;
+        public PersonDataLoader(HttpClient client)
+        {
+            _client = client;
+        }
+        public async Task<PaginationResult<PersonData>> LoadDataAsync(FilterData parameters)
+        {
+
+            var data = await _client.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+            IQueryable<PersonData> query = data.AsQueryable();
+            if (parameters?.Query != null)
+            {
+                query = query.Where(
+                    x => x.email.ToLowerInvariant().Contains(parameters.Query.ToLowerInvariant()) ||
+                         x.full_name.ToLowerInvariant().Contains(parameters.Query.ToLowerInvariant()));
+            }
+            if (parameters?.OrderBy != null)
+            {
+                var orderBy = parameters.OrderBy.Split(" ");
+                if (orderBy.Length == 2)
+                {
+                    var isSortDescending = orderBy[1] == "desc";
+                    var prop = typeof(PersonData).GetProperty(orderBy[0]);
+                    query = isSortDescending ? query.OrderByDescending(x => prop.GetValue(x, null))
+                        : query.OrderBy(x => prop.GetValue(x, null));
+                }
+            }
+            var results = parameters?.Top.HasValue ?? false ?
+                query.Skip(parameters.Skip.GetValueOrDefault())
+                .Take(parameters.Top.Value).ToArray() :
+                query.ToArray();
+
+            return new PaginationResult<PersonData>
+            {
+                Records = results,
+                Skip = parameters?.Skip ?? 0,
+                Total = query.ToList().Count,
+                Top = parameters?.Top ?? 0
+            };
+        }
+    }
+
+}

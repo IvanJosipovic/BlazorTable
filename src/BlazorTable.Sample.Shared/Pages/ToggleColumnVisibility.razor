@@ -5,9 +5,11 @@
 
 <h1>Toggle Column Visibility</h1>
 
+<p>Users can change the visibility of a column if its "Hideable" attribute is set to true.</p>
+
 <button class="btn btn-primary mb-2" @onclick="@(_ => showSearchBar = !showSearchBar)">Toggle Search Bar</button>
 
-<Table TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" ShowSearchBar="showSearchBar">
+<Table @ref="table" TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" ShowSearchBar="showSearchBar">
     <Column Hideable="true" TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column Hideable="true" TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <Column Hideable="true" TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
@@ -35,9 +37,11 @@
 </Table>
 
 @code
-{ 
+{
     [Inject]
     private HttpClient httpClient { get; set; }
+
+    private ITable<PersonData> table;
 
     private PersonData[] data;
 
@@ -46,6 +50,13 @@
     protected override async Task OnInitializedAsync()
     {
         data = await httpClient.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+
+        Random random = new Random(123);
+
+        foreach (IColumn<PersonData> column in table.Columns)
+        {
+            column.Visible = random.Next(2) == 1 ? true : false; // column visibility
+        }
     }
 
     public class PersonData

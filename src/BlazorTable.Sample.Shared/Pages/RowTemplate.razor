@@ -1,33 +1,15 @@
-﻿@page "/Detail"
-
+﻿@page "/CustomRow"
+@inject HttpClient Http
 @using BlazorTable
+@using System.ComponentModel
 
-<h1>DetailTemplate</h1>
+<h1>Row Template - Custom Row</h1>
 
-<p>The <code>DetailTemplate</code> can be used to display additional details below an item.</p>
-<br />
-<div class="btn-toolbar mb-3">
-    <div class="btn-group mr-2">
-        <button class="btn btn-primary" @onclick="_ => Try(() => table.ToggleAllDetailsView(open: true))">Open All</button>
-        <button class="btn btn-danger" @onclick="_ => Try(() => table.ToggleAllDetailsView(open: false))">Close All</button>
-    </div>
-    <div class="input-group mr-1">
-        <div class="input-group-prepend">
-            <div class="input-group-text">Row Number:</div>
-        </div>
-        <input type="number" @bind="rowNumber" class="form-control">
-    </div>
-    <div class="btn-group">
-        <button class="btn btn-primary" @onclick="_ => Try(() => table.ToggleDetailView(rowNumber, open: true))">Open</button>
-        <button class="btn btn-danger" @onclick="_ => Try(() => table.ToggleDetailView(rowNumber, open: false))">Close</button>
-    </div>
-</div>
-<br />
-@if (errorMessage != "")
-{
-    <label>@errorMessage</label>
-}
-<Table @ref="table" TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true">
+<p></p>
+
+<p>Use</p> 
+
+<Table @ref="table" TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" ShowSearchBar="true">
     <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
@@ -51,33 +33,30 @@
             @context.cc_type
         </Template>
     </Column>
-    <DetailTemplate TableItem="PersonData">
-        <strong>Name</strong> @context.full_name
-        <br />
-        <strong>Email</strong> @context.email
-        <br />
-        <strong>Created Date</strong>@context.created_date
-        <br />
-    </DetailTemplate>
+    <CustomRow TableItem="PersonData" IsActiveForItem="x => (x.id % 4) == 0">
+        <tr>
+            <td colspan="@(table.Columns.Count)">
+                <div class="text-center w-100"><b>Custom Row</b></div>
+            </td>
+        </tr>
+    </CustomRow>
     <Pager ShowPageNumber="true" ShowTotalCount="true" />
 </Table>
 
 @code
 {
     [Inject]
-    private HttpClient Http { get; set; }
+    private HttpClient httpClient { get; set; }
 
     private ITable<PersonData> table;
 
     private PersonData[] data;
 
-    private int rowNumber;
-
-    private string errorMessage = "";
+    private int i = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        data = await Http.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
+        data = await httpClient.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
     }
 
     public class PersonData
@@ -97,18 +76,5 @@
         [Description("MasterCard")]
         MasterCard = 1,
         Visa = 2
-    }
-
-    private void Try(Action action)
-    {
-        try
-        {
-            errorMessage = "";
-            action();
-        }
-        catch (Exception e)
-        {
-            errorMessage = e.Message;
-        }
     }
 }
