@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorTable
@@ -15,7 +15,11 @@ namespace BlazorTable
         [Inject]
         public ILogger<FilterManager<TableItem>> Logger { get; set; }
 
+        [Inject]
+        IStringLocalizer<Localization.Localization> Localization { get; set; }
+
         private async Task ApplyFilterAsync()
+
         {
             Column.ToggleFilter();
 

@@ -1,4 +1,4 @@
-﻿using BlazorTable.Components;
+﻿using BlazorTable.Localization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq.Expressions;
@@ -11,7 +11,7 @@ namespace BlazorTable
         public IColumn<TableItem> Column { get; set; }
 
         [Inject]
-        Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Components.Localization> Localization { get; set; }
+        Microsoft.Extensions.Localization.IStringLocalizer<BlazorTable.Localization.Localization> Localization { get; set; }
 
         private StringCondition Condition { get; set; }
 
@@ -187,28 +187,28 @@ namespace BlazorTable
 
     public enum StringCondition
     {
-        [LocalizedDescription("StringConditionContains", typeof(Localization))]
+        [LocalizedDescription("StringConditionContains", typeof(Localization.Localization))]
         Contains,
 
-        [LocalizedDescription("StringConditionDoesNotContain", typeof(Localization))]
+        [LocalizedDescription("StringConditionDoesNotContain", typeof(Localization.Localization))]
         DoesNotContain,
 
-        [LocalizedDescription("StringConditionStartsWith", typeof(Localization))]
+        [LocalizedDescription("StringConditionStartsWith", typeof(Localization.Localization))]
         StartsWith,
 
-        [LocalizedDescription("StringConditionEndsWith", typeof(Localization))]
+        [LocalizedDescription("StringConditionEndsWith", typeof(Localization.Localization))]
         EndsWith,
 
-        [LocalizedDescription("StringConditionIsEqualTo", typeof(Localization))]
+        [LocalizedDescription("StringConditionIsEqualTo", typeof(Localization.Localization))]
         IsEqualTo,
 
-        [LocalizedDescription("StringConditionIsNotEqualTo", typeof(Localization))]
+        [LocalizedDescription("StringConditionIsNotEqualTo", typeof(Localization.Localization))]
         IsNotEqualTo,
 
-        [LocalizedDescription("StringConditionIsNullOrEmpty", typeof(Localization))]
+        [LocalizedDescription("StringConditionIsNullOrEmpty", typeof(Localization.Localization))]
         IsNullOrEmpty,
 
-        [LocalizedDescription("StringConditionIsNotNullOrEmpty", typeof(Localization))]
+        [LocalizedDescription("StringConditionIsNotNullOrEmpty", typeof(Localization.Localization))]
         IsNotNulOrEmpty
     }
 }
