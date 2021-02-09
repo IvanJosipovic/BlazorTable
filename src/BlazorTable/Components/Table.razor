@@ -256,7 +256,11 @@
                         @foreach (IColumn<TableItem> column in Columns)
                         {
                             <td @key="column" style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")" class="@(column.ColumnFooterClass)">
-                                @if (!string.IsNullOrEmpty(column.SetFooterValue))
+                                @if (!(column.FooterTemplate == null))
+                                {
+                                    @column.FooterTemplate;
+                                }
+                                else if (!string.IsNullOrEmpty(column.SetFooterValue))
                                 {
                                     @column.SetFooterValue
                                 }

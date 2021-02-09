@@ -68,6 +68,13 @@ namespace BlazorTable
         public RenderFragment<TableItem> EditTemplate { get; set; }
 
         /// <summary>
+        /// Footer Template
+        /// </summary>
+        [Parameter]
+        public RenderFragment FooterTemplate { get; set; }
+
+
+        /// <summary>
         /// Set custom Footer column value 
         /// </summary>
         [Parameter]
