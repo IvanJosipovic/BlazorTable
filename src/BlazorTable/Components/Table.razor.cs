@@ -256,6 +256,8 @@ namespace BlazorTable
                     OrderBy = sortExpression.ToString()
                 }).ConfigureAwait(false);
                 Items = result.Records;
+                PageNumber = result.PageNumber;
+                GlobalSearch = result.Query;
                 TotalCount = result.Total.GetValueOrDefault(1);
             }
         }
