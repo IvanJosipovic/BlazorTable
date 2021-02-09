@@ -82,17 +82,37 @@
                         : query.OrderBy(x => prop.GetValue(x, null));
                 }
             }
+
+            // Page number behaves like a zero-based index.
+            var pageNumber = 0;
+            var count = query.Count();
+            var skip = parameters?.Skip;
+
+            // Don't want to skip more records than exist.
+            if (skip.GetValueOrDefault() > count)
+            {
+                skip = 0;
+            }
+
+            // Use skip and top to determine the correct page number.
+            if (skip.HasValue && parameters?.Top > 0)
+            {
+                pageNumber = skip.Value / parameters.Top.Value;
+            }
+
             var results = parameters?.Top.HasValue ?? false ?
-                query.Skip(parameters.Skip.GetValueOrDefault())
+                query.Skip(skip.GetValueOrDefault())
                 .Take(parameters.Top.Value).ToArray() :
                 query.ToArray();
 
             return new PaginationResult<PersonData>
             {
                 Records = results,
-                Skip = parameters?.Skip ?? 0,
+                Skip = skip ?? 0,
                 Total = query.ToList().Count,
-                Top = parameters?.Top ?? 0
+                Top = parameters?.Top ?? 0,
+                PageNumber = pageNumber,
+                Query = parameters?.Query
             };
         }
     }
