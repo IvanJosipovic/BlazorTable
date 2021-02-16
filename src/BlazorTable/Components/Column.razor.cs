@@ -181,6 +181,11 @@ namespace BlazorTable
         /// </summary>
         public IFilter<TableItem> FilterControl { get; set; }
 
+        /// <summary>
+        /// The field property name.
+        /// </summary>
+        public string FieldName { get; set; }
+
         protected override void OnInitialized()
         {
             Table.AddColumn(this);
