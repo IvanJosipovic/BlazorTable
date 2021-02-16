@@ -159,6 +159,10 @@ namespace BlazorTable
         /// </summary>
         bool? DefaultSortDescending { get; set; }
 
+        /// <summary>
+        /// The field property name.
+        /// </summary>
+        string FieldName { get; set; }
 
         /// <summary>
         /// Returns aggregation of this column for the table footer based on given type: Sum, Average, Count, Min, or Max.
