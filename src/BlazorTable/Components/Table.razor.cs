@@ -259,6 +259,38 @@ namespace BlazorTable
                 PageNumber = result.PageNumber;
                 GlobalSearch = result.Query;
                 TotalCount = result.Total.GetValueOrDefault(1);
+
+                UpdateSortColumn(result.OrderBy);
+            }
+        }
+
+        private void UpdateSortColumn(string orderBy)
+        {
+            if (!string.IsNullOrWhiteSpace(orderBy))
+            {
+                var split = orderBy?.Split(" ");
+
+                if (split.Length > 1)
+                {
+                    var columnName = split[0];
+                    var sortDirection = split[1];
+
+                    var newSortColumn = Columns.Find(x => x.FieldName.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+
+                    if (!newSortColumn.SortColumn)
+                    {
+                        var oldSortColumn = Columns.Find(x => x.SortColumn);
+                        if (oldSortColumn != null)
+                        {
+                            oldSortColumn.SortColumn = false;
+                            oldSortColumn.SortDescending = false;
+                        }
+
+                        newSortColumn.SortColumn = true;
+                    }
+
+                    newSortColumn.SortDescending = sortDirection.Equals("desc", StringComparison.OrdinalIgnoreCase);
+                }
             }
         }
 
@@ -274,6 +306,8 @@ namespace BlazorTable
             {
                 column.Type = column.Field?.GetPropertyMemberInfo().GetMemberUnderlyingType();
             }
+
+            column.FieldName = column.Field?.GetPropertyMemberInfo().Name;
 
             Columns.Add(column);
             Refresh();
