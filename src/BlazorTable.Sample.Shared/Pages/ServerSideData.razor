@@ -112,7 +112,8 @@
                 Total = query.ToList().Count,
                 Top = parameters?.Top ?? 0,
                 PageNumber = pageNumber,
-                Query = parameters?.Query
+                Query = parameters?.Query,
+                OrderBy = parameters.OrderBy
             };
         }
     }

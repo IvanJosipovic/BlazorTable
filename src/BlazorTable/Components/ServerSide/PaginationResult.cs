@@ -17,5 +17,7 @@ namespace BlazorTable.Components.ServerSide
         public int PageNumber { get; set; }
 
         public string Query { get; set; }
+
+        public string OrderBy { get; set; }
     }
 }
