@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="PuppeteerSharp" Version="2.0.4" />
     <PackageReference Include="PuppeteerSharp.Contrib.Extensions" Version="3.0.0" />
     <PackageReference Include="Shouldly" Version="4.0.3" />
