@@ -27,7 +27,7 @@
 {
     <label>@errorMessage</label>
 }
-<Table @ref="table" TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true">
+<Table @ref="table" TableItem="PersonData" Items="data" PageSize="15" ColumnReorder="true" SelectionType="SelectionType.Multiple">
     <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Filterable="true" Width="10%" DefaultSortColumn="true" />
     <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Filterable="true" Width="20%" />
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Filterable="true" Width="20%">
