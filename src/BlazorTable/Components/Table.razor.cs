@@ -89,6 +89,12 @@ namespace BlazorTable
         [Parameter]
         public string GlobalSearch { get; set; }
 
+        /// <summary>
+        /// Enable editing by individual row
+        /// </summary>
+        [Parameter]
+        public bool EditByRow { get; set; }
+
         [Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
@@ -197,6 +203,8 @@ namespace BlazorTable
 
         private Dictionary<int, bool> detailsViewOpen = new Dictionary<int, bool>();
 
+        private Dictionary<int, bool> editRowViewEnabled = new Dictionary<int, bool>();
+
         /// <summary>
         /// Open/Close detail view in specified row.
         /// </summary>
@@ -221,6 +229,33 @@ namespace BlazorTable
             foreach (int row in rows)
             {
                 detailsViewOpen[row] = open;
+            }
+        }
+
+        /// <summary>
+        /// Enable/Disable edit view in specified row.
+        /// </summary>
+        /// <param name="row">number of row to toggle edit view</param>
+        /// <param name="open">true for opening edit view, false for closing edit view</param>
+        public void ToggleEditRowView(int row, bool open)
+        {
+            if (!editRowViewEnabled.ContainsKey(row))
+                throw new KeyNotFoundException("Specified row could not be found in the currently rendered part of the table.");
+
+            editRowViewEnabled[row] = open;
+        }
+
+        /// <summary>
+        /// Enable/Disable all edit views.
+        /// </summary>
+        /// <param name="open">true for opening edit view, false for closing edit view</param>
+        public void ToggleAllEditRowView(bool open)
+        {
+            int[] rows = new int[editRowViewEnabled.Keys.Count];
+            editRowViewEnabled.Keys.CopyTo(rows, 0);
+            foreach (int row in rows)
+            {
+                editRowViewEnabled[row] = open;
             }
         }
 
@@ -296,6 +331,7 @@ namespace BlazorTable
             {
                 PageNumber = 0;
                 detailsViewOpen.Clear();
+                editRowViewEnabled.Clear();
                 await UpdateAsync().ConfigureAwait(false);
             }
         }
@@ -309,6 +345,7 @@ namespace BlazorTable
             {
                 PageNumber++;
                 detailsViewOpen.Clear();
+                editRowViewEnabled.Clear();
                 await UpdateAsync().ConfigureAwait(false);
             }
         }
@@ -322,6 +359,7 @@ namespace BlazorTable
             {
                 PageNumber--;
                 detailsViewOpen.Clear();
+                editRowViewEnabled.Clear();
                 await UpdateAsync().ConfigureAwait(false);
             }
         }
@@ -333,6 +371,7 @@ namespace BlazorTable
         {
             PageNumber = TotalPages - 1;
             detailsViewOpen.Clear();
+            editRowViewEnabled.Clear();
             await UpdateAsync().ConfigureAwait(false);
         }
 

@@ -385,6 +385,15 @@ namespace BlazorTable.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit View.
+        /// </summary>
+        internal static string TableEditView {
+            get {
+                return ResourceManager.GetString("TableEditView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Global Search....
         /// </summary>
         internal static string TableGlobalSearch {
