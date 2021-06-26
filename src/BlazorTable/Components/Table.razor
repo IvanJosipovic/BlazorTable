@@ -68,6 +68,10 @@
 
             <thead class="@TableHeadClass">
                 <tr style="cursor: pointer;">
+                    @if (EditByRow)
+                    {
+                        <th style="width: 1%"></th>
+                    }
                     @if (_detailTemplate != null)
                     {
                         <th style="width: 1%"></th>
@@ -150,7 +154,6 @@
                         foreach (TableItem item in FilteredItems)
                         {
                             bool rowDisplayed = false;
-
                             foreach (CustomRow<TableItem> customRow in CustomRows)
                             {
                                 if (customRow.IsActiveForItem != null && customRow.IsActiveForItem(item))
@@ -167,10 +170,25 @@
 
                                     @{
                                         int locali = i;
+                                        if (!editRowViewEnabled.ContainsKey(locali))
+                                        {
+                                            editRowViewEnabled[locali] = false;
+                                        }
                                         if (!detailsViewOpen.ContainsKey(locali))
                                         {
                                             detailsViewOpen[locali] = false;
                                         }
+                                    }
+                                    @if (EditByRow)
+                                    {
+                                        <td>
+                                            <a href="javascript:;" style="text-decoration: none;" @onclick="@(() => { editRowViewEnabled[locali] = !editRowViewEnabled[locali]; StateHasChanged(); })" title="@Localization["TableEditView"]" aria-expanded="@(editRowViewEnabled[locali] ? "true" : "false")">
+                                                @if (editRowViewEnabled[locali])
+                                                {<span aria-hidden="true"><img src="_content/BlazorTable/images/pencilCross.png" /></span>}
+                                                else
+                                                {<span aria-hidden="true"><img src="_content/BlazorTable/images/pencil.png" /></span>}
+                                            </a>
+                                        </td>
                                     }
                                     @if (detailViewActive)
                                     {
@@ -192,7 +210,7 @@
                                                 style="@(column.Align > 0 ? $"text-align: {column.Align};" : "")"
                                                 class="@(column.Class)">
 
-                                                @if (IsEditMode && column.EditTemplate != null)
+                                                @if ((IsEditMode || editRowViewEnabled[locali]) && column.EditTemplate != null)
                                                     @column.EditTemplate(item)
                                                     else if (column.Template == null)
                                                         @column.Render(item)

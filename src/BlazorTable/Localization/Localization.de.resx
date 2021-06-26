@@ -225,6 +225,9 @@
   <data name="TableDetailsView" xml:space="preserve">
     <value>Detailansicht</value>
   </data>
+  <data name="TableEditView" xml:space="preserve">
+    <value>Bearbeitensicht</value>
+  </data>
   <data name="TableGlobalSearch" xml:space="preserve">
     <value>Globale Suche...</value>
   </data>
