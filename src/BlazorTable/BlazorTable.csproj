@@ -4,25 +4,17 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
     <IsPackable>true</IsPackable>
-    <Title>BlazorTable.Glitched</Title>
-    <PackageId>BlazorTable.Glitched</PackageId>
-    <Description>A fork of the Blazor Table Component with Sorting, Paging and Filtering, to implement Edit By Row</Description>
-    <Authors>Ivan Josipovic;Josh Dietrich</Authors>
+    <Title>BlazorTable</Title>
+    <PackageId>BlazorTable</PackageId>
+    <Description>Blazor Table Component with Sorting, Paging and Filtering</Description>
+    <Authors>Ivan Josipovic</Authors>
     <PackageProjectUrl>https://BlazorTable.netlify.app</PackageProjectUrl>
     <PackageTags>Blazor;Table;Component;Grid;DataTable;Data;Sort;Filter;AspNetCore;AspNet</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
-    <RepositoryUrl>https://github.com/Glitched94/BlazorTable</RepositoryUrl>
+    <RepositoryUrl>https://github.com/IvanJosipovic/BlazorTable</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Product>BlazorTable.Glitched</Product>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <Version>1.0.1</Version>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,30 +50,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Update="wwwroot\images\filter.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\images\minus.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\images\pencil.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\images\pencilCross.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\images\plus.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\images\sort-asc.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\images\sort-desc.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   
   <ItemGroup>
