@@ -3,6 +3,7 @@ on:
     branches: 
       - '*'
       - '!master'
+      - '!beta'
 
 name: CI/CD
 jobs:
@@ -38,9 +39,7 @@ jobs:
 
     - name: Get Test Address
       run: |
-        $url = '${{ steps.netlify.outputs.NETLIFY_URL }}';
-        Write-Output $url;
-        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value $url;
+        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value "${{ steps.netlify.outputs.NETLIFY_URL }}";
       shell: pwsh
 
     - name: Dotnet Test
