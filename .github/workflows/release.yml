@@ -2,6 +2,7 @@ on:
   push:
     branches: 
       - master
+      - beta
 
 name: Create Release
 jobs:
@@ -13,41 +14,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v1
 
-    - name: Bump version
-      id: version
-      uses: anothrNick/github-tag-action@1.19.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        DRY_RUN: true
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-
-    - name: Dotnet Pack 
-      working-directory: src/BlazorTable
-      run: dotnet pack -c Release -p:Version=${{ steps.version.outputs.new_tag }}
-
-    - name: Set Test Address
-      run: |
-        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value "https://blazortable.netlify.app";
-      shell: pwsh
-
-    - name: Dotnet Test
-      run: dotnet test --configuration Release
-
-    - name: Dotnet Nuget Push
-      if: "!contains(github.event.head_commit.message, '#skip')"
-      working-directory: src/BlazorTable/bin/Release
-      run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
-      continue-on-error: true
 
     - name: Dotnet Publish
       working-directory: src/BlazorTable.Sample.Wasm
       run: dotnet publish -c Release
 
     - name: Deploy to Production
+      if: github.ref == 'refs/heads/master' 
+      id: netlify   
       uses: netlify/actions/cli@master
       with:
         args: deploy --prod --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/wwwroot
@@ -55,13 +33,45 @@ jobs:
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
-    - name: Create Release
-      if: "!contains(github.event.head_commit.message, '#skip')"
-      uses: actions/create-release@master
+    - name: Set Test Address
+      if: github.ref == 'refs/heads/master'
+      run: |
+        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value "${{ steps.netlify.outputs.NETLIFY_URL }}";
+      shell: pwsh
+
+    - name: Deploy to Staging
+      if: github.ref == 'refs/heads/beta'
+      id: netlify2
+      uses: netlify/actions/cli@master
+      with:
+        args: deploy --json -d src/BlazorTable.Sample.Wasm/bin/Release/netstandard2.1/publish/wwwroot
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+    - name: Set Test Address
+      if: github.ref == 'refs/heads/beta'
+      run: |
+        Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value "${{ steps.netlify2.outputs.NETLIFY_URL }}";
+      shell: pwsh
+
+    - name: Dotnet Test
+      run: dotnet test --configuration Release
+
+    - name: Semantic Release
+      uses: cycjimmy/semantic-release-action@v2
+      id: semantic
+      with:
+        semantic_version: 17.4
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ steps.version.outputs.new_tag }}
-        release_name: Release ${{ steps.version.outputs.new_tag }}
-        draft: false
-        prerelease: false
+
+    - name: Dotnet Pack 
+      if: steps.semantic.outputs.new_release_published == 'true'
+      working-directory: src/BlazorTable
+      run: dotnet pack -c Release -p:Version=${{ steps.version.outputs.new_tag }}
+
+    - name: Dotnet Nuget Push
+      if: steps.semantic.outputs.new_release_published == 'true'
+      working-directory: src/BlazorTable/bin/Release
+      run: dotnet nuget push BlazorTable.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}

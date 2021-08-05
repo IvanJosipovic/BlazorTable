@@ -24,7 +24,7 @@ namespace BlazorTable.Tests
             else
                 throw new Exception($"Missing {filename}");
 
-            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
+            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
 
             Browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
