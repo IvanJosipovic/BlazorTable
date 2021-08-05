@@ -5,6 +5,7 @@
   "dependencyDashboardTitle": "Renovate Dashboard",
   "commitMessageSuffix": "",
   "commitBody": "",
+  "semanticCommits": true,
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
   "extends": [
