@@ -2,6 +2,7 @@ on:
   push:
     branches: 
       - master
+      - alpha
       - beta
 
 name: Create Release
@@ -40,7 +41,7 @@ jobs:
       shell: pwsh
 
     - name: Deploy to Staging
-      if: github.ref == 'refs/heads/beta'
+      if: github.ref != 'refs/heads/master'
       id: netlify2
       uses: netlify/actions/cli@master
       with:
@@ -50,7 +51,7 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
     - name: Set Test Address
-      if: github.ref == 'refs/heads/beta'
+      if: github.ref != 'refs/heads/master'
       run: |
         Set-Content -Path "src/BlazorTable.Tests/BrowserTestsAddress.config" -Value "${{ steps.netlify2.outputs.NETLIFY_URL }}";
       shell: pwsh
