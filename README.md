@@ -18,6 +18,8 @@ Blazor Table Component with Sorting, Paging and Filtering
 - Add call to Program.cs or Startup.cs
   - Services.AddBlazorTable();
 
+Note: If installing `BlazorTable` in a hosted Blazor WASM application, these steps should be performed in the [WASM Client](https://docs.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-5.0#blazor-webassembly-1) project.
+
 ## Features
 - Column Reordering
 - Edit Mode ([Template Switching](https://github.com/IvanJosipovic/BlazorTable/blob/master/src/BlazorTable.Sample.Shared/Pages/EditMode.razor))
