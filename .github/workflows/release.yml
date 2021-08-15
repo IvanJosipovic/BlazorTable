@@ -70,7 +70,7 @@ jobs:
     - name: Dotnet Pack 
       if: steps.semantic.outputs.new_release_published == 'true'
       working-directory: src/BlazorTable
-      run: dotnet pack -c Release -p:Version=${{ steps.version.outputs.new_tag }}
+      run: dotnet pack -c Release -p:Version=${{ steps.semantic.outputs.new_release_version }}
 
     - name: Dotnet Nuget Push
       if: steps.semantic.outputs.new_release_published == 'true'
