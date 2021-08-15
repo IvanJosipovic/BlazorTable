@@ -4,7 +4,6 @@
 [![Nuget (with prereleases)](https://img.shields.io/nuget/dt/BlazorTable.svg?style=flat-square)](https://www.nuget.org/packages/BlazorTable)
 ![](https://github.com/IvanJosipovic/BlazorTable/workflows/CI/CD/badge.svg)
 
-
 Blazor Table Component with Sorting, Paging and Filtering
 
 [![Sample Gif](https://raw.githubusercontent.com/IvanJosipovic/BlazorTable/master/BlazorTable.gif)](/BlazorTable.gif)
