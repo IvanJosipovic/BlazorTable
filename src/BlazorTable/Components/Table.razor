@@ -175,7 +175,7 @@
                                     @if (detailViewActive)
                                     {
                                         <td>
-                                            <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" title="@Localization["TableDetailsView"]" aria-expanded="@(detailsViewOpen[locali] ? "true" : "false")">
+                                            <a href="javascript:;" style="text-decoration: none" @onclick="@(() => { detailsViewOpen[locali] = !detailsViewOpen[locali]; StateHasChanged(); })" @onclick:stopPropagation title="@Localization["TableDetailsView"]" aria-expanded="@(detailsViewOpen[locali] ? "true" : "false")">
                                                 @if (detailsViewOpen[locali])
                                                 {<span aria-hidden="true"><img src="_content/BlazorTable/images/minus.png" /></span>}
                                                 else
