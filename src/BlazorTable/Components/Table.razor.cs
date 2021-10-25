@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlazorTable.Components.ServerSide;
 using BlazorTable.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace BlazorTable
 {
@@ -95,6 +96,9 @@ namespace BlazorTable
         [Inject]
         IStringLocalizer<Localization.Localization> Localization { get; set; }
 
+        [Inject]
+        IOptions<BlazorTableOptions> Options { get; set; }
+
         /// <summary>
         /// Ref to visibility menu icon for popover display
         /// </summary>
@@ -139,6 +143,11 @@ namespace BlazorTable
         /// Custom Rows
         /// </summary>
         private List<CustomRow<TableItem>> CustomRows { get; set; } = new List<CustomRow<TableItem>>();
+
+        /// <summary>
+        /// Switch between float-right and float-end based on bootstrap version
+        /// </summary>
+        public string FloatRightClass => Options.Value.IsBootstrap5 ? "float-end" : "float-right";
 
         protected override async Task OnParametersSetAsync()
         {

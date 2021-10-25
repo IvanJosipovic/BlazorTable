@@ -7,7 +7,7 @@
             @if (ShowPageSizes)
             {
             <li class="page-item" title="Set Page Size">
-                <select class="form-control" value="@Table.PageSize" @onchange="(async ev => await SetPageSizeAsync(ev))">
+                <select class="@(Options.Value.IsBootstrap5 ? "form-select" : "form-control")" value="@Table.PageSize" @onchange="(async ev => await SetPageSizeAsync(ev))">
                     @foreach (int option in PageSizes)
                     {
                         <option value="@option">@option</option>
@@ -33,7 +33,7 @@
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&nbsp;</a>
                 </li>
             }
-
+            
             <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.FirstPageAsync())" title="@Localization["PagerFirst"]">
                 <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber == 0 ? "true": null)">@Localization["PagerFirst"]</a>
             </li>

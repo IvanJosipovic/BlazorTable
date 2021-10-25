@@ -21,11 +21,11 @@
                         <th colspan="@columnCount">
                             @if (ShowSearchBar)
                             {
-                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); UpdateAsync(); })" placeholder="@Localization["TableGlobalSearch"]" />
+                                <input type="text" class="form-control form-control-sm @FloatRightClass ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); UpdateAsync(); })" placeholder="@Localization["TableGlobalSearch"]" />
                             }
                             @if (Columns.Exists(column => !column.Visible))
                             {
-                                <div class="float-right" @onclick="@(_ => VisibilityMenuOpen = !VisibilityMenuOpen)">
+                                <div class="@FloatRightClass" @onclick="@(_ => VisibilityMenuOpen = !VisibilityMenuOpen)">
                                     <a href="javascript:;" @ref="VisibilityMenuIconRef">
                                         <span aria-hidden="true">
                                             <img src="_content/BlazorTable/images/plus.png" />
@@ -43,7 +43,7 @@
                                                         @(column.Title)
                                                     </td>
                                                     <td>
-                                                        <div class="float-right" @onclick="@(_ => { column.Visible = true; if (!Columns.Exists(column => !column.Visible)) VisibilityMenuOpen = false;})">
+                                                        <div class="@FloatRightClass" @onclick="@(_ => { column.Visible = true; if (!Columns.Exists(column => !column.Visible)) VisibilityMenuOpen = false;})">
                                                             <a href="javascript:;">
                                                                 <span aria-hidden="true">
                                                                     <img src="_content/BlazorTable/images/plus.png" />
@@ -98,7 +98,7 @@
 
                                     @if (column.Filterable)
                                     {
-                                        <div class="float-right" @onclick="@(_ => column.ToggleFilter())" @onclick:stopPropagation>
+                                        <div class="@FloatRightClass" @onclick="@(_ => column.ToggleFilter())" @onclick:stopPropagation>
                                             <a href="javascript:;" @ref="column.FilterRef" aria-expanded="@(column.FilterOpen ? "true" : "false")" style="text-decoration: none" aria-label="@(column.Filter == null ? "unfiltered" : "filtered")">
                                                 <span aria-hidden="true" style="@(column.Filter == null ? "opacity: 0.2;" : string.Empty)">
                                                     <img src="_content/BlazorTable/images/filter.png" />
@@ -127,7 +127,7 @@
 
                                     @if (column.Hideable)
                                     {
-                                        <div class="float-right mr-1" @onclick="@(_ => column.Visible = false)" @onclick:stopPropagation>
+                                        <div class="@FloatRightClass mr-1" @onclick="@(_ => column.Visible = false)" @onclick:stopPropagation>
                                             <span aria-hidden="true">
                                                 <img src="_content/BlazorTable/images/minus.png" />
                                             </span>
