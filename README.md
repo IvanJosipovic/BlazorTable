@@ -11,11 +11,14 @@ Blazor Table Component with Sorting, Paging and Filtering
 ## Install
 
 - Add [BlazorTable Nuget](https://www.nuget.org/packages/BlazorTable)
-  - dotnet add package BlazorTable
+  - `dotnet add package BlazorTable`
 - Add to the index.html or _Hosts.cshtml
   - `<script src="_content/BlazorTable/BlazorTable.min.js"></script>`
 - Add call to Program.cs or Startup.cs
-  - Services.AddBlazorTable();
+  - For Bootstrap 4
+    - `Services.AddBlazorTable();`
+  - For Bootstrap 5
+    - `Services.AddBlazorTable(options => options.UseBootstrap5());`
 
 Note: If installing `BlazorTable` in a hosted Blazor WASM application, these steps should be performed in the [WASM Client](https://docs.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-5.0#blazor-webassembly-1) project.
 

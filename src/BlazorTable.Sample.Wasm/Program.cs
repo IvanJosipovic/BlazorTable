@@ -16,7 +16,12 @@ namespace BlazorTable.Sample.Wasm
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            // To use Bootstrap 4
             builder.Services.AddBlazorTable();
+
+            // To use Bootstrap 5
+            //builder.Services.AddBlazorTable(options => options.UseBootstrap5());
 
             await builder.Build().RunAsync();
         }
