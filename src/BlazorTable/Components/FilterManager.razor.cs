@@ -27,6 +27,7 @@ namespace BlazorTable
             if (Column.FilterControl != null)
             {
                 Column.Filter = Column.FilterControl.GetFilter();
+                Column.FilterString = Column.FilterControl.GetFilterString();
                 await Column.Table.UpdateAsync().ConfigureAwait(false);
                 await Column.Table.FirstPageAsync().ConfigureAwait(false);
             }

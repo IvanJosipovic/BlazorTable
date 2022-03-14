@@ -59,6 +59,11 @@ namespace BlazorTable
         Task LastPageAsync();
 
         /// <summary>
+        /// Go to Specific Page Async
+        /// </summary>
+        Task GoToPageAsync(int pageNumber);
+
+        /// <summary>
         /// Redraws the Table using EditTemplate instead of Template
         /// </summary>
         void ToggleEditMode();
@@ -86,7 +91,9 @@ namespace BlazorTable
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
-        Task UpdateAsync();
+        /// <param name="updateServerData">false if it is not needed to update server data</param>
+        /// <returns></returns>
+        Task UpdateAsync(bool updateServerData = true);
         /// <summary>
         /// Open/Close detail view in specified row.
         /// </summary>

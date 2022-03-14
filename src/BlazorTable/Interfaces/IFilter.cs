@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorTable.Components.ServerSide;
+using System;
 using System.Linq.Expressions;
 
 namespace BlazorTable
@@ -14,5 +15,11 @@ namespace BlazorTable
         /// </summary>
         /// <returns></returns>
         Expression<Func<TableItem, bool>> GetFilter();
+
+        /// <summary>
+        /// Get filter as string object
+        /// </summary>
+        /// <returns></returns>
+        FilterString GetFilterString();
     }
 }

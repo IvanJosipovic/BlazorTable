@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorTable.Components.ServerSide;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq.Expressions;
 
@@ -126,6 +127,16 @@ namespace BlazorTable
                         Column.Field.Parameters),
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),
+            };
+        }
+
+        public FilterString GetFilterString()
+        {
+            return new FilterString()
+            {
+                Field = Column.Field.GetPropertyMemberInfo().Name,
+                Condition = Condition.ToString(),
+                FilterValue = FilterValue.ToString()
             };
         }
     }

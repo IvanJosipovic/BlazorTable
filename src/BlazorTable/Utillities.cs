@@ -1,4 +1,5 @@
 ﻿using LinqKit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -228,6 +229,18 @@ namespace BlazorTable
             }
 
             return newExpression;
+        }
+
+        public static bool CompareEx(this object obj, object another)
+        {
+            if (ReferenceEquals(obj, another)) return true;
+            if ((obj == null) || (another == null)) return false;
+            if (obj.GetType() != another.GetType()) return false;
+
+            var objJson = JsonConvert.SerializeObject(obj);
+            var anotherJson = JsonConvert.SerializeObject(another);
+
+            return objJson == anotherJson;
         }
     }
 }

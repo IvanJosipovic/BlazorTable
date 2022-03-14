@@ -1,4 +1,5 @@
-﻿using BlazorTable.Localization;
+﻿using BlazorTable.Components.ServerSide;
+using BlazorTable.Localization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -88,7 +89,17 @@ namespace BlazorTable
                 _ => null,
             };
         }
+        public FilterString GetFilterString()
+        {
+            return new FilterString()
+            {
+                Field = Column.Field.GetPropertyMemberInfo().Name,
+                Condition = Condition.ToString()
+            };
+        }
     }
+
+    
 
     public enum BooleanCondition
     {

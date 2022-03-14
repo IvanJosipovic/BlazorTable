@@ -6,9 +6,11 @@
 
 <h1>Server side data</h1>
 
-<Table TableItem="PersonData" DataLoader="_loader" Items="data" PageSize="15" ShowSearchBar="true">
-    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Width="10%" DefaultSortColumn="true" />
-    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Width="20%" />
+Selected: @(selectedItems.Any() ? selectedItems.Select(x => x.full_name).Aggregate((c, n) => $"{c},{n}") : "None")
+
+<Table TableItem="PersonData" DataLoader="_loader" Items="data" PageSize="15" ShowSearchBar="true" SelectionType="SelectionType.Multiple" SelectedItems="selectedItems" RowClickAction="RowClick">
+    <Column TableItem="PersonData" Title="Id" Field="@(x => x.id)" Sortable="true" Width="10%" DefaultSortColumn="true" Filterable="true" />
+    <Column TableItem="PersonData" Title="Full Name" Field="@(x => x.full_name)" Sortable="true" Width="20%" Filterable="true" />
     <Column TableItem="PersonData" Title="Email" Field="@(x => x.email)" Sortable="true" Width="20%">
         <Template>
             <a href="mailto:@context.email">@context.email</a>
@@ -25,7 +27,7 @@
             @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
         </Template>
     </Column>
-    <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    <Pager ShowPageNumber="true" ShowTotalCount="true" ShowPageNumberSelector="true" ShowPageSizes="true" ShowPageNumberInput="true" />
 </Table>
 
 @code
@@ -47,10 +49,17 @@
 
     private IEnumerable<PersonData> data;
 
+    private List<PersonData> selectedItems = new List<PersonData>();
+
     protected override async Task OnInitializedAsync()
     {
         _loader = new PersonDataLoader(httpClient);
-        data = (await _loader.LoadDataAsync(null)).Records;
+        //data = (await _loader.LoadDataAsync(null)).Records;
+    }
+
+    public void RowClick(PersonData data)
+    {
+        StateHasChanged();
     }
 
     public class PersonDataLoader : IDataLoader<PersonData>
@@ -60,7 +69,7 @@
         {
             _client = client;
         }
-        public async Task<PaginationResult<PersonData>> LoadDataAsync(FilterData parameters)
+        public async Task<PaginationResult<PersonData>> LoadDataAsync(FilterData<PersonData> parameters)
         {
 
             var data = await _client.GetFromJsonAsync<PersonData[]>("sample-data/MOCK_DATA.json");
@@ -82,6 +91,13 @@
                         : query.OrderBy(x => prop.GetValue(x, null));
                 }
             }
+            if(parameters?.Filters != null)
+            {
+                foreach (var filter in parameters?.Filters)
+                {
+                    query = query.Where(filter);
+                }    
+            }
             var results = parameters?.Top.HasValue ?? false ?
                 query.Skip(parameters.Skip.GetValueOrDefault())
                 .Take(parameters.Top.Value).ToArray() :
@@ -96,5 +112,7 @@
             };
         }
     }
+
+    
 
 }

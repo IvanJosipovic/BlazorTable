@@ -1,4 +1,5 @@
-﻿using BlazorTable.Localization;
+﻿using BlazorTable.Components.ServerSide;
+using BlazorTable.Localization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Globalization;
@@ -136,6 +137,17 @@ namespace BlazorTable
                         Column.Field.Parameters),
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),
+            };
+        }
+
+        public FilterString GetFilterString()
+        {
+
+            return new FilterString()
+            {
+                Field = Column.Field.GetPropertyMemberInfo().Name,
+                Condition = Condition.ToString(),
+                FilterValue = FilterValue
             };
         }
     }

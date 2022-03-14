@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BlazorTable.Components.ServerSide;
 
 namespace BlazorTable.Interfaces
 {
     public interface IDataLoader<T>
     {
-        public Task<PaginationResult<T>> LoadDataAsync(FilterData parameters);
+        public Task<PaginationResult<T>> LoadDataAsync(FilterData<T> parameters);
+        
     }
 }
