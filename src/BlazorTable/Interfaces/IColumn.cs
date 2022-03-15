@@ -91,6 +91,11 @@ namespace BlazorTable
         FilterString FilterString { get; set; }
 
         /// <summary>
+        /// Filter as string
+        /// </summary>
+        FilterString InitialFilterString { get; set; }
+
+        /// <summary>
         /// Edit Mode Item Template
         /// </summary>
         RenderFragment<TableItem> EditTemplate { get; set; }

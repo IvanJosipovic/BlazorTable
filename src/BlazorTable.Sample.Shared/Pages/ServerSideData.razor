@@ -54,6 +54,7 @@ Selected: @(selectedItems.Any() ? selectedItems.Select(x => x.full_name).Aggrega
     protected override async Task OnInitializedAsync()
     {
         _loader = new PersonDataLoader(httpClient);
+        
         //data = (await _loader.LoadDataAsync(null)).Records;
     }
 

@@ -129,6 +129,11 @@ namespace BlazorTable
         public FilterString FilterString { get; set; }
 
         /// <summary>
+        /// Initial filters
+        /// </summary>
+        public FilterString InitialFilterString { get; set; }
+
+        /// <summary>
         /// True if this is the default Sort Column
         /// </summary>
         [Parameter]

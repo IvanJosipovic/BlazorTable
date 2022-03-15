@@ -182,6 +182,11 @@ namespace BlazorTable
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
         }
 
+        public static T ParseEnum<T>(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
+
         /// <summary>
         /// Recursively walks up the tree and adds null checks
         /// </summary>

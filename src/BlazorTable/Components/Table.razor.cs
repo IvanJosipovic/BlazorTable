@@ -596,6 +596,25 @@ namespace BlazorTable
         }
 
         /// <summary>
+        /// Set Table Page Size
+        /// </summary>
+        /// <param name="pageSize"></param>
+        public async Task SetFilterAsync(List<FilterString> filters)
+        {
+            foreach (var item in filters)
+            {
+                var column = Columns.FirstOrDefault(x => x.Field.GetPropertyMemberInfo().Name == item.Field);
+                if (column != null)
+                {
+                    column.InitialFilterString = item;
+                }
+            }
+            PageNumber = 0;
+            detailsViewOpen.Clear();
+            await UpdateAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Show table child content at the top of the table.
         /// </summary>
         [Parameter]
