@@ -73,13 +73,13 @@ Selected: @(selectedItems.Any() ? selectedItems.Select(x => x.full_name).Aggrega
             new FilterString()
             {
                 Condition = StringCondition.IsEqualTo.ToString(),
-                Field = "full_name",
+                Field = nameof(PersonData.full_name),
                 FilterValue = "Marja Mustill"
             },
             new FilterString()
             {
                 Condition = BooleanCondition.True.ToString(),
-                Field = "paid"
+                Field = nameof(PersonData.paid)
             } 
         });
         
