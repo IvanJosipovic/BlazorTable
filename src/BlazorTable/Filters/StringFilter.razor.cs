@@ -26,6 +26,15 @@ namespace BlazorTable
             {
                 Column.FilterControl = this;
 
+                if (Column.InitialFilterString != null)
+                {
+                    Condition = Utilities.ParseEnum<StringCondition>(Column.InitialFilterString.Condition);
+                    FilterText = Column.InitialFilterString.FilterValue;
+                    Column.InitialFilterString = null;
+
+                    Column.Filter = GetFilter();
+                }
+
                 if (Column.Filter != null)
                 {
                     bool NotCondition = false;
@@ -88,10 +97,13 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
+
             if (Column.InitialFilterString != null)
             {
                 Condition = Utilities.ParseEnum<StringCondition>(Column.InitialFilterString.Condition);
                 FilterText = Column.InitialFilterString.FilterValue;
+
+                Column.InitialFilterString = null;
             }
 
             FilterText = FilterText?.Trim();

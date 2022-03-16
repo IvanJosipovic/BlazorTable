@@ -596,21 +596,37 @@ namespace BlazorTable
         }
 
         /// <summary>
-        /// Set Table Page Size
+        /// Set initial filters to grid
         /// </summary>
-        /// <param name="pageSize"></param>
-        public async Task SetFilterAsync(List<FilterString> filters)
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        public async Task SetInitialFiltersAsync(IEnumerable<FilterString> filters)
         {
             foreach (var item in filters)
             {
                 var column = Columns.FirstOrDefault(x => x.Field.GetPropertyMemberInfo().Name == item.Field);
-                if (column != null)
+                if (column != null && column.Filterable)
                 {
                     column.InitialFilterString = item;
+                    if (column.FilterControl == null)
+                    {
+                        if(column.Type == typeof(string))
+                            column.FilterControl = new StringFilter<TableItem>() { Column = column };
+                        if (column.Type.IsNumeric() && !column.Type.GetNonNullableType().IsEnum)
+                            column.FilterControl = new NumberFilter<TableItem>() { Column = column };
+                        if (column.Type.GetNonNullableType().IsEnum)
+                            column.FilterControl = new EnumFilter<TableItem>() { Column = column };
+                        if (column.Type.GetNonNullableType() == typeof(DateTime))
+                            column.FilterControl = new DateFilter<TableItem>() { Column = column };
+                        if (column.CustomIFilters != null)
+                            column.FilterControl = new CustomSelect<TableItem>() { Column = column };
+                        if (new List<Type>() { typeof(bool) }.Contains(column.Type.GetNonNullableType()))
+                            column.FilterControl = new BooleanFilter<TableItem>() { Column = column };
+                    }
+                    column.Filter = column.FilterControl.GetFilter();
                 }
             }
-            PageNumber = 0;
-            detailsViewOpen.Clear();
+            await FirstPageAsync().ConfigureAwait(false);
             await UpdateAsync().ConfigureAwait(false);
         }
 

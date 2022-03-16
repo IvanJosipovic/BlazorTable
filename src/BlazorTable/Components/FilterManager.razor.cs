@@ -20,7 +20,6 @@ namespace BlazorTable
         IStringLocalizer<Localization.Localization> Localization { get; set; }
 
         private async Task ApplyFilterAsync()
-
         {
             Column.ToggleFilter();
 

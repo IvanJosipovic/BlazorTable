@@ -26,6 +26,15 @@ namespace BlazorTable
             {
                 Column.FilterControl = this;
 
+                if (Column.InitialFilterString != null)
+                {
+                    Condition = Utilities.ParseEnum<EnumCondition>(Column.InitialFilterString.Condition);
+                    FilterValue = Column.InitialFilterString.FilterValue;
+                    Column.InitialFilterString = null;
+
+                    Column.Filter = GetFilter();
+                }
+
                 if (Column.Filter?.Body is BinaryExpression binaryExpression
                     && binaryExpression.Right is BinaryExpression logicalBinary
                     && logicalBinary.Right is ConstantExpression constant)
@@ -52,6 +61,13 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
+            if (Column.InitialFilterString != null)
+            {
+                Condition = Utilities.ParseEnum<EnumCondition>(Column.InitialFilterString.Condition);
+                FilterValue = Column.InitialFilterString.FilterValue;
+                Column.InitialFilterString = null;
+            }
+
             return Condition switch
             {
                 EnumCondition.IsEqualTo =>

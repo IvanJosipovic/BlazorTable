@@ -25,6 +25,15 @@ namespace BlazorTable
             {
                 Column.FilterControl = this;
 
+                if (Column.InitialFilterString != null)
+                {
+                    Condition = Utilities.ParseEnum<BooleanCondition>(Column.InitialFilterString.Condition);
+                    
+                    Column.InitialFilterString = null;
+
+                    Column.Filter = GetFilter();
+                }
+
                 if (Column.Filter != null)
                 {
                     var nodeType = Column.Filter.Body.NodeType;
@@ -56,6 +65,13 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
+            if (Column.InitialFilterString != null)
+            {
+                Condition = Utilities.ParseEnum<BooleanCondition>(Column.InitialFilterString.Condition);
+
+                Column.InitialFilterString = null;
+            }
+
             return Condition switch
             {
                 BooleanCondition.True =>

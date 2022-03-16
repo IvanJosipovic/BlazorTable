@@ -191,7 +191,6 @@ namespace BlazorTable
         /// Currently applied Filter Control
         /// </summary>
         public IFilter<TableItem> FilterControl { get; set; }
-        
 
         protected override void OnInitialized()
         {
@@ -306,5 +305,7 @@ namespace BlazorTable
         /// Save compiled renderCompiled property to avoid repeated Compile() calls
         /// </summary>
         private Func<TableItem, object> renderCompiled;
+
+        public Func<Task> OnFilterChangedAsync { get; set; }
     }
 }

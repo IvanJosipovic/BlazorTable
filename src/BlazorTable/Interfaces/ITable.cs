@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using BlazorTable.Components.ServerSide;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -145,5 +147,12 @@ namespace BlazorTable
         /// </summary>
         /// <param name="pageSize"></param>
         Task SetPageSizeAsync(int pageSize);
+
+        /// <summary>
+        /// Set initial filters
+        /// </summary>
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        Task SetInitialFiltersAsync(IEnumerable<FilterString> filters);
     }
 }
