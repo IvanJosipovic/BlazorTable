@@ -610,20 +610,21 @@ namespace BlazorTable
                     column.InitialFilterString = item;
                     if (column.FilterControl == null)
                     {
-                        if(column.Type == typeof(string))
-                            column.FilterControl = new StringFilter<TableItem>() { Column = column };
-                        if (column.Type.IsNumeric() && !column.Type.GetNonNullableType().IsEnum)
-                            column.FilterControl = new NumberFilter<TableItem>() { Column = column };
-                        if (column.Type.GetNonNullableType().IsEnum)
-                            column.FilterControl = new EnumFilter<TableItem>() { Column = column };
-                        if (column.Type.GetNonNullableType() == typeof(DateTime))
-                            column.FilterControl = new DateFilter<TableItem>() { Column = column };
                         if (column.CustomIFilters != null)
                             column.FilterControl = new CustomSelect<TableItem>() { Column = column };
-                        if (new List<Type>() { typeof(bool) }.Contains(column.Type.GetNonNullableType()))
+                        else if (column.Type == typeof(string))
+                            column.FilterControl = new StringFilter<TableItem>() { Column = column };
+                        else if (column.Type.IsNumeric() && !column.Type.GetNonNullableType().IsEnum)
+                            column.FilterControl = new NumberFilter<TableItem>() { Column = column };
+                        else if (column.Type.GetNonNullableType().IsEnum)
+                            column.FilterControl = new EnumFilter<TableItem>() { Column = column };
+                        else if (column.Type.GetNonNullableType() == typeof(DateTime))
+                            column.FilterControl = new DateFilter<TableItem>() { Column = column };
+                        else if (new List<Type>() { typeof(bool) }.Contains(column.Type.GetNonNullableType()))
                             column.FilterControl = new BooleanFilter<TableItem>() { Column = column };
                     }
                     column.Filter = column.FilterControl.GetFilter();
+                    column.FilterString = column.FilterControl.GetFilterString();
                 }
             }
             await FirstPageAsync().ConfigureAwait(false);
