@@ -4,7 +4,6 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
 
 pool:
   vmImage: 'windows-latest'
@@ -13,9 +12,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  Parameters.requestedMajorVersion: '1'
-  Parameters.requestedMinorVersion: '17'
-  Parameters.requestedPatchVersion: '3'
 
 steps:
 - task: PowerShell@2
@@ -63,7 +59,7 @@ steps:
       <?xml version="1.0" encoding="utf-8"?><package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
       <metadata>
       <id>BlazorTables</id>
-      <version>$version$</version>
+      <version>1.17.3-preview</version>
       <authors>Octavian Technology Group</authors>
       <description>A fork of Blazor Tables</description>
       </metadata>
