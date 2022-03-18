@@ -73,7 +73,7 @@ steps:
   displayName: 'Nuget Pack'
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.nuspec'
+    packagesToPack: '**/BlazorTable.csproj'
     includeSymbols: true
     configuration: '$(buildConfiguration)'
     versioningScheme: byPrereleaseNumber
