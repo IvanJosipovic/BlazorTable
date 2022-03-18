@@ -13,8 +13,31 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  Parameters.requestedMajorVersion: '1'
+  Parameters.requestedMinorVersion: '17'
+  Parameters.requestedPatchVersion: '3'
 
 steps:
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $tempdir = [IO.Path]::GetTempPath()
+      
+      $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH = Join-Path $tempdir "pluginlog"
+      $env:NUGET_CREDENTIALPROVIDER_LOG_PATH = Join-Path $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH "artifacts-credprovider.log"
+      $env:NUGET_PLUGIN_ENABLE_LOG = "true"
+      
+      if (Test-Path -LiteralPath $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH) {
+        Remove-Item -Recurse -Force -LiteralPath $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH
+      }
+      
+      [IO.Directory]::CreateDirectory($env:NUGET_PLUGIN_LOG_DIRECTORY_PATH) | Out-Null
+      
+      Write-Host "##vso[task.setvariable variable=NUGET_CREDENTIALPROVIDER_LOG_PATH]$env:NUGET_CREDENTIALPROVIDER_LOG_PATH"
+      Write-Host "##vso[task.setvariable variable=NUGET_PLUGIN_ENABLE_LOG]$env:NUGET_PLUGIN_ENABLE_LOG"
+      Write-Host "##vso[task.setvariable variable=NUGET_PLUGIN_LOG_DIRECTORY_PATH]$env:NUGET_PLUGIN_LOG_DIRECTORY_PATH"
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -24,7 +47,6 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -32,3 +54,23 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: NuGetCommand@2
+  displayName: 'Nuget Pack'
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.nuspec'
+    includeSymbols: true
+    configuration: '$(buildConfiguration)'
+    versioningScheme: byPrereleaseNumber
+    majorVersion: '$(Parameters.requestedMajorVersion)'
+    minorVersion: '$(Parameters.requestedMinorVersion)'
+    patchVersion: '$(Parameters.requestedPatchVersion)'
+
+- task: NuGetCommand@2
+  displayName: 'Nuget Push'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '62fc85ae-4447-4b56-a2ea-c6ab74293507/dbfc01ad-afcb-448b-bda5-e0ef32ca9d70'
