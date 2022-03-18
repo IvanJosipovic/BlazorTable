@@ -15,6 +15,13 @@
                 </select>
             </li>
             }
+
+            @if (ShowPageNumberInput)    
+            {
+                <li class="page-item" title="Page @(Table.PageNumber + 1)/@(Table.TotalPages)">
+                    <input type="number" class="page-link" tabindex="-1" @onkeydown="@SetPageInput" style="width: 75px; text-align:right" @bind="inputPage" @bind:event="oninput" />
+                </li>
+            }
             @if (ShowPageNumber)
             {
                 <li class="page-item disabled" @onclick="@(() => Table.FirstPageAsync())" title="Page @(Table.PageNumber + 1)/@(Table.TotalPages)">
@@ -40,6 +47,21 @@
             <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.PreviousPageAsync())" title="@Localization["PagerPrevious"]">
                 <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber == 0 ? "true": null)">@Localization["PagerPrevious"]</a>
             </li>
+
+            @if(ShowPageNumberSelector)
+            {
+                for (var i = 0; i < 9; i++)
+                {
+                    var page = Table.PageNumber < 5 ? i : Table.PageNumber + i - 4;
+                    if(page <= Table.TotalPages - 1)
+                    {
+                        <li class="page-item @(Table.PageNumber == page ? "active": "")" @onclick="@(() => Table.GoToPageAsync(page))" title="@(page + 1)">
+                        <a class="page-link" href="javascript:;">@(page + 1)</a>
+                        </li>
+                    }
+                }    
+            }
+
             <li class="page-item @(Table.PageNumber + 1 < Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.NextPageAsync())" title="@Localization["PagerNext"]">
                 <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber + 1 < Table.TotalPages ? null: "true")">@Localization["PagerNext"]</a>
             </li>

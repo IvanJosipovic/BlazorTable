@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorTable.Components.ServerSide;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -121,6 +122,16 @@ namespace BlazorTable
         /// Filter expression
         /// </summary>
         public Expression<Func<TableItem, bool>> Filter { get; set; }
+
+        /// <summary>
+        /// Filter as string
+        /// </summary>
+        public FilterString FilterString { get; set; }
+
+        /// <summary>
+        /// Initial filters
+        /// </summary>
+        public FilterString InitialFilterString { get; set; }
 
         /// <summary>
         /// True if this is the default Sort Column

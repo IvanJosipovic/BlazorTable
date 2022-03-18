@@ -163,7 +163,7 @@
 
                             if (!rowDisplayed)
                             {
-                                <tr @key="item" aria-selected="@(SelectedItems.Contains(item) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
+                                <tr @key="item" aria-selected="@(SelectedItems.Any(x=> x.CompareEx(item)) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Any(x=> x.CompareEx(item)) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
 
                                     @{
                                         int locali = i;

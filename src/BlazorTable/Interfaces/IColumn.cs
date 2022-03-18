@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorTable.Components.ServerSide;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -83,6 +84,16 @@ namespace BlazorTable
         /// Filter expression
         /// </summary>
         Expression<Func<TableItem, bool>> Filter { get; set; }
+
+        /// <summary>
+        /// Filter as string
+        /// </summary>
+        FilterString FilterString { get; set; }
+
+        /// <summary>
+        /// Filter as string
+        /// </summary>
+        FilterString InitialFilterString { get; set; }
 
         /// <summary>
         /// Edit Mode Item Template

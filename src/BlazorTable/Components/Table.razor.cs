@@ -142,7 +142,7 @@ namespace BlazorTable
 
         protected override async Task OnParametersSetAsync()
         {
-            await UpdateAsync().ConfigureAwait(false);
+            await UpdateAsync(true).ConfigureAwait(false);
         }
 
         private IEnumerable<TableItem> GetData()
@@ -156,6 +156,11 @@ namespace BlazorTable
                 ItemsQueryable = Items.AsQueryable();
             }
 
+            if (DataLoader != null)
+            {
+                return ItemsQueryable.ToList();
+            }
+
             foreach (var item in Columns)
             {
                 if (item.Filter != null)
@@ -163,11 +168,7 @@ namespace BlazorTable
                     ItemsQueryable = ItemsQueryable.Where(item.Filter);
                 }
             }
-
-            if (DataLoader != null)
-            {
-                return ItemsQueryable.ToList();
-            }
+            
             // Global Search
             if (!string.IsNullOrEmpty(GlobalSearch))
             {
@@ -227,9 +228,10 @@ namespace BlazorTable
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
-        public async Task UpdateAsync()
+        public async Task UpdateAsync(bool updateServerData = true)
         {
-            await LoadServerSideDataAsync().ConfigureAwait(false);
+            if(updateServerData)
+                await LoadServerSideDataAsync().ConfigureAwait(false);
             FilteredItems = GetData();
             Refresh();
         }
@@ -248,12 +250,28 @@ namespace BlazorTable
                         .Append(sortColumn.SortDescending ? "desc" : "asc");
                 }
 
-                var result = await DataLoader.LoadDataAsync(new FilterData
+                var filters = new List<Expression<Func<TableItem, bool>>>();
+                var filterStrings = new List<FilterString>();
+                if (Columns != null)
+                {
+                    foreach (var item in Columns)
+                    {
+                        if (item.Filter != null)
+                        {
+                            filters.Add(item.Filter);
+                            filterStrings.Add(item.FilterString);
+                        }
+                    }
+                }
+
+                var result = await DataLoader.LoadDataAsync(new FilterData<TableItem>
                 {
                     Top = PageSize,
                     Skip = PageNumber * PageSize,
                     Query = GlobalSearch,
-                    OrderBy = sortExpression.ToString()
+                    OrderBy = sortExpression.ToString(),
+                    Filters = filters,
+                    FilterStrings = filterStrings
                 }).ConfigureAwait(false);
                 Items = result.Records;
                 TotalCount = result.Total.GetValueOrDefault(1);
@@ -337,6 +355,18 @@ namespace BlazorTable
         }
 
         /// <summary>
+        /// Go to specific page
+        /// </summary>
+        /// <param name="pageNumber">Page number to go</param>
+        /// <returns></returns>
+        public async Task GoToPageAsync(int pageNumber)
+        {
+            PageNumber = pageNumber;
+            detailsViewOpen.Clear();
+            await UpdateAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Redraws the Table using EditTemplate instead of Template
         /// </summary>
         public void ToggleEditMode()
@@ -348,9 +378,9 @@ namespace BlazorTable
         /// <summary>
         /// Redraws Table without Getting Data
         /// </summary>
-        public void Refresh()
+        public async void Refresh()
         {
-            InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);
         }
 
         /// <summary>
@@ -468,7 +498,7 @@ namespace BlazorTable
         /// Handles the onclick action for table rows.
         /// This allows the RowClickAction to be optional.
         /// </summary>
-        private void OnRowClickHandler(TableItem tableItem)
+        private async void OnRowClickHandler(TableItem tableItem)
         {
             try
             {
@@ -488,8 +518,8 @@ namespace BlazorTable
                     SelectedItems.Add(tableItem);
                     break;
                 case SelectionType.Multiple:
-                    if (SelectedItems.Contains(tableItem))
-                        SelectedItems.Remove(tableItem);
+                    if (SelectedItems.Any(x=> x.CompareEx(tableItem)))
+                        SelectedItems.RemoveAll(x=> x.CompareEx(tableItem));
                     else
                         SelectedItems.Add(tableItem);
                     break;
@@ -560,6 +590,44 @@ namespace BlazorTable
         public async Task SetPageSizeAsync(int pageSize)
         {
             PageSize = pageSize;
+            PageNumber = 0;
+            detailsViewOpen.Clear();
+            await UpdateAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Set initial filters to grid
+        /// </summary>
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        public async Task SetInitialFiltersAsync(IEnumerable<FilterString> filters)
+        {
+            foreach (var item in filters)
+            {
+                var column = Columns.FirstOrDefault(x => x.Field.GetPropertyMemberInfo().Name == item.Field);
+                if (column != null && column.Filterable)
+                {
+                    column.InitialFilterString = item;
+                    if (column.FilterControl == null)
+                    {
+                        if (column.CustomIFilters != null)
+                            column.FilterControl = new CustomSelect<TableItem>() { Column = column };
+                        else if (column.Type == typeof(string))
+                            column.FilterControl = new StringFilter<TableItem>() { Column = column };
+                        else if (column.Type.IsNumeric() && !column.Type.GetNonNullableType().IsEnum)
+                            column.FilterControl = new NumberFilter<TableItem>() { Column = column };
+                        else if (column.Type.GetNonNullableType().IsEnum)
+                            column.FilterControl = new EnumFilter<TableItem>() { Column = column };
+                        else if (column.Type.GetNonNullableType() == typeof(DateTime))
+                            column.FilterControl = new DateFilter<TableItem>() { Column = column };
+                        else if (new List<Type>() { typeof(bool) }.Contains(column.Type.GetNonNullableType()))
+                            column.FilterControl = new BooleanFilter<TableItem>() { Column = column };
+                    }
+                    column.Filter = column.FilterControl.GetFilter();
+                    column.FilterString = column.FilterControl.GetFilterString();
+                }
+            }
+            await FirstPageAsync().ConfigureAwait(false);
             await UpdateAsync().ConfigureAwait(false);
         }
 
