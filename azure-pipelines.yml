@@ -56,7 +56,7 @@ steps:
     targetType: 'inline'
     script: |
       Set-Content package.nuspec @"
-      <?xml version="1.0" encoding="utf-8"?><package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+      <?xml version="1.0" encoding="utf-8"?><package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
       <metadata>
       <id>BlazorTable</id>
       <version>1.17.3-preview</version>
