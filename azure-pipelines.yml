@@ -55,6 +55,22 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      Set-Content package.nuspec @"
+      <?xml version="1.0" encoding="utf-8"?><package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+      <metadata>
+      <id>BlazorTables</id><version>$version$</version><authors>Octavian Technology Group</authors>
+      <description>A fork of Blazor Tables</description>
+      </metadata>
+      <files>
+      <file src="src\BlazorTable\bin\$configuration$\netstandard2.1\**\BlazorTable.dll" target="lib" />
+      </files>
+      </package>
+      "@
+
 - task: NuGetCommand@2
   displayName: 'Nuget Pack'
   inputs:
