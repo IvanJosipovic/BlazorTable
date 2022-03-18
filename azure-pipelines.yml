@@ -10,7 +10,9 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-
+  Parameters.requestedMajorVersion: '1'
+  Parameters.requestedMinorVersion: '17'
+  Parameters.requestedPatchVersion: '3'
 steps:
 - task: PowerShell@2
   inputs:
