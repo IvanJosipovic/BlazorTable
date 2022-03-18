@@ -58,14 +58,19 @@ steps:
       Set-Content package.nuspec @"
       <?xml version="1.0" encoding="utf-8"?><package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
       <metadata>
-      <id>BlazorTables</id>
+      <id>BlazorTable</id>
       <version>1.17.3-preview</version>
       <authors>Octavian Technology Group</authors>
       <description>A fork of Blazor Tables</description>
       </metadata>
-      <files>
-      <file src="src\BlazorTable\bin\$(buildConfiguration)\netstandard2.1\**\BlazorTable.dll" target="lib" />
-      </files>
+      <dependencies>
+        <group targetFramework=".NETStandard2.1">
+          <dependency id="LINQKit.Core" version="1.1.26" exclude="Build,Analyzers" />
+          <dependency id="Microsoft.AspNetCore.Components" version="3.1.18" exclude="Build,Analyzers" />
+          <dependency id="Microsoft.AspNetCore.Components.Web" version="3.1.18" exclude="Build,Analyzers" />
+          <dependency id="Microsoft.Extensions.Localization" version="3.1.18" exclude="Build,Analyzers" />
+        </group>
+      </dependencies>
       </package>
       "@
 
