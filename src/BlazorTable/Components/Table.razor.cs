@@ -632,6 +632,24 @@ namespace BlazorTable
         }
 
         /// <summary>
+        /// Clear filter
+        /// </summary>
+        /// <param name="columnName">Column name</param>
+        /// <returns></returns>
+        public async Task ClearFilterAsync(string columnName)
+        {
+            var column = Columns.FirstOrDefault(x => x.Field.GetPropertyMemberInfo().Name == columnName);
+            if (column != null && column.Filterable)
+            {
+                column.Filter = null;
+                column.FilterString = null;
+                await FirstPageAsync().ConfigureAwait(false);
+                await UpdateAsync().ConfigureAwait(false);
+            }
+        }
+
+
+        /// <summary>
         /// Show table child content at the top of the table.
         /// </summary>
         [Parameter]

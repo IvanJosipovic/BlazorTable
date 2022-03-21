@@ -16,7 +16,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyVersion></AssemblyVersion>
-    <Version>1.17.2-preview</Version>
+    <Version>1.17.3-preview</Version>
   </PropertyGroup>
 
   <ItemGroup>
