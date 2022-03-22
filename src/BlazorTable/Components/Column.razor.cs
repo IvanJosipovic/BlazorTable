@@ -158,7 +158,7 @@ namespace BlazorTable
         /// <summary>
         /// Filter Panel is open
         /// </summary>
-        public bool FilterOpen { get; private set; }
+        public bool FilterOpen { get; set; }
 
         private bool _visible = true;
 
@@ -231,6 +231,10 @@ namespace BlazorTable
         public void ToggleFilter()
         {
             FilterOpen = !FilterOpen;
+            foreach (var column in Table.Columns.Where(x => x != this))
+            {
+                column.FilterOpen = false;
+            }
             Table.Refresh();
         }
 

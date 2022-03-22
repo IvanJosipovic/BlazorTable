@@ -50,7 +50,7 @@ namespace BlazorTable
         /// <summary>
         /// Filter Panel is open
         /// </summary>
-        bool FilterOpen { get; }
+        bool FilterOpen { get; set; }
 
         /// <summary>
         /// Column visibility
