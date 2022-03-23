@@ -14,31 +14,13 @@ variables:
   Parameters.requestedMinorVersion: '17'
   Parameters.requestedPatchVersion: '3'
 steps:
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      $tempdir = [IO.Path]::GetTempPath()
-      
-      $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH = Join-Path $tempdir "pluginlog"
-      $env:NUGET_CREDENTIALPROVIDER_LOG_PATH = Join-Path $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH "artifacts-credprovider.log"
-      $env:NUGET_PLUGIN_ENABLE_LOG = "true"
-      
-      if (Test-Path -LiteralPath $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH) {
-        Remove-Item -Recurse -Force -LiteralPath $env:NUGET_PLUGIN_LOG_DIRECTORY_PATH
-      }
-      
-      [IO.Directory]::CreateDirectory($env:NUGET_PLUGIN_LOG_DIRECTORY_PATH) | Out-Null
-      
-      Write-Host "##vso[task.setvariable variable=NUGET_CREDENTIALPROVIDER_LOG_PATH]$env:NUGET_CREDENTIALPROVIDER_LOG_PATH"
-      Write-Host "##vso[task.setvariable variable=NUGET_PLUGIN_ENABLE_LOG]$env:NUGET_PLUGIN_ENABLE_LOG"
-      Write-Host "##vso[task.setvariable variable=NUGET_PLUGIN_LOG_DIRECTORY_PATH]$env:NUGET_PLUGIN_LOG_DIRECTORY_PATH"
 
 - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
-    restoreSolution: '$(solution)'
+    command: 'restore'
+    feedsToUse: 'select'
 
 - task: VSBuild@1
   inputs:
@@ -50,29 +32,6 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      Set-Content package.nuspec @"
-      <?xml version="1.0" encoding="utf-8"?><package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
-      <metadata>
-      <id>BlazorTable</id>
-      <version>1.17.3-preview</version>
-      <authors>Octavian Technology Group</authors>
-      <description>A fork of Blazor Tables</description>
-      </metadata>
-      <dependencies>
-        <group targetFramework=".NETStandard2.1">
-          <dependency id="LINQKit.Core" version="1.1.26" exclude="Build,Analyzers" />
-          <dependency id="Microsoft.AspNetCore.Components" version="3.1.18" exclude="Build,Analyzers" />
-          <dependency id="Microsoft.AspNetCore.Components.Web" version="3.1.18" exclude="Build,Analyzers" />
-          <dependency id="Microsoft.Extensions.Localization" version="3.1.18" exclude="Build,Analyzers" />
-        </group>
-      </dependencies>
-      </package>
-      "@
 
 - task: DotNetCoreCLI@2
   inputs:
