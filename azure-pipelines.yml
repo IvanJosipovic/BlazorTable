@@ -82,10 +82,10 @@ steps:
     versioningScheme: 'byPrereleaseNumber'
     majorVersion: '1'
     minorVersion: '17'
-    patchVersion: '3''
-    
-- task: NuGetCommand@2
+    patchVersion: 'Preview'
   displayName: 'Nuget Push'
+
+- task: NuGetCommand@2
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
