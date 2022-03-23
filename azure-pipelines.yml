@@ -74,18 +74,16 @@ steps:
       </package>
       "@
 
-- task: NuGetCommand@2
-  displayName: 'Nuget Pack'
+- task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
     packagesToPack: '**/BlazorTable.csproj'
-    includeSymbols: true
-    configuration: '$(buildConfiguration)'
-    versioningScheme: byPrereleaseNumber
-    majorVersion: '$(Parameters.requestedMajorVersion)'
-    minorVersion: '$(Parameters.requestedMinorVersion)'
-    patchVersion: '$(Parameters.requestedPatchVersion)'
-
+    includesymbols: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '17'
+    patchVersion: '3''
+    
 - task: NuGetCommand@2
   displayName: 'Nuget Push'
   inputs:
