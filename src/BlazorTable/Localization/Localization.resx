@@ -162,6 +162,9 @@
   <data name="FilterManagerClose" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="GoToPage" xml:space="preserve">
+    <value>Go to page:</value>
+  </data>
   <data name="NumberConditionIsEqualTo" xml:space="preserve">
     <value>Is equal to</value>
   </data>

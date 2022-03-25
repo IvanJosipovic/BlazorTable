@@ -2,12 +2,19 @@
 
 @if (AlwaysShow || (Table.TotalPages > 1))
 {
-    <div class="d-flex justify-content-end">
+    <div class="row">
+        <div class="col-6">
+
+        </div>
+        <div class="col-6">
+             <div class="d-flex justify-content-end">
+        
         <ul class="pagination">
             @if (ShowPageSizes)
             {
             <li class="page-item" title="Set Page Size">
                 <select class="form-control" value="@Table.PageSize" @onchange="(async ev => await SetPageSizeAsync(ev))">
+                    <option>Select size</option>
                     @foreach (int option in PageSizes)
                     {
                         <option value="@option">@option</option>
@@ -19,7 +26,7 @@
             @if (ShowPageNumberInput)    
             {
                 <li class="page-item" title="Page @(Table.PageNumber + 1)/@(Table.TotalPages)">
-                    <input type="number" class="page-link" tabindex="-1" @onkeydown="@SetPageInput" style="width: 75px; text-align:right" @bind="inputPage" @bind:event="oninput" />
+                    @Localization["GoToPage"]&nbsp;<input type="number" class="page-link" tabindex="-1" @onkeydown="@SetPageInput" style="width: 75px; text-align:right" @bind="inputPage" @bind:event="oninput" />
                 </li>
             }
             @if (ShowPageNumber)
@@ -70,4 +77,7 @@
             </li>
         </ul>
     </div>
+        </div>
+    </div>
+   
 }
