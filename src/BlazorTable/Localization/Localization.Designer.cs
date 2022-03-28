@@ -313,6 +313,15 @@ namespace BlazorTable.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set Page Size.
+        /// </summary>
+        internal static string SetPageSize {
+            get {
+                return ResourceManager.GetString("SetPageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Contains.
         /// </summary>
         internal static string StringConditionContains {

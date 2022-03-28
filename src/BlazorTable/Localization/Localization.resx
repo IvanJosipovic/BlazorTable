@@ -201,6 +201,9 @@
   <data name="PagerPrevious" xml:space="preserve">
     <value>Previous</value>
   </data>
+  <data name="SetPageSize" xml:space="preserve">
+    <value>Set Page Size</value>
+  </data>
   <data name="StringConditionContains" xml:space="preserve">
     <value>Contains</value>
   </data>

@@ -37,7 +37,7 @@ Selected: @(selectedItems.Any() ? selectedItems.Select(x => x.full_name).Aggrega
             @(context.created_date.HasValue ? context.created_date.Value.ToShortDateString() : string.Empty)
         </Template>
     </Column>
-    <Pager ShowPageNumber="true" ShowTotalCount="true" ShowPageNumberSelector="true" ShowPageSizes="true" ShowPageNumberInput="true" />
+    <Pager ShowPageNumber="true" ShowPageNumberSelector="true" ShowPageSizes="true" ShowPageNumberInput="true" />
 </Table>
 
 @code
@@ -70,12 +70,12 @@ Selected: @(selectedItems.Any() ? selectedItems.Select(x => x.full_name).Aggrega
 
         await Table.SetInitialFiltersAsync(new List<FilterString>()
         {
-            new FilterString()
-            {
-                Condition = StringCondition.IsEqualTo.ToString(),
-                Field = nameof(PersonData.full_name),
-                FilterValue = "Marja Mustill"
-            },
+            //new FilterString()
+            //{
+            //    Condition = StringCondition.IsEqualTo.ToString(),
+            //    Field = nameof(PersonData.full_name),
+            //    FilterValue = "Marja Mustill"
+            //},
             new FilterString()
             {
                 Condition = BooleanCondition.True.ToString(),
