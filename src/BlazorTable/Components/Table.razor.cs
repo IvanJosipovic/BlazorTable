@@ -56,6 +56,8 @@ namespace BlazorTable
         [Parameter]
         public int PageSize { get; set; } = DEFAULT_PAGE_SIZE;
 
+        public int? ServerPageSize { get; set; }
+
         /// <summary>
         /// Allow Columns to be reordered
         /// </summary>
@@ -266,7 +268,7 @@ namespace BlazorTable
 
                 var result = await DataLoader.LoadDataAsync(new FilterData<TableItem>
                 {
-                    Top = PageSize,
+                    Top = ServerPageSize.GetValueOrDefault(PageSize),
                     Skip = PageNumber * PageSize,
                     Query = GlobalSearch,
                     OrderBy = sortExpression.ToString(),
@@ -590,6 +592,7 @@ namespace BlazorTable
         public async Task SetPageSizeAsync(int pageSize)
         {
             PageSize = pageSize;
+            ServerPageSize = pageSize;
             PageNumber = 0;
             detailsViewOpen.Clear();
             await UpdateAsync().ConfigureAwait(false);

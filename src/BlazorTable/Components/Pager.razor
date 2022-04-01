@@ -6,7 +6,7 @@
         <div class="col-1">
             @if (ShowPageSizes)
             {
-                <select class="form-control" title="@Localization["SetPageSize"]" value="@Table.PageSize" @onchange="(async ev => await SetPageSizeAsync(ev))">
+                <select class="form-control" title="@Localization["SetPageSize"]" value="@Table.ServerPageSize.GetValueOrDefault(Table.PageSize)" @onchange="(async ev => await SetPageSizeAsync(ev))">
                     @foreach (int option in PageSizes)
                     {
                         <option value="@option">@option</option>

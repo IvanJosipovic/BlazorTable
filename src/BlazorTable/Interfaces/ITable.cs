@@ -14,6 +14,8 @@ namespace BlazorTable
         /// </summary>
         int PageSize { get; }
 
+        int? ServerPageSize { get; }
+
         /// <summary>
         /// Allow Columns to be reordered
         /// </summary>
