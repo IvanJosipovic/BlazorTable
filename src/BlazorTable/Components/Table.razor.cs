@@ -186,9 +186,13 @@ namespace BlazorTable
             }
 
             // if the current page is filtered out, we should go back to a page that exists
-            if (PageNumber > TotalPages)
+            if (PageNumber >= TotalPages)
             {
                 PageNumber = TotalPages - 1;
+            }
+            else if (PageNumber < 0 && TotalPages > 0)
+            {
+                PageNumber = 0;
             }
 
             // if PageSize is zero, we return all rows and no paging
@@ -292,7 +296,7 @@ namespace BlazorTable
         /// </summary>
         public async Task FirstPageAsync()
         {
-            if (PageNumber != 0)
+            if (PageNumber > 0)
             {
                 PageNumber = 0;
                 detailsViewOpen.Clear();
@@ -331,9 +335,12 @@ namespace BlazorTable
         /// </summary>
         public async Task LastPageAsync()
         {
-            PageNumber = TotalPages - 1;
-            detailsViewOpen.Clear();
-            await UpdateAsync().ConfigureAwait(false);
+            if (PageNumber + 1 < TotalPages)
+            {
+                PageNumber = TotalPages - 1;
+                detailsViewOpen.Clear();
+                await UpdateAsync().ConfigureAwait(false);
+            }
         }
 
         /// <summary>

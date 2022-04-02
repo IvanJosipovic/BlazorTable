@@ -34,17 +34,17 @@
                 </li>
             }
 
-            <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.FirstPageAsync())" title="@Localization["PagerFirst"]">
-                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber == 0 ? "true": null)">@Localization["PagerFirst"]</a>
+            <li class="page-item @(Table.PageNumber <= 0 ? "disabled": "")" @onclick="@(() => Table.FirstPageAsync())" title="@Localization["PagerFirst"]">
+                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber <= 0 ? "true": null)">@Localization["PagerFirst"]</a>
             </li>
-            <li class="page-item @(Table.PageNumber == 0 ? "disabled": "")" @onclick="@(() => Table.PreviousPageAsync())" title="@Localization["PagerPrevious"]">
-                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber == 0 ? "true": null)">@Localization["PagerPrevious"]</a>
+            <li class="page-item @(Table.PageNumber <= 0 ? "disabled": "")" @onclick="@(() => Table.PreviousPageAsync())" title="@Localization["PagerPrevious"]">
+                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber <= 0 ? "true": null)">@Localization["PagerPrevious"]</a>
             </li>
             <li class="page-item @(Table.PageNumber + 1 < Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.NextPageAsync())" title="@Localization["PagerNext"]">
                 <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber + 1 < Table.TotalPages ? null: "true")">@Localization["PagerNext"]</a>
             </li>
-            <li class="page-item @(Table.PageNumber + 1 != Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.LastPageAsync())" title="@Localization["PagerLast"]">
-                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber + 1 != Table.TotalPages ? null : "true")">@Localization["PagerLast"]</a>
+            <li class="page-item @(Table.PageNumber + 1 < Table.TotalPages ? "" : "disabled")" @onclick="@(() => Table.LastPageAsync())" title="@Localization["PagerLast"]">
+                <a class="page-link" href="javascript:;" aria-disabled="@(Table.PageNumber + 1 < Table.TotalPages ? null : "true")">@Localization["PagerLast"]</a>
             </li>
         </ul>
     </div>
