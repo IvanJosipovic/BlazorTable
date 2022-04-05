@@ -21,7 +21,7 @@
                         <th colspan="@columnCount">
                             @if (ShowSearchBar)
                             {
-                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); UpdateAsync(); })" placeholder="@Localization["TableGlobalSearch"]" />
+                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%"  @bind="GlobalSearch" @bind:event="oninput" @onkeyup="@(() => { UpdateAsync(); })" placeholder="@Localization["TableGlobalSearch"]" />
                             }
                             @if (Columns.Exists(column => !column.Visible))
                             {

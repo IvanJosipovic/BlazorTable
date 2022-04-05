@@ -14,7 +14,7 @@ namespace BlazorTable
         /// <summary>
         /// List of All Available Columns
         /// </summary>
-        List<IColumn<TableItem>> Columns { get; }
+        List<IColumn<TableItem>> Columns { get; set; }
 
         /// <summary>
         /// Adds a Column to the Table

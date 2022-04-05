@@ -18,7 +18,7 @@
             @if (ShowPageNumberInput)
             {
                 <div class="d-flex">
-                    <span class="m-auto">@Localization["GoToPage"]</span><input type="number" class="page-link" tabindex="-1" @onkeydown="@SetPageInput" style="width: 75px; text-align:right; border:1px solid #dee2e6;" @bind="inputPage" @bind:event="oninput" />
+                    <span class="m-auto">@Localization["GoToPage"]</span><input type="number" class="page-link" tabindex="-1" @onkeydown="@SetPageInput" @onblur="@GoToPage" style="width: 75px; text-align:right; border:1px solid #dee2e6;" @bind="inputPage" @bind:event="oninput" />
                 </div>
             }
         </div>

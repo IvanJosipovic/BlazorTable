@@ -73,18 +73,23 @@ namespace BlazorTable
         {
             if (e.Code == "Enter" || e.Code == "NumpadEnter")
             {
-                if (inputPage > Table.TotalPages)
-                {
-                    inputPage = Table.TotalPages;
-                }
-
-                if (inputPage < 1)
-                {
-                    inputPage = 1;
-                }
-                    
-                await Table.GoToPageAsync(inputPage - 1).ConfigureAwait(false);
+                await GoToPage().ConfigureAwait(false);
             }
+        }
+
+        private async Task GoToPage() 
+        {
+            if (inputPage > Table.TotalPages)
+            {
+                inputPage = Table.TotalPages;
+            }
+
+            if (inputPage < 1)
+            {
+                inputPage = 1;
+            }
+
+            await Table.GoToPageAsync(inputPage - 1).ConfigureAwait(false);
         }
     }
 }

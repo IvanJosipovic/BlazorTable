@@ -156,7 +156,7 @@ namespace BlazorTable
             {
                 Field = Column.Field.GetPropertyMemberInfo().Name,
                 Condition = Condition.ToString(),
-                FilterValue = FilterValue.ToString()
+                FilterValue = FilterValue.ToString("MM-dd-yyyy")
             };
         }
     }

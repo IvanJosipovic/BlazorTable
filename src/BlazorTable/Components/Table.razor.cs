@@ -115,7 +115,7 @@ namespace BlazorTable
         /// <summary>
         /// List of All Available Columns
         /// </summary>
-        public List<IColumn<TableItem>> Columns { get; } = new List<IColumn<TableItem>>();
+        public List<IColumn<TableItem>> Columns { get; set; } = new List<IColumn<TableItem>>();
 
         /// <summary>
         /// Current Page Number
