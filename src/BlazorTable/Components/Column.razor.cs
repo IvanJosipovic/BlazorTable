@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorTable.Components.ServerSide;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -123,6 +124,16 @@ namespace BlazorTable
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
         /// <summary>
+        /// Filter as string
+        /// </summary>
+        public FilterString FilterString { get; set; }
+
+        /// <summary>
+        /// Initial filters
+        /// </summary>
+        public FilterString InitialFilterString { get; set; }
+
+        /// <summary>
         /// True if this is the default Sort Column
         /// </summary>
         [Parameter]
@@ -147,7 +158,7 @@ namespace BlazorTable
         /// <summary>
         /// Filter Panel is open
         /// </summary>
-        public bool FilterOpen { get; private set; }
+        public bool FilterOpen { get; set; }
 
         private bool _visible = true;
 
@@ -220,6 +231,10 @@ namespace BlazorTable
         public void ToggleFilter()
         {
             FilterOpen = !FilterOpen;
+            foreach (var column in Table.Columns.Where(x => x != this))
+            {
+                column.FilterOpen = false;
+            }
             Table.Refresh();
         }
 

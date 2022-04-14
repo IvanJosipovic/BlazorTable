@@ -19,7 +19,7 @@ namespace BlazorTable.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Localization {
@@ -196,6 +196,15 @@ namespace BlazorTable.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to page:.
+        /// </summary>
+        internal static string GoToPage {
+            get {
+                return ResourceManager.GetString("GoToPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is equal to.
         /// </summary>
         internal static string NumberConditionIsEqualTo {
@@ -300,6 +309,15 @@ namespace BlazorTable.Localization {
         internal static string PagerPrevious {
             get {
                 return ResourceManager.GetString("PagerPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Page Size.
+        /// </summary>
+        internal static string SetPageSize {
+            get {
+                return ResourceManager.GetString("SetPageSize", resourceCulture);
             }
         }
         

@@ -162,6 +162,9 @@
   <data name="FilterManagerClose" xml:space="preserve">
     <value>Luk</value>
   </data>
+  <data name="GoToPage" xml:space="preserve">
+    <value>Gå til side:</value>
+  </data>
   <data name="NumberConditionIsEqualTo" xml:space="preserve">
     <value>Er lig med</value>
   </data>

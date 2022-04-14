@@ -1,4 +1,5 @@
-﻿using BlazorTable.Localization;
+﻿using BlazorTable.Components.ServerSide;
+using BlazorTable.Localization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,15 @@ namespace BlazorTable
             if (FilterTypes.Contains(Column.Type.GetNonNullableType()))
             {
                 Column.FilterControl = this;
+
+                if (Column.InitialFilterString != null)
+                {
+                    Condition = Utilities.ParseEnum<BooleanCondition>(Column.InitialFilterString.Condition);
+                    
+                    Column.InitialFilterString = null;
+
+                    Column.Filter = GetFilter();
+                }
 
                 if (Column.Filter != null)
                 {
@@ -55,6 +65,13 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
+            if (Column.InitialFilterString != null)
+            {
+                Condition = Utilities.ParseEnum<BooleanCondition>(Column.InitialFilterString.Condition);
+
+                Column.InitialFilterString = null;
+            }
+
             return Condition switch
             {
                 BooleanCondition.True =>
@@ -88,7 +105,17 @@ namespace BlazorTable
                 _ => null,
             };
         }
+        public FilterString GetFilterString()
+        {
+            return new FilterString()
+            {
+                Field = Column.Field.GetPropertyMemberInfo().Name,
+                Condition = Condition.ToString()
+            };
+        }
     }
+
+    
 
     public enum BooleanCondition
     {

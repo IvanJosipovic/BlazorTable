@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorTable.Components.ServerSide;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq.Expressions;
 
@@ -18,6 +19,17 @@ namespace BlazorTable
             if (Column.Type.GetNonNullableType() == typeof(DateTime))
             {
                 Column.FilterControl = this;
+
+                if (Column.InitialFilterString != null)
+                {
+                    Condition = Utilities.ParseEnum<NumberCondition>(Column.InitialFilterString.Condition);
+                    if (DateTime.TryParse(Column.InitialFilterString.FilterValue, out DateTime filterValue))
+                        FilterValue = filterValue;
+
+                    Column.InitialFilterString = null;
+
+                    Column.Filter = GetFilter();
+                }
 
                 if (Column.Filter?.Body is BinaryExpression binaryExpression
                     && binaryExpression.Right is BinaryExpression logicalBinary
@@ -55,6 +67,15 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
+            if (Column.InitialFilterString != null)
+            {
+                Condition = Utilities.ParseEnum<NumberCondition>(Column.InitialFilterString.Condition);
+                if (DateTime.TryParse(Column.InitialFilterString.FilterValue, out DateTime filterValue))
+                    FilterValue = filterValue;
+
+                Column.InitialFilterString = null;
+            }
+
             return Condition switch
             {
                 NumberCondition.IsEqualTo =>
@@ -126,6 +147,16 @@ namespace BlazorTable
                         Column.Field.Parameters),
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),
+            };
+        }
+
+        public FilterString GetFilterString()
+        {
+            return new FilterString()
+            {
+                Field = Column.Field.GetPropertyMemberInfo().Name,
+                Condition = Condition.ToString(),
+                FilterValue = FilterValue.ToString("MM-dd-yyyy")
             };
         }
     }

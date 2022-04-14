@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.Linq.Expressions;
 using Microsoft.Extensions.Localization;
+using BlazorTable.Components.ServerSide;
 
 namespace BlazorTable
 {
@@ -24,6 +25,15 @@ namespace BlazorTable
             if (Column.Type.GetNonNullableType().IsEnum)
             {
                 Column.FilterControl = this;
+
+                if (Column.InitialFilterString != null)
+                {
+                    Condition = Utilities.ParseEnum<EnumCondition>(Column.InitialFilterString.Condition);
+                    FilterValue = Column.InitialFilterString.FilterValue;
+                    Column.InitialFilterString = null;
+
+                    Column.Filter = GetFilter();
+                }
 
                 if (Column.Filter?.Body is BinaryExpression binaryExpression
                     && binaryExpression.Right is BinaryExpression logicalBinary
@@ -51,6 +61,13 @@ namespace BlazorTable
 
         public Expression<Func<TableItem, bool>> GetFilter()
         {
+            if (Column.InitialFilterString != null)
+            {
+                Condition = Utilities.ParseEnum<EnumCondition>(Column.InitialFilterString.Condition);
+                FilterValue = Column.InitialFilterString.FilterValue;
+                Column.InitialFilterString = null;
+            }
+
             return Condition switch
             {
                 EnumCondition.IsEqualTo =>
@@ -87,6 +104,16 @@ namespace BlazorTable
 
                 _ => throw new ArgumentException(Condition + " is not defined!"),
             };
+        }
+
+        public FilterString GetFilterString()
+        {
+            return new FilterString()
+            {
+                Field = Column.Field.GetPropertyMemberInfo().Name,
+                Condition = Condition.ToString(),
+                FilterValue = FilterValue.ToString()
+            }; 
         }
 
         public enum EnumCondition

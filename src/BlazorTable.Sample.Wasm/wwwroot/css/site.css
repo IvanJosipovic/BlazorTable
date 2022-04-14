@@ -256,3 +256,7 @@ app {
     flex-direction: column;
     --sk-color: white;
 }
+
+.page-link {
+	border: none;
+}

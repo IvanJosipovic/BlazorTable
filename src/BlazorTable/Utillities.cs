@@ -1,4 +1,5 @@
 ﻿using LinqKit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -181,6 +182,11 @@ namespace BlazorTable
             return attributes.Length > 0 ? attributes[0].Description : string.Empty;
         }
 
+        public static T ParseEnum<T>(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
+
         /// <summary>
         /// Recursively walks up the tree and adds null checks
         /// </summary>
@@ -228,6 +234,18 @@ namespace BlazorTable
             }
 
             return newExpression;
+        }
+
+        public static bool CompareEx(this object obj, object another)
+        {
+            if (ReferenceEquals(obj, another)) return true;
+            if ((obj == null) || (another == null)) return false;
+            if (obj.GetType() != another.GetType()) return false;
+
+            var objJson = JsonConvert.SerializeObject(obj);
+            var anotherJson = JsonConvert.SerializeObject(another);
+
+            return objJson == anotherJson;
         }
     }
 }

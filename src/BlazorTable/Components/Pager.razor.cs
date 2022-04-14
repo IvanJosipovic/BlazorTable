@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,6 +44,18 @@ namespace BlazorTable
         [Parameter]
         public bool ShowPageSizes { get; set; }
 
+        /// <summary>
+        /// Show Pages Numbers
+        /// </summary>
+        [Parameter]
+        public bool ShowPageNumberSelector { get; set; }
+
+        /// <summary>
+        /// Show Pages Number selector input
+        /// </summary>
+        [Parameter]
+        public bool ShowPageNumberInput { get; set; }
+
         [Inject]
         IStringLocalizer<Localization.Localization> Localization { get; set; }
 
@@ -52,6 +65,31 @@ namespace BlazorTable
             {
                 await Table.SetPageSizeAsync(result).ConfigureAwait(false);
             }
+        }
+
+        private int inputPage { get; set; } = 1;
+
+        private async Task SetPageInput(KeyboardEventArgs e)
+        {
+            if (e.Code == "Enter" || e.Code == "NumpadEnter")
+            {
+                await GoToPage().ConfigureAwait(false);
+            }
+        }
+
+        private async Task GoToPage() 
+        {
+            if (inputPage > Table.TotalPages)
+            {
+                inputPage = Table.TotalPages;
+            }
+
+            if (inputPage < 1)
+            {
+                inputPage = 1;
+            }
+
+            await Table.GoToPageAsync(inputPage - 1).ConfigureAwait(false);
         }
     }
 }

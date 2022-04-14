@@ -20,13 +20,13 @@ namespace BlazorTable
         IStringLocalizer<Localization.Localization> Localization { get; set; }
 
         private async Task ApplyFilterAsync()
-
         {
             Column.ToggleFilter();
 
             if (Column.FilterControl != null)
             {
                 Column.Filter = Column.FilterControl.GetFilter();
+                Column.FilterString = Column.FilterControl.GetFilterString();
                 await Column.Table.UpdateAsync().ConfigureAwait(false);
                 await Column.Table.FirstPageAsync().ConfigureAwait(false);
             }

@@ -21,7 +21,7 @@
                         <th colspan="@columnCount">
                             @if (ShowSearchBar)
                             {
-                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%" value="@GlobalSearch" @onchange="@(x => { GlobalSearch = x.Value.ToString(); UpdateAsync(); })" placeholder="@Localization["TableGlobalSearch"]" />
+                                <input type="text" class="form-control form-control-sm float-right ml-3" style="width:33%"  @bind="GlobalSearch" @bind:event="oninput" @onkeyup="@(() => { UpdateAsync(); })" placeholder="@Localization["TableGlobalSearch"]" />
                             }
                             @if (Columns.Exists(column => !column.Visible))
                             {
@@ -139,6 +139,24 @@
                     }
                 </tr>
             </thead>
+            @if(AddExtraTh)
+            {
+            <thead class="@TableHeadClass">
+                <tr style="cursor: pointer;">
+                    @if (_detailTemplate != null)
+                    {
+                        <th style="width: 1%"></th>
+                    }
+                    @foreach (IColumn<TableItem> column in Columns)
+                    {
+                        @if (column.Visible)
+                        {
+                            <th scope="col" class="@(column.Class)"></th>
+                        }
+                    }
+                </tr>
+            </thead>    
+            }
             <tbody class="@TableBodyClass">
                 @if (FilteredItems != null)
                 {
@@ -163,7 +181,7 @@
 
                             if (!rowDisplayed)
                             {
-                                <tr @key="item" aria-selected="@(SelectedItems.Contains(item) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Contains(item) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
+                                <tr @key="item" aria-selected="@(SelectedItems.Any(x=> x.CompareEx(item)) ? "true" : null)" class="@RowClass(item) @(SelectedItems.Any(x=> x.CompareEx(item)) ? "table-active" : "")" @onclick="(() => OnRowClickHandler(item))">
 
                                     @{
                                         int locali = i;

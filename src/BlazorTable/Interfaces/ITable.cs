@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using BlazorTable.Components.ServerSide;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlazorTable
 {
@@ -11,6 +13,8 @@ namespace BlazorTable
         /// Page Size
         /// </summary>
         int PageSize { get; }
+
+        int? ServerPageSize { get; }
 
         /// <summary>
         /// Allow Columns to be reordered
@@ -59,6 +63,11 @@ namespace BlazorTable
         Task LastPageAsync();
 
         /// <summary>
+        /// Go to Specific Page Async
+        /// </summary>
+        Task GoToPageAsync(int pageNumber);
+
+        /// <summary>
         /// Redraws the Table using EditTemplate instead of Template
         /// </summary>
         void ToggleEditMode();
@@ -86,7 +95,9 @@ namespace BlazorTable
         /// <summary>
         /// Gets Data and redraws the Table
         /// </summary>
-        Task UpdateAsync();
+        /// <param name="updateServerData">false if it is not needed to update server data</param>
+        /// <returns></returns>
+        Task UpdateAsync(bool updateServerData = true);
         /// <summary>
         /// Open/Close detail view in specified row.
         /// </summary>
@@ -138,5 +149,12 @@ namespace BlazorTable
         /// </summary>
         /// <param name="pageSize"></param>
         Task SetPageSizeAsync(int pageSize);
+
+        /// <summary>
+        /// Set initial filters
+        /// </summary>
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        Task SetInitialFiltersAsync(IEnumerable<FilterString> filters);
     }
 }

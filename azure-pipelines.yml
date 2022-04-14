@@ -1,0 +1,52 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  Parameters.requestedMajorVersion: '1'
+  Parameters.requestedMinorVersion: '17'
+  Parameters.requestedPatchVersion: '3'
+steps:
+
+- task: NuGetToolInstaller@1
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    feedsToUse: 'select'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/BlazorTable.csproj'
+    includesymbols: true
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '17'
+    patchVersion: '3'
+  displayName: 'Nuget Push'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '62fc85ae-4447-4b56-a2ea-c6ab74293507/dbfc01ad-afcb-448b-bda5-e0ef32ca9d70'

@@ -162,6 +162,9 @@
   <data name="FilterManagerClose" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="GoToPage" xml:space="preserve">
+    <value>Go to page:</value>
+  </data>
   <data name="NumberConditionIsEqualTo" xml:space="preserve">
     <value>Is equal to</value>
   </data>
@@ -197,6 +200,9 @@
   </data>
   <data name="PagerPrevious" xml:space="preserve">
     <value>Previous</value>
+  </data>
+  <data name="SetPageSize" xml:space="preserve">
+    <value>Set Page Size</value>
   </data>
   <data name="StringConditionContains" xml:space="preserve">
     <value>Contains</value>

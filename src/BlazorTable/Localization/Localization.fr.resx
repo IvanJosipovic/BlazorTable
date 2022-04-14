@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -160,6 +161,9 @@
   </data>
   <data name="FilterManagerClose" xml:space="preserve">
     <value>Fermer</value>
+  </data>
+  <data name="GoToPage" xml:space="preserve">
+    <value>Aller à la page:</value>
   </data>
   <data name="NumberConditionIsEqualTo" xml:space="preserve">
     <value>Est égal à</value>
