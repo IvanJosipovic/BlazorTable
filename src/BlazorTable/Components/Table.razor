@@ -139,6 +139,24 @@
                     }
                 </tr>
             </thead>
+            @if(AddExtraTh)
+            {
+            <thead class="@TableHeadClass">
+                <tr style="cursor: pointer;">
+                    @if (_detailTemplate != null)
+                    {
+                        <th style="width: 1%"></th>
+                    }
+                    @foreach (IColumn<TableItem> column in Columns)
+                    {
+                        @if (column.Visible)
+                        {
+                            <th scope="col" class="@(column.Class)"></th>
+                        }
+                    }
+                </tr>
+            </thead>    
+            }
             <tbody class="@TableBodyClass">
                 @if (FilteredItems != null)
                 {

@@ -658,5 +658,11 @@ namespace BlazorTable
         [Parameter]
         public bool ShowChildContentAtTop { get; set; }
 
+        /// <summary>
+        /// Add a new th row
+        /// </summary>
+        [Parameter]
+        public bool AddExtraTh { get; set; }
+
     }
 }
