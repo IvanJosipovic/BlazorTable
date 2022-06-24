@@ -53,6 +53,13 @@ namespace BlazorTable
         /// </summary>
         List<TableItem> SelectedItems { get; }
 
+		/// <summary>
+		/// Name of the default column.
+		/// </summary>
+		string DefaultSortColumnField { get; }
+		
+		bool SortDescending { get; }
+
         /// <summary>
         /// Set the SetDetailTemplate for the table
         /// </summary>
@@ -64,5 +71,17 @@ namespace BlazorTable
         /// </summary>
         /// <param name="customRow">Custom row to add</param>
         void AddCustomRow(CustomRow<TableItem> customRow);
-    }
+
+		/// <summary>
+		/// Sets the sort column field.
+		/// </summary>
+		/// <param name="sortColumnField"></param>
+		void SetSortColumnField(string sortColumnField);
+
+		/// <summary>
+		/// Sets the sort order for the set column field..
+		/// </summary>
+		/// <param name="sortColumnField">True if sorted descending.</param>
+		void SetSortOrder(bool sortDescending = false);
+	}
 }
