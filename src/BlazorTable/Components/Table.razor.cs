@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlazorTable.Components.ServerSide;
 using BlazorTable.Interfaces;
+using System.Runtime.CompilerServices;
 
 namespace BlazorTable
 {
@@ -89,7 +90,19 @@ namespace BlazorTable
         [Parameter]
         public string GlobalSearch { get; set; }
 
-        [Inject]
+		/// <summary>
+		/// Name of the default sort field.
+		/// </summary>
+		[Parameter]
+		public string? DefaultSortColumnField { get; set; }
+
+		/// <summary>
+		/// Whether to initially sort by descending or not.
+		/// </summary>
+		[Parameter]
+		public bool? DefaultSortDescending { get; set; }
+
+		[Inject]
         private ILogger<ITable<TableItem>> Logger { get; set; }
 
         [Inject]
@@ -135,17 +148,35 @@ namespace BlazorTable
         /// </summary>
         public int TotalPages => PageSize <= 0 ? 1 : (TotalCount + PageSize - 1) / PageSize;
 
-        /// <summary>
-        /// Custom Rows
-        /// </summary>
-        private List<CustomRow<TableItem>> CustomRows { get; set; } = new List<CustomRow<TableItem>>();
+		/// <summary>
+		/// Whether sorting is descending or not.
+		/// </summary>
+		public bool SortDescending { get; set; }
 
-        protected override async Task OnParametersSetAsync()
+		/// <summary>
+		/// Custom Rows
+		/// </summary>
+		private List<CustomRow<TableItem>> CustomRows { get; set; } = new List<CustomRow<TableItem>>();
+
+		private string? SortColumnField { get; set; }
+
+
+
+		protected override void OnInitialized()
+		{
+			SortColumnField = DefaultSortColumnField;
+			if (DefaultSortDescending != null)
+			{
+				SortDescending = DefaultSortDescending.Value;
+			}
+		}
+
+		protected override async Task OnParametersSetAsync()
         {
             await UpdateAsync().ConfigureAwait(false);
         }
 
-        private IEnumerable<TableItem> GetData()
+		private IEnumerable<TableItem> GetData()
         {
             if (Items == null && ItemsQueryable == null)
             {
@@ -180,7 +211,7 @@ namespace BlazorTable
 
             if (sortColumn != null)
             {
-                ItemsQueryable = sortColumn.SortDescending ?
+                ItemsQueryable = SortDescending ?
                     ItemsQueryable.OrderByDescending(sortColumn.Field) :
                     ItemsQueryable.OrderBy(sortColumn.Field);
             }
@@ -238,14 +269,13 @@ namespace BlazorTable
         {
             if (DataLoader != null)
             {
-                var sortColumn = Columns.Find(x => x.SortColumn);
                 var sortExpression = new StringBuilder();
-                if (sortColumn != null)
+                if (!string.IsNullOrWhiteSpace(SortColumnField))
                 {
                     sortExpression
-                        .Append(sortColumn.Field.GetPropertyMemberInfo()?.Name)
+                        .Append(SortColumnField)
                         .Append(' ')
-                        .Append(sortColumn.SortDescending ? "desc" : "asc");
+                        .Append(SortDescending ? "desc" : "asc");
                 }
 
                 var result = await DataLoader.LoadDataAsync(new FilterData
@@ -563,10 +593,20 @@ namespace BlazorTable
             await UpdateAsync().ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Show table child content at the top of the table.
-        /// </summary>
-        [Parameter]
+		public void SetSortColumnField(string sortColumnField)
+		{
+			this.SortColumnField = sortColumnField;
+		}
+
+		public void SetSortOrder(bool sortDescending = false)
+		{
+			this.SortDescending = sortDescending;
+		}
+
+		/// <summary>
+		/// Show table child content at the top of the table.
+		/// </summary>
+		[Parameter]
         public bool ShowChildContentAtTop { get; set; }
 
     }

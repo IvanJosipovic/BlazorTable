@@ -123,26 +123,9 @@ namespace BlazorTable
         public Expression<Func<TableItem, bool>> Filter { get; set; }
 
         /// <summary>
-        /// True if this is the default Sort Column
-        /// </summary>
-        [Parameter]
-        public bool? DefaultSortColumn { get; set; }
-
-        /// <summary>
-        /// Direction of default sorting
-        /// </summary>
-        [Parameter]
-        public bool? DefaultSortDescending { get; set; }
-
-        /// <summary>
         /// True if this is the current Sort Column
         /// </summary>
         public bool SortColumn { get; set; }
-
-        /// <summary>
-        /// Direction of sorting
-        /// </summary>
-        public bool SortDescending { get; set; }
 
         /// <summary>
         /// Filter Panel is open
@@ -185,15 +168,7 @@ namespace BlazorTable
         {
             Table.AddColumn(this);
 
-            if (DefaultSortDescending.HasValue)
-            {
-                this.SortDescending = DefaultSortDescending.Value;
-            }
-
-            if (DefaultSortColumn.HasValue)
-            {
-                this.SortColumn = DefaultSortColumn.Value;
-            }
+			this.SortColumn = Table.DefaultSortColumnField == this.Field.GetPropertyMemberInfo()?.Name;
         }
 
         protected override void OnParametersSet()
@@ -232,12 +207,13 @@ namespace BlazorTable
             {
                 if (SortColumn)
                 {
-                    SortDescending = !SortDescending;
-                }
+					Table.SetSortOrder(!Table.SortDescending);
+				}
 
-                Table.Columns.ForEach(x => x.SortColumn = false);
+				Table.Columns.ForEach(x => x.SortColumn = false);
 
                 SortColumn = true;
+				Table.SetSortColumnField(this.Field.GetPropertyMemberInfo()?.Name);
 
                 await Table.UpdateAsync().ConfigureAwait(false);
             }
