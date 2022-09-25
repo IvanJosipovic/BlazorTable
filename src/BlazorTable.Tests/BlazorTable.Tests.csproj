@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-    <PackageReference Include="PuppeteerSharp" Version="5.0.0" />
+    <PackageReference Include="PuppeteerSharp" Version="7.1.0" />
     <PackageReference Include="PuppeteerSharp.Contrib.Extensions" Version="4.0.0" />
     <PackageReference Include="Shouldly" Version="4.0.3" />
     <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
